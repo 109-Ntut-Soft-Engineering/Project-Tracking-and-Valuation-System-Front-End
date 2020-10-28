@@ -1,5 +1,5 @@
 import React from "react";
-import { Sidenav, Nav, Icon} from 'rsuite'
+import { Sidenav, Nav, Icon} from 'rsuite';
 import {Link}  from "react-router-dom";
 class Sidenavbar extends React.Component{
     render(){

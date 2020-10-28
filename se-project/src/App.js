@@ -2,6 +2,7 @@ import React from "react";
 import { HashRouter as Router, Route} from "react-router-dom";
 import Home from './js/Home';
 import Login from './js/Login';
+import Codevariation from './js/Codevariation'
 
 class App extends React.Component{
     render(){
@@ -11,6 +12,8 @@ class App extends React.Component{
                     <Route exact path="/" component={Login}/>
 
                     <Route path="/home" component={Home}/>
+
+                    <Route path="/code" component={Codevariation}/>
                 </div>
             </Router>
         )
