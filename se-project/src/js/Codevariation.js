@@ -1,8 +1,7 @@
 import React from 'react';
 import Sidenavbar from "./tool/Sidenavbar";
-import {Container, Grid, Row, Col} from 'rsuite'; 
-import {LineChart, Line, CartesianGrid, AreaChart, Area, Tooltip,
-    XAxis, YAxis, Legend} from 'recharts'
+import {Container} from 'rsuite'; 
+import {AreaChart, Area, XAxis, YAxis, Legend} from 'recharts'
 
 class CodeVariation extends React.Component{
 	// get_withd(){
