@@ -1,0 +1,21 @@
+.repository-name {
+    color: #E8FFFF;
+    text-align: center;
+    margin-top: 25px;
+}
+
+.member-button {
+    height: 50px;
+    width: 125px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
+.horizontal-center {
+    margin: 0 auto;
+}
+
+.component-margin {
+    margin-left: 25px;
+    margin-top: 25px;
+}
