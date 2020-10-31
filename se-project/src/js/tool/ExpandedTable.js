@@ -76,7 +76,6 @@ class ExpandedTable extends React.Component{
                     >
                     </div>
                     <p>{rowData.discription}</p>
-                    <p>{rowData.date}</p>
                   </div>
                 );
               }}
@@ -88,6 +87,10 @@ class ExpandedTable extends React.Component{
                         expandedRowKeys={expandedRowKeys}
                         onChange={this.handleExpanded}
                     />
+                </Column>
+                <Column width={130}>
+                    <HeaderCell>Title</HeaderCell>
+                    <Cell dataKey="title" />
                 </Column>
                 <Column width={130}>
                     <HeaderCell>User</HeaderCell>

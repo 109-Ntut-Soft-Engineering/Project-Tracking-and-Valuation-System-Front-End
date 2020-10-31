@@ -16,7 +16,7 @@ class App extends React.Component{
                     <Route path="/home" component={Home}/>
 
                     <Route path="/code" component={CodeVariation}/>
-                    <Route path="/issue" component={IssueDashboard}/>
+                    <Route path="/issues" component={IssueDashboard}/>
                 </div>
             </Router>
         )

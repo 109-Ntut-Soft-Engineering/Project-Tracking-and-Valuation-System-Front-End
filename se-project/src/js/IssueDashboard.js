@@ -4,13 +4,13 @@ import Sidenavbar from './tool/Sidenavbar';
 import ExpandedTable from './tool/ExpandedTable'
 
 const data =  [{
-    id: "001", user: "Tony", date:"2020-10-21", discription: "This is test issue 001"
+    id: "001", title: "issue_test001", user: "Tony@gmail.com", date:"2020-10-21", discription: "This is test issue 001"
 },{
-    id: "002", user: "Ken", date:"2020-10-22", discription: "This is test issue 002"
+    id: "002", title: "issue_test002", user: "Ken@gmail.com", date:"2020-10-22", discription: "This is test issue 002"
 },{
-    id: "003", user: "Bob", date:"2020-11-01", discription: "This is test issue 003"
+    id: "003", title: "issue_test003", user: "Bob@gmail.com", date:"2020-11-01", discription: "This is test issue 003"
 },{
-    id: "004", user: "Ancle", date:"2020-10-10", discription: "This is test issue 004"
+    id: "004", title: "issue_test004", user: "Ancle@gmail.com", date:"2020-10-10", discription: "This is test issue 004"
 }]
 
 class IssueDashboard extends React.Component{
