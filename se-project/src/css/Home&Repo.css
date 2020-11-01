@@ -1,0 +1,64 @@
+.homeHeader{
+    background-image:linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%);
+    padding:50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.TitleBox{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.UserBox{
+    display: flex;
+    flex-direction: row;
+    color: white;
+    align-items: center;
+}
+
+.UserAccount{
+    margin: 15px;
+}
+
+.SubTitle{
+    background-color: #f6f7f9;
+    padding-top: 35px;
+    padding-right: 13%;
+    padding-left: 13%;
+}
+
+/* 布局排版 */
+.FlexBox{
+    padding: 0 10% 3% 10%;
+    background-color: #f6f7f9;
+    height: 100%;
+}
+
+/* 卡片樣式 */
+.Card{
+    background-color:white;
+    height:0;
+    padding-bottom: 100%;
+    font-size: 20px;
+    font-weight: bolder;
+    word-wrap:break-word;
+    text-align:center;
+    color: #575757;
+}
+
+.Card:hover{
+    background-color:#b6b7b9ea;
+}
+
+#Card_AddNew{
+    font-size: 50px;
+    font-weight: 10;
+}
+
+/* 文字置中 */
+.rs-panel-body{
+    margin-top: 50px;
+}
