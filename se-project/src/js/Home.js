@@ -1,6 +1,6 @@
 import React from "react";
 import Sidenavbar from "./tool/Sidenavbar";
-import { Container,Content,Header} from 'rsuite';
+import { Container,Content, Header} from 'rsuite';
 
 class Home extends React.Component{
     render(){
