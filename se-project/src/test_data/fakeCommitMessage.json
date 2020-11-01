@@ -1,0 +1,15 @@
+{
+    "repoName":"Repository_Name", 
+    "member":["Alex12345", "Alice12345", "Martin12345", "Roy12345"], 
+    "data":[
+        {"name":"Alex12345", "message":"[Feature] Establish project", "lines":100, "time":"2020/10/20"}, 
+        {"name":"Alice12345", "message":"[Feature] Do something-1", "lines":120, "time":"2020/10/21"}, 
+        {"name":"Martin12345", "message":"[Feature] Do something-2", "lines":140, "time":"2020/10/21"}, 
+        {"name":"Roy12345", "message":"[Feature] Do something-3", "lines":70, "time":"2020/10/23"}, 
+        {"name":"Alex12345", "message":"[Feature] Do something-4", "lines":10, "time":"2020/10/24"}, 
+        {"name":"Alice12345", "message":"[Feature] Do something-5", "lines":340, "time":"2020/10/24"}, 
+        {"name":"Martin12345", "message":"[Feature] Do something-6", "lines":200, "time":"2020/10/24"}, 
+        {"name":"Martin12345", "message":"[Feature] Do something-7", "lines":150, "time":"2020/10/25"}, 
+        {"name":"Roy12345", "message":"[Feature] Do something-7", "lines":40, "time":"2020/10/26"}
+    ]
+}
