@@ -21,17 +21,17 @@ var ImageCell = ({ rowData, dataKey, ...props }) => (
 
 class ContributionCommit extends React.Component {
     render() {
+        var repoName = this.props.match.params.repo_name;
         return (
             <Container style={{ height: "100%", display: "flex", flexDirection: "row" }}>
-                <Sidenavbar style={{ height: "100%" }} />
+                <Sidenavbar contact={{repo_name:repoName}}/>
                 <Container>
-                    <div style={{ width: "100%", height: "100px" }}>
-                        <h2>RepositoryName</h2>
+                    <div style={{width:"100%", marginTop:"30px",marginBottom:"40px",color:"white",textAlign: "center"}}>
+                        <h1>{repoName}</h1>
                     </div>
                     <div style={{
                         width: "90%", backgroundColor: "white",
-                        marginLeft: window.innerWidth * 0.01, marginRight: window.innerWidth * 0.01
-                    }}>
+                        marginLeft: "5%", marginRight: "5%",marginBottom:"300px"}}>
                         <div>
                             <h3>ThisWeek</h3>
                         </div>

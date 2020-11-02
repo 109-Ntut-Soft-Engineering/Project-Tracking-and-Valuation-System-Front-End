@@ -4,6 +4,9 @@ import {Container} from 'rsuite';
 import {AreaChart, Area, XAxis, YAxis, Legend} from 'recharts'
 
 class CodeVariation extends React.Component{
+    constructor(props){
+        super(props);
+    }
 	// get_withd(){
 	// 	return document.getElementById('chart_region').getAttribute('width')
 	// }
@@ -37,16 +40,16 @@ class CodeVariation extends React.Component{
         
 		const chart_width = window.innerWidth * 0.7
 		const chart_height = window.innerHeight * 0.7
-		
+		var repoName = this.props.match.params.repo_name;
         return (
             <Container style={{height:"100%", display:"flex", flexDirection:"row"}}>
-                <Sidenavbar style={{height:"100%"}}/>
-				<Container id="main" style={{height:"100%", display:"flex", flexDirection:"col"}}>
-					<div style={{width:"100%", height:"100px"}}>
-						<h2>RepositoryName</h2>
+                <Sidenavbar contact={{repo_name:repoName}}/>
+				<Container id="main" style={{height:"100%", display:"flex", flexDirection:"col",alignItems:"center"}}>
+					<div style={{width:"100%", marginTop:"30px",marginBottom:"40px",color:"white",textAlign: "center"}}>
+						<h1>{repoName}</h1>
 					</div>
 					<div id="chart_region" style={{width:"90%", height:{chart_height}, backgroundColor: "white",
-						marginLeft:window.innerWidth * 0.01, marginRight:window.innerWidth * 0.01}}>
+						marginLeft:window.innerWidth * 0.01, marginRight:window.innerWidth * 0.01,marginBottom:"150px"}}>
 						<AreaChart width={chart_width} height={chart_height} data={data}>
                             <defs>
                                 <linearGradient id="colorCode" x1="0" y1="0" x2="0" y2="1">

@@ -1,6 +1,6 @@
 {
     "repoName":"Repository_Name", 
-    "member":["Alex12345", "Alice12345", "Martin12345", "Roy12345"], 
+    "member":["Alex12345", "Alice12345", "Martin12345", "Roy12345", "Group"], 
     "data":[
         {"name":"Alex12345", "message":"[Feature] Establish project", "lines":100, "time":"2020/10/20"}, 
         {"name":"Alice12345", "message":"[Feature] Do something-1", "lines":120, "time":"2020/10/21"}, 

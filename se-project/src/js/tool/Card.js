@@ -11,7 +11,7 @@ class Card extends React.Component{
         var go_to_place ="";
 
         if(this.props.contact.from_where == "home") go_to_place = "/repository";
-        else if(this.props.contact.from_where == "repo") go_to_place = "/code";
+        else if(this.props.contact.from_where == "repo") go_to_place = "/code/" + this.props.contact.name;
 
         return (
             <FlexboxGrid.Item style={{width:"20%",margin:"2.5%"}}>

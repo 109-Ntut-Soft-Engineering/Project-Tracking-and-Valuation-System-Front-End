@@ -16,12 +16,13 @@ const data =  [{
 class IssueDashboard extends React.Component{
     
     render(){
+        var repoName = this.props.match.params.repo_name;
         return(
             <Container style={{height:"100%", display:"flex", flexDirection:"row"}}>
-                <Sidenavbar />
+                <Sidenavbar contact={{repo_name:repoName}}/>
                 <Container style={{height:"100%", width:"100%", flexDirection:"col"}}>
-                    <div style={{width:"100%", height:"15%", backgroundColor:"#c1c1d7"}}>
-                        <h1>Repository Name</h1>    
+                    <div style={{width:"100%", paddingTop:"30px", paddingBottom:"40px", backgroundImage: "linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%)", color:"white", textAlign:"center"}}>
+                        <h1>{repoName}</h1>    
                     </div>
                     <div>
                         <ExpandedTable data={data} height={window.innerHeight*0.85}></ExpandedTable>

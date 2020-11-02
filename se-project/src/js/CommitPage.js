@@ -9,20 +9,24 @@ import '../css/commitPage.css'
 
 import fakeCommitMessage from '../test_data/fakeCommitMessage.json'
 
-const repoName = fakeCommitMessage.repoName;
+
 const members = fakeCommitMessage.member;
 const datas = fakeCommitMessage.data;
 
 class CommitPage extends React.Component {
+    constructor(props){
+        super(props);
+    }
+
     render() {
+        var repoName = this.props.match.params.repo_name;
         return (
             <Container style={{height:"100%", display:"flex", flexDirection:"row"}}>
-                <Sidenavbar />
-                <Container>
-
+                <Sidenavbar contact={{repo_name:repoName}}/>
+                <Container className="horizontal-center component-margin">
                     <h1 className="repository-name">{repoName}</h1>
 
-                    <Header style={{display:"flex", flexDirection:"row", marginLeft:"25px", marginTop:"25px", marginBottom:"25px"}}>
+                    <Header style={{display:"flex", flexDirection:"row",justifyContent:"center", marginLeft:"25px", marginTop:"25px", marginBottom:"25px"}}>
                         {members.map(member => 
                             <Button className="member-button">{member}</Button>
                         )}
@@ -35,7 +39,7 @@ class CommitPage extends React.Component {
                         <Area type="monotone" dataKey="lines" stroke="#82ca9d" fill="#82ca9d" />
                     </AreaChart>
                     
-                    <Container className="horizontal-center component-margin">
+                    <Container className="horizontal-center component-margin" style={{marginBottom:"50px"}}>
                         <Table width={1000} height={375} data={datas}>
                             <Column width={200}>
                                 <HeaderCell>Name</HeaderCell>

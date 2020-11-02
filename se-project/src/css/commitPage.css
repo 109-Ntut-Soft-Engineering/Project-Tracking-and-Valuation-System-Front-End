@@ -1,7 +1,8 @@
 .repository-name {
-    color: #E8FFFF;
+    color: white;
     text-align: center;
-    margin-top: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .member-button {
