@@ -5,21 +5,24 @@ import '../css/Home&Repo.css';
 import Card from './tool/Card.js';
 import {Link}  from "react-router-dom";
 
-class Home extends React.Component{
+class Repository extends React.Component{
     render(){
-        var p_name=["Project Name_106590017","Project Name_106590022","Project Name_106590045","Project Name_106590055"];
+        var r_name=["Repository frontEnd","Repository backEnd","Repository database"];
 
         // 將四張卡片放入cards
         var cards = [];
-        for (let i = 0; i <= 3; i++) {
+        for (let i = 0; i <= 2; i++) {
             cards.push(
-                <Card contact={{name:p_name[i], from_where:"home"}}/>
+                <Card contact={{name:r_name[i], from_where:"repo"}}/>
             );
         }
         return (
             <Container>
                 <Header className="homeHeader">
-                    <h1 style={{color:"white"}}>專案管理追蹤系統</h1>
+                    <div className="TitleBox">
+                        <Link to="/home"><Icon inverse='true' size='5x' icon='angle-left'/></Link>
+                        <h1 style={{color:"white",marginLeft:"20px"}}>  專案管理追蹤系統</h1>
+                    </div>
                     <div className="UserBox"> 
                         <h5 className="UserAccount">will8456835用戶，您好</h5>
                         <Dropdown   renderTitle={children => {return <IconButton icon={<Icon icon="user" />} />;}}>
@@ -31,7 +34,7 @@ class Home extends React.Component{
                 </Header>
 
                 <div className="SubTitle">
-                    <h3>您的 Project：</h3>
+                    <h3>您的 Repository：</h3>
                 </div>
 
                 <FlexboxGrid justify="start" className="FlexBox">
@@ -47,4 +50,4 @@ class Home extends React.Component{
         )
     }
 }
-export default Home;
+export default Repository;

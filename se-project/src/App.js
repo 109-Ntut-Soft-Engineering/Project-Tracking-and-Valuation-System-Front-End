@@ -2,9 +2,11 @@ import React from "react";
 import { HashRouter as Router, Route} from "react-router-dom";
 import Home from './js/Home';
 import Login from './js/Login';
+import ContributionCommit from './js/ContributionCommit'
+import CommitPage from './js/CommitPage'
 import CodeVariation from './js/Codevariation'
 import IssueDashboard from './js/IssueDashboard'
-
+import Repository from './js/Repository'
 
 class App extends React.Component{
     render(){
@@ -12,11 +14,12 @@ class App extends React.Component{
             <Router>
                 <div style={{height:"100%"}}> 
                     <Route exact path="/" component={Login}/>
-
                     <Route path="/home" component={Home}/>
-
-                    <Route path="/code" component={CodeVariation}/>
-                    <Route path="/issue" component={IssueDashboard}/>
+                    <Route path="/repository" component={Repository}/>
+                    <Route path="/code/:repo_name" component={CodeVariation}/>
+                    <Route path="/commit/:repo_name" component={CommitPage} />
+                    <Route path="/committeam/:repo_name" component={ContributionCommit}/>
+                    <Route path="/issue/:repo_name" component={IssueDashboard}/>
                 </div>
             </Router>
         )
