@@ -11,17 +11,26 @@ function SettingForm(props){
         <Form layout="inline">
             <FormGroup>
                 <ControlLabel style={{width: 100}}>ProjectName</ControlLabel>
-                <FormControl name="username" value={props.proName} style={{ width: 300}} />
+                <FormControl name="username" value={props.proName} style={{ width: 350}} />
                 <HelpBlock tooltip>Required</HelpBlock>
             </FormGroup>
             <FormGroup>
                 <ControlLabel style={{width: 100}}>Token</ControlLabel>                              
-                <FormControl name="token"  style={{width: 300}} />
+                <FormControl name="token"  style={{width: 350}} />
                 <HelpBlock tooltip>Required</HelpBlock>
             </FormGroup>
+            <FormGroup>
+                <ControlLabel style={{width: 100}}>owner</ControlLabel>                              
+                <FormControl name="token"  style={{width: 350}} />
+                <HelpBlock tooltip>owner</HelpBlock>
+            </FormGroup>
+    
             <ButtonToolbar>
-                <Button>
+                <Button color='primary'>
                     Save
+                </Button>
+                <Button color='red'>
+                    Delete
                 </Button>
             </ButtonToolbar>
         </Form>
@@ -44,8 +53,8 @@ function SettingPage(props){
                     <Sidenavbar contact={{repo_name:proName}}/>
                     <Grid style={{marginTop: 30}}>
                         <Row>
-                            <Col xs={8}/>
-                            <Col xs={10}>
+                            <Col xs={7}/>
+                            <Col xs={12}>
                                 <SettingForm proName={proName}/>
                             </Col>
                             <Col xs={3} />
