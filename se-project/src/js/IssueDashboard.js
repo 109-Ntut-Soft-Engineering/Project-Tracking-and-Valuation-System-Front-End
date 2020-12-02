@@ -1,7 +1,9 @@
 import React from 'react';
-import {Container} from 'rsuite';
+import {Container, Breadcrumb} from 'rsuite';
 import Sidenavbar from './tool/Sidenavbar';
+import {Link}  from "react-router-dom";
 import ExpandedTable from './tool/ExpandedTable'
+import MainHeader from './tool/MainHeader'
 
 const data =  [{
     id: "001", title: "issue_test001", user: "Tony@gmail.com", date:"2020-10-21", discription: "This is test issue 001"
@@ -16,16 +18,18 @@ const data =  [{
 class IssueDashboard extends React.Component{
     
     render(){
-        var repoName = this.props.match.params.repo_name;
+        var proName = this.props.match.params.pro_name;
         return(
-            <Container style={{height:"100%", display:"flex", flexDirection:"row"}}>
-                <Sidenavbar contact={{repo_name:repoName}}/>
-                <Container style={{height:"100%", width:"100%", flexDirection:"col"}}>
-                    <div style={{width:"100%", paddingTop:"30px", paddingBottom:"40px", backgroundImage: "linear-gradient(-225deg, #22E1FF 0%, #1D8FE1 48%, #625EB1 100%)", color:"white", textAlign:"center"}}>
-                        <h1>{repoName}</h1>    
-                    </div>
-                    <div>
-                        <ExpandedTable data={data} height={window.innerHeight*0.85}></ExpandedTable>
+            <Container style={{height:"100%"}}>
+                <MainHeader/>
+                <Container style={{backgroundColor:"white",width:"100%",paddingLeft:"10%", paddingRight:"10%"}}>
+                    <Breadcrumb style={{marginBottom:"20px", marginTop:"20px"}}>
+                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
+                        <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Sidenavbar contact={{repo_name:proName}}/>
+                    <div style={{marginTop:"30px"}}>
+                        <ExpandedTable data={data} height={window.innerHeight*0.65}></ExpandedTable>
                     </div>
                 </Container>
             </Container>

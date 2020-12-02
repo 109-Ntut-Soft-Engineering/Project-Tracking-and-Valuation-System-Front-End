@@ -10,7 +10,7 @@ class Card extends React.Component{
     render(){
         var go_to_place ="";
 
-        if(this.props.contact.from_where == "home") go_to_place = "/repository";
+        if(this.props.contact.from_where == "home") go_to_place = "/code/" + this.props.contact.name;
         else if(this.props.contact.from_where == "repo") go_to_place = "/code/" + this.props.contact.name;
 
         return (

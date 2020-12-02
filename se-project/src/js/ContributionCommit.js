@@ -1,8 +1,10 @@
 import React from "react";
 import Sidenavbar from "./tool/Sidenavbar";
-import { Container } from 'rsuite';
+import { Container ,Breadcrumb} from 'rsuite';
+import {Link}  from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import black from '../img/black.png';
+import MainHeader from './tool/MainHeader'
 
 const data = [
     { user: "Tony", c1: 5, c2: 11, c3: 7, c4: 0, c5: 3, c6: 4, c7: 2 },
@@ -21,22 +23,21 @@ var ImageCell = ({ rowData, dataKey, ...props }) => (
 
 class ContributionCommit extends React.Component {
     render() {
-        var repoName = this.props.match.params.repo_name;
+        var proName = this.props.match.params.pro_name;
         return (
-            <Container style={{ height: "100%", display: "flex", flexDirection: "row" }}>
-                <Sidenavbar contact={{repo_name:repoName}}/>
-                <Container>
-                    <div style={{width:"100%", marginTop:"30px",marginBottom:"40px",color:"white",textAlign: "center"}}>
-                        <h1>{repoName}</h1>
-                    </div>
-                    <div style={{
-                        width: "90%", backgroundColor: "white",
-                        marginLeft: "5%", marginRight: "5%",marginBottom:"300px"}}>
-                        <div>
-                            <h3>ThisWeek</h3>
-                        </div>
+            <Container style={{ height: "100%"}}>
+                <MainHeader/>
+                <Container style={{backgroundColor:"white",width:"100%",paddingLeft:"10%", paddingRight:"10%"}}>
+                    <Breadcrumb style={{marginBottom:"20px", marginTop:"20px"}}>
+                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
+                        <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Sidenavbar contact={{repo_name:proName}}/>
+
+                    <div style={{width:"80%",marginLeft:"10%",marginRight:"10%",marginBottom:"100px"}}>
+                        <h5 style={{marginTop:"25px", marginBottom:"25px"}}>ThisWeek</h5>                    
                         <Table data={data} autoHeight>
-                            <Column width={100}>
+                            <Column width={80}>
                                 <HeaderCell>Name</HeaderCell>
                                 <Cell dataKey="user" />
                             </Column>

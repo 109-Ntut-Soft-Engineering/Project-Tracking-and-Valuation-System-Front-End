@@ -15,29 +15,45 @@
 .UserBox {
     display: flex;
     flex-direction: row;
-    color: white;
+    color: rgb(226, 222, 222);
     align-items: center;
 }
 
 .UserAccount {
     margin: 15px;
+    color: white;
 }
 
 .SubTitle {
-    background-color: #f6f7f9;
-    padding-top: 35px;
-    padding-right: 13%;
-    padding-left: 13%;
+    background-color: white;
+    font-size: 15px;
+    color: #8e8e93;
+    padding-top: 25px;
+    padding-right: 15%;
+    padding-left: 15%;
 }
 
 /* 布局排版 */
 
 .FlexBox {
     padding: 0 10% 3% 10%;
-    background-color: #f6f7f9;
+    background-color: white;
     height: 100%;
 }
 
+
+.projectsTable{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 50px;
+    background-color: white;
+}
+
+.cell{
+    color: #2a2a2a;
+    text-decoration: none;
+}
 /* 卡片樣式 */
 
 .Card {

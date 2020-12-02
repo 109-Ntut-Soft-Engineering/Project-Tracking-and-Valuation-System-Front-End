@@ -1,15 +1,15 @@
 import React from 'react';
 import Sidenavbar from "./tool/Sidenavbar";
-import {Container} from 'rsuite'; 
+import {Container,Breadcrumb} from 'rsuite'; 
+import {Link}  from "react-router-dom";
 import {AreaChart, Area, XAxis, YAxis, Legend} from 'recharts'
+import MainHeader from './tool/MainHeader'
 
 class CodeVariation extends React.Component{
     constructor(props){
         super(props);
     }
-	// get_withd(){
-	// 	return document.getElementById('chart_region').getAttribute('width')
-	// }
+	
     render(){
         const data = [
             {
@@ -39,17 +39,21 @@ class CodeVariation extends React.Component{
           ];
         
 		const chart_width = window.innerWidth * 0.7
-		const chart_height = window.innerHeight * 0.7
-		var repoName = this.props.match.params.repo_name;
+		const chart_height = window.innerHeight * 0.6
+		var proName = this.props.match.params.pro_name;
         return (
-            <Container style={{height:"100%", display:"flex", flexDirection:"row"}}>
-                <Sidenavbar contact={{repo_name:repoName}}/>
-				<Container id="main" style={{height:"100%", display:"flex", flexDirection:"col",alignItems:"center"}}>
-					<div style={{width:"100%", marginTop:"30px",marginBottom:"40px",color:"white",textAlign: "center"}}>
-						<h1>{repoName}</h1>
-					</div>
-					<div id="chart_region" style={{width:"90%", height:{chart_height}, backgroundColor: "white",
-						marginLeft:window.innerWidth * 0.01, marginRight:window.innerWidth * 0.01,marginBottom:"150px"}}>
+            <Container style={{height:"100%"}}>
+                <MainHeader/>
+
+				<Container id="main" style={{backgroundColor:"white",width:"100%",paddingLeft:"10%", paddingRight:"10%"}}>
+                    <Breadcrumb style={{marginBottom:"20px", marginTop:"20px"}}>
+                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
+                        <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
+                    </Breadcrumb>
+
+                    <Sidenavbar contact={{repo_name:proName}}/>
+
+					<div id="chart_region" style={{display:"flex",justifyContent:"center",marginTop:"25px",marginBottom:"100px"}}>
 						<AreaChart width={chart_width} height={chart_height} data={data}>
                             <defs>
                                 <linearGradient id="colorCode" x1="0" y1="0" x2="0" y2="1">

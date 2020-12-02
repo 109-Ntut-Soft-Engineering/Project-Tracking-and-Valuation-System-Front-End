@@ -28,7 +28,7 @@ class Login extends React.Component {
         <FlexboxGrid.Item >
           <img src={bk} alt="Background" style={{ height: "60vh", width: "auto" }} />
         </FlexboxGrid.Item>
-        <FlexboxGrid.Item colspan={6}>
+        <FlexboxGrid.Item colspan={8}>
           <h2 style={{ color: "white", marginBottom: "20px", justifySelf: "center" }}>專案管理追蹤系統</h2>
           {!this.state.showLogin && <SingUp history={this.props.history} switch={this.switch} />}
           {this.state.showLogin && <SingIn history={this.props.history} switch={this.switch} />}

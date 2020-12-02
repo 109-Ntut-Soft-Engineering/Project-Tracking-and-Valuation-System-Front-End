@@ -16,10 +16,10 @@ class App extends React.Component {
                     <Route exact path="/" component={Login} />
                     <Route path="/home" component={Home} />
                     <Route path="/repository" component={Repository} />
-                    <Route path="/code/:repo_name" component={CodeVariation} />
-                    <Route path="/commit/:repo_name" component={CommitPage} />
-                    <Route path="/committeam/:repo_name" component={ContributionCommit} />
-                    <Route path="/issue/:repo_name" component={IssueDashboard} />
+                    <Route path="/code/:pro_name" component={CodeVariation} />
+                    <Route path="/commit/:pro_name" component={CommitPage} />
+                    <Route path="/committeam/:pro_name" component={ContributionCommit} />
+                    <Route path="/issue/:pro_name" component={IssueDashboard} />
                 </div>
             </Router>
         )
