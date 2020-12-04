@@ -27,7 +27,7 @@ class IssueDashboard extends React.Component{
                         <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Sidenavbar contact={{repo_name:proName}}/>
+                    <Sidenavbar contact={{pro_name:proName}}/>
                     <div style={{marginTop:"30px"}}>
                         <ExpandedTable data={data} height={window.innerHeight*0.65}></ExpandedTable>
                     </div>

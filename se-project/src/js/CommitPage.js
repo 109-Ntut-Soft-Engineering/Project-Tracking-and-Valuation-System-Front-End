@@ -33,7 +33,7 @@ class CommitPage extends React.Component {
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
 
-                    <Sidenavbar contact={{repo_name:proName}}/>
+                    <Sidenavbar contact={{pro_name:proName}}/>
 
                     <div style={{display:"flex", flexDirection:"row",justifyContent:"center", marginLeft:"25px", marginTop:"25px", marginBottom:"25px"}}>
                         {members.map(member => 
