@@ -50,17 +50,18 @@ function SettingPage(props){
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
 
-                    <Sidenavbar contact={{repo_name:proName}}/>
-                    <Grid style={{marginTop: 30}}>
-                        <Row>
-                            <Col xs={7}/>
-                            <Col xs={12}>
-                                <SettingForm proName={proName}/>
-                            </Col>
-                            <Col xs={3} />
-                        </Row>
-                    </Grid>
-                    
+                    <Sidenavbar contact={{pro_name:proName}}/>
+                    <div style={{display:"flex",justifyContent:"center",marginBottom:"100px"}}>
+                        <Grid style={{marginTop: 30}}>
+                            <Row>
+                                <Col xs={7}/>
+                                <Col xs={12}>
+                                    <SettingForm proName={proName}/>
+                                </Col>
+                                <Col xs={3} />
+                            </Row>
+                        </Grid>
+                    </div>
 				</Container>
             </Container>
     )

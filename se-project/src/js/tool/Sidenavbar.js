@@ -27,6 +27,9 @@ class Sidenavbar extends React.Component{
                     <Link to={"/issue/" + proName}>
                         <Nav.Item icon={<Icon icon="dashboard" />}>Issue</Nav.Item>
                     </Link>
+                    <Link to={"/setting/" + proName}>
+                        <Nav.Item icon={<Icon icon="dashboard" />}>Setting</Nav.Item>
+                    </Link>
                 </Nav>
                 </Navbar.Body>
             </Navbar>
