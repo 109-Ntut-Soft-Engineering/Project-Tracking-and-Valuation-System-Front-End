@@ -32,7 +32,7 @@ class ContributionCommit extends React.Component {
                         <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Sidenavbar contact={{repo_name:proName}}/>
+                    <Sidenavbar contact={{pro_name:proName}}/>
 
                     <div style={{width:"80%",marginLeft:"10%",marginRight:"10%",marginBottom:"100px"}}>
                         <h5 style={{marginTop:"25px", marginBottom:"25px"}}>ThisWeek</h5>                    

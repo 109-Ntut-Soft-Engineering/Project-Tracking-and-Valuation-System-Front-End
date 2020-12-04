@@ -15,7 +15,7 @@ class App extends React.Component {
                 <div style={{ height: "100%" }}>
                     <Route exact path="/" component={Login} />
                     <Route path="/home" component={Home} />
-                    <Route path="/repository" component={Repository} />
+                    <Route path="/repository/:pro_name" component={Repository} />
                     <Route path="/code/:pro_name" component={CodeVariation} />
                     <Route path="/commit/:pro_name" component={CommitPage} />
                     <Route path="/committeam/:pro_name" component={ContributionCommit} />

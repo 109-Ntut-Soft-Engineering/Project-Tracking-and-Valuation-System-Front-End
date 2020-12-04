@@ -51,7 +51,7 @@ class CodeVariation extends React.Component{
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
 
-                    <Sidenavbar contact={{repo_name:proName}}/>
+                    <Sidenavbar contact={{pro_name:proName}}/>
 
 					<div id="chart_region" style={{display:"flex",justifyContent:"center",marginTop:"25px",marginBottom:"100px"}}>
 						<AreaChart width={chart_width} height={chart_height} data={data}>
