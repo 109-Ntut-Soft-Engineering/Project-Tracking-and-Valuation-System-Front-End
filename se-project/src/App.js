@@ -7,7 +7,7 @@ import CommitPage from './js/CommitPage'
 import CodeVariation from './js/Codevariation'
 import IssueDashboard from './js/IssueDashboard'
 import Repository from './js/Repository'
-
+import SettingPage from './js/SettingPage'
 class App extends React.Component {
     render() {
         return (
@@ -20,6 +20,7 @@ class App extends React.Component {
                     <Route path="/commit/:pro_name" component={CommitPage} />
                     <Route path="/committeam/:pro_name" component={ContributionCommit} />
                     <Route path="/issue/:pro_name" component={IssueDashboard} />
+                    <Route path='/setting/:pro_name' component={SettingPage} />
                 </div>
             </Router>
         )
