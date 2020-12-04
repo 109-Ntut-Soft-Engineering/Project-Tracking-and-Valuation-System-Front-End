@@ -4,7 +4,7 @@ import Home from './js/Home';
 import Login from './js/Login';
 import ContributionCommit from './js/ContributionCommit'
 import CommitPage from './js/CommitPage'
-import CodeVariation from './js/Codevariation'
+import CodeFrequency from './js/CodeFreqency'
 import IssueDashboard from './js/IssueDashboard'
 import Repository from './js/Repository'
 import SettingPage from './js/SettingPage'
@@ -16,7 +16,7 @@ class App extends React.Component {
                     <Route exact path="/" component={Login} />
                     <Route path="/home" component={Home} />
                     <Route path="/repository" component={Repository} />
-                    <Route path="/code/:pro_name" component={CodeVariation} />
+                    <Route path="/code/:pro_name" component={CodeFrequency} />
                     <Route path="/commit/:pro_name" component={CommitPage} />
                     <Route path="/committeam/:pro_name" component={ContributionCommit} />
                     <Route path="/issue/:pro_name" component={IssueDashboard} />
