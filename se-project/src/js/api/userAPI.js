@@ -1,0 +1,17 @@
+import req from './api'
+import axios from 'axios';
+import APIKey from '../tool/Token'
+const firebaseSignUpAPI = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + APIKey
+const firebaseSingInAPI = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + APIKey
+
+export const userSignUp = (signUpData) => {
+    return axios.post(firebaseSignUpAPI, signUpData)
+}
+
+export const userLogIn = (logInData) => {
+    return axios.post(firebaseSingInAPI, logInData)
+}
+
+export const saveUserInfo = (info) => {
+    return req('post', 'user', info)
+}

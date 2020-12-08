@@ -6,7 +6,7 @@ import {
     Message, Button, Panel, Form, FormGroup, ControlLabel, FormControl, ButtonToolbar, Schema
 } from 'rsuite';
 
-import { signUp, saveUserInfo } from "./api/Api";
+import { userSignUp, saveUserInfo } from './api/userAPI';
 
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -49,14 +49,13 @@ class SingUp extends React.Component {
     }
     register(formValue) {
         if (this.form.check()) {
-            signUp({
+            userSignUp({
                 email: formValue.email,
                 password: formValue.password,
                 returnSecureToken: true
             }).then(response => {
                 const data = response.data
                 window.localStorage.setItem('token', JSON.stringify(data))
-                axios.defaults.headers.common['Authorization'] = `Bearer ${data.idToken}`;
                 saveUserInfo({
                     'name': data.email.split('@')[0],
                     'email': data.email

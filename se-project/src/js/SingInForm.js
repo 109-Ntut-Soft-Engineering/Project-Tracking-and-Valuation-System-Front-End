@@ -1,7 +1,7 @@
 import React from "react";
 import '../css/Login.css';
 import 'rsuite/dist/styles/rsuite-default.css';
-import { signIn } from "./api/Api";
+import { userLogIn } from './api/userAPI';
 import axios from 'axios';
 import {
     Button, Panel, Form, FormGroup, ControlLabel, FormControl, ButtonToolbar, Schema, Message
@@ -38,14 +38,13 @@ class SingIn extends React.Component {
     }
     login(formValue) {
         if (this.form.check()) {
-            signIn({
+            userLogIn({
                 email: formValue.email,
                 password: formValue.password,
                 returnSecureToken: true
             }).then(response => {
                 const data = response.data
                 window.localStorage.setItem('token', JSON.stringify(data))
-                axios.defaults.headers.common['Authorization'] = `Bearer ${data.idToken}`;
                 this.props.history.push("/home");
                 this.setState({ correct: true })
 
