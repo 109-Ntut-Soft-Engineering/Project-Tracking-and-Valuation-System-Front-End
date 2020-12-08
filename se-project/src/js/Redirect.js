@@ -46,7 +46,8 @@ class Redirect extends React.Component {
                 , {
                     method: 'POST',
                     headers: new Headers({
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': JSON.parse(window.localStorage.getItem('token')).idToken
                     }),
                     body: JSON.stringify(
                         {
