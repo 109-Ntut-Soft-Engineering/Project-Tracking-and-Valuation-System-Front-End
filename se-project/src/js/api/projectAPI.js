@@ -1,6 +1,6 @@
-import req from './api'
+import { req,Method } from './api'
 
 const project = 'project/'
 export const requestProjectCodeFreq = (data) => {
-    return req('get', project + 'code_freq/' + data.name)
+    return req(Method.get, project + 'code_freq/' + data.name)
 }

@@ -55,10 +55,14 @@ class SingUp extends React.Component {
                 returnSecureToken: true
             }).then(response => {
                 const data = response.data
-                window.localStorage.setItem('token', JSON.stringify(data))
+                window.localStorage.setItem('token',
+                    JSON.stringify({
+                        idToken: data.idToken,
+                        refreshToken: data.refreshToken
+                    }))
                 saveUserInfo({
-                    'name': data.email.split('@')[0],
-                    'email': data.email
+                    'name': formValue.email.split('@')[0],
+                    'email': formValue.email
                 }).then(response => {
                     console.log(response)
                 }).catch(err => {

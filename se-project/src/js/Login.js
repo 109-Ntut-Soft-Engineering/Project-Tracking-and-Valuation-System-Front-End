@@ -19,7 +19,6 @@ class Login extends React.Component {
   }
   componentDidMount() {
     localStorage.removeItem('token')
-    delete axios.defaults.headers.common['Authorization'];
   }
   switch() {
     this.setState({ showLogin: !this.state.showLogin })

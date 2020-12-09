@@ -1,24 +1,36 @@
 import axios from 'axios';
-
-
+import createAuthRefreshInterceptor from "axios-auth-refresh";
+import {APIKey} from '../tool/Token'
 
 const api = axios.create({
     baseURL: "http://localhost:5000",
     timeout: 10000
 })
+function getTokenData() {
+    return JSON.parse(localStorage.getItem('token'))
+}
+
+
+export const Method = Object.freeze({
+    post: 'post',
+    get: 'get',
+    delete: 'delete',
+    put: 'put',
+    patch: 'patch'
+})
 
 export function req(method, url, data = null) {
     method = method.toLowerCase();
     switch (method) {
-        case "post":
+        case Method.post:
             return api.post(url, data);
-        case "get":
+        case Method.get:
             return api.get(url, { params: data });
-        case "delete":
+        case Method.delete:
             return api.delete(url, { params: data });
-        case "put":
+        case Method.put:
             return api.put(url, data);
-        case "patch":
+        case Method.patch:
             return api.patch(url, data);
         default:
             console.log(`未知的 method: ${method}`);
@@ -35,9 +47,27 @@ api.interceptors.request.use(
     }
 );
 
+const refreshAuthLogic = failedRequest =>
+    axios
+        .post(`https://securetoken.googleapis.com/v1/token?key=${APIKey}`, {
+            grant_type: 'refresh_token',
+            refresh_token: getTokenData().refreshToken
+        }, { headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' } })
+        .then(tokenRefreshResponse => {
+            const data = tokenRefreshResponse.data
+            window.localStorage.setItem('token',
+                JSON.stringify({
+                    idToken: data.id_token,
+                    refreshToken: data.refresh_token
+                }))
+            failedRequest.response.config.headers["Authorization"] =
+                "Bearer " + tokenRefreshResponse.data.id_token;
+            return Promise.resolve();
+        })
+        .catch(error => {
+            console.log("refresh fail");
+            localStorage.setItem("token", null);
+            return Promise.reject(error);
+        });
 
-// const requestProjectCodeFreq = (data) => projectAPi.get('code_freq/' + data.name)
-// const signUp = (data) => axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + APIKey, data, { headers: { 'Authorization': '' } })
-// const saveUserInfo = (data) => userInstance.post('http://127.0.0.1:5000/user', data)
-// const signIn = (data) => axios.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + APIKey, data)
-// export { requestProjectCodeFreq, signUp, signIn, saveUserInfo }
+createAuthRefreshInterceptor(api, refreshAuthLogic);

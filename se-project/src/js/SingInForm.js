@@ -44,7 +44,11 @@ class SingIn extends React.Component {
                 returnSecureToken: true
             }).then(response => {
                 const data = response.data
-                window.localStorage.setItem('token', JSON.stringify(data))
+                window.localStorage.setItem('token',
+                    JSON.stringify({
+                        idToken: data.idToken,
+                        refreshToken: data.refreshToken
+                    }))
                 this.props.history.push("/home");
                 this.setState({ correct: true })
 
