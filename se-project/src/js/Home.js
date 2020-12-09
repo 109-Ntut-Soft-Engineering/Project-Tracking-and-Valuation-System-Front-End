@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Container, Button, Modal, Input} from 'rsuite';
+import { Container, Button, Modal, Input,  IconButton, Icon} from 'rsuite';
 import {Link}  from "react-router-dom";
 import MainHeader from './tool/MainHeader'
 import fakeProjectData from '../test_data/fakeProjectData.json'
@@ -48,7 +48,7 @@ class Home extends React.Component{
 
                 <div className="projectsTable">
                     <Table bordered={true} width={chart_width} height={375} data={datas}>
-                            <Column width={chart_width*0.6} align="center">
+                            <Column width={chart_width*0.5} align="center">
                                 <HeaderCell className="haederCell">Project Name</HeaderCell>
                                 <Cell>
                                     {rowData => {
@@ -60,6 +60,20 @@ class Home extends React.Component{
                             <Column width={chart_width*0.2} align="center">
                                 <HeaderCell className="haederCell">Last Update Time</HeaderCell>
                                 <Cell dataKey="updateTime"></Cell>
+                            </Column>
+                            <Column width={chart_width*0.3} align="center">
+                                <HeaderCell className="haederCell">Delete Repository</HeaderCell>
+                                <Cell>
+                                {rowData => {
+                                    function handleAction() {
+                                        //alert(`刪除Repo：${rowData.name} (還沒做)`);
+                                        window.confirm(`確定要刪除${rowData.name}嗎`);
+                                    }
+                                    return (
+                                    <IconButton icon={<Icon icon="trash-o"/>} onClick={handleAction}/>
+                                    );
+                                }}
+                                </Cell>
                             </Column>
                     </Table>
                 </div>
