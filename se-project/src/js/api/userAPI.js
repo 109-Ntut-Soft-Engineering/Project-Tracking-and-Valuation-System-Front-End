@@ -15,3 +15,7 @@ export const userLogIn = (logInData) => {
 export const saveUserInfo = (info) => {
     return req(Method.post, 'user', info)
 }
+
+export const linkGithub = (code) => {
+    return req(Method.post, 'user/auth', code)
+}

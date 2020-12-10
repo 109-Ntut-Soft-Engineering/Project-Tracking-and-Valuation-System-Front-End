@@ -1,7 +1,7 @@
 import axios from 'axios';
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-import {APIKey} from '../tool/Token'
-
+import { APIKey } from '../tool/Token'
+import qs from 'qs'
 const api = axios.create({
     baseURL: "http://localhost:5000",
     timeout: 10000
@@ -49,10 +49,10 @@ api.interceptors.request.use(
 
 const refreshAuthLogic = failedRequest =>
     axios
-        .post(`https://securetoken.googleapis.com/v1/token?key=${APIKey}`, {
+        .post(`https://securetoken.googleapis.com/v1/token?key=${APIKey}`, qs.stringify({
             grant_type: 'refresh_token',
             refresh_token: getTokenData().refreshToken
-        }, { headers: { 'Content-Type': 'Content-Type: application/x-www-form-urlencoded' } })
+        }))
         .then(tokenRefreshResponse => {
             const data = tokenRefreshResponse.data
             window.localStorage.setItem('token',

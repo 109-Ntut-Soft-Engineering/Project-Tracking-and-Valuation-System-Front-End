@@ -2,7 +2,7 @@ import React from "react";
 import '../css/Login.css';
 import 'rsuite/dist/styles/rsuite-default.css';
 import { userLogIn } from './api/userAPI';
-import axios from 'axios';
+
 import {
     Button, Panel, Form, FormGroup, ControlLabel, FormControl, ButtonToolbar, Schema, Message
 } from 'rsuite';
