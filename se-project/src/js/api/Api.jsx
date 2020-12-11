@@ -5,8 +5,9 @@ const projectAPi = axios.create({
     timeout: 10000
 })
 
-
-
-
 const requestProjectCodeFreq = (data) => projectAPi.get('code_freq/' + data.name)
 export {requestProjectCodeFreq}
+
+//後端uId=123
+const requestUserProjects = () => projectAPi.get()
+export {requestUserProjects}

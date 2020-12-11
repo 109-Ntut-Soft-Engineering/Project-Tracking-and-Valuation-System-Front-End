@@ -4,17 +4,19 @@ import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { Container, Button, Modal, Input,  IconButton, Icon} from 'rsuite';
 import {Link}  from "react-router-dom";
 import MainHeader from './tool/MainHeader'
-import fakeProjectData from '../test_data/fakeProjectData.json'
+// import fakeProjectData from '../test_data/fakeProjectData.json'
 import '../css/Home&Repo.css';
+import {requestUserProjects} from './api/Api';
 
 const chart_width = window.innerWidth * 0.7
-const datas = fakeProjectData.projects_data;
+// const datas = fakeProjectData.projects_data;
 class Home extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
           backdrop: true,
           show: false,
+          datas: undefined
         };
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
@@ -34,8 +36,20 @@ class Home extends React.Component{
         alert(`新增Project：(還沒做)`);
     }
 
+    printProjects() {
+        requestUserProjects()
+        .then(result => result.data.projects)
+        .then(projects  => {
+            // for(var i =0; i < projects.length; i++)
+                // console.log(projects[i].name)
+            this.setState({datas: projects})
+        })
+    }
+
     render(){
-        const { backdrop, show} = this.state;
+        const { backdrop, show, datas} = this.state;
+        if (this.state.datas === undefined)
+            this.printProjects();
         return (
             <Container style={{backgroundColor:"white"}}>
                 <MainHeader/>
@@ -62,7 +76,7 @@ class Home extends React.Component{
                                 <Cell dataKey="updateTime"></Cell>
                             </Column>
                             <Column width={chart_width*0.3} align="center">
-                                <HeaderCell className="haederCell">Delete Repository</HeaderCell>
+                                <HeaderCell className="haederCell">Delete Project</HeaderCell>
                                 <Cell>
                                 {rowData => {
                                     function handleAction() {
