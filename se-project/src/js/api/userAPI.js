@@ -1,4 +1,4 @@
-import { req, Method } from './api'
+import { req } from './api'
 import axios from 'axios';
 import { APIKey } from '../tool/Token'
 const firebaseSignUpAPI = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${APIKey}`
@@ -13,13 +13,13 @@ export const userLogIn = (logInData) => {
 }
 
 export const saveUserInfo = (info) => {
-    return req(Method.post, 'user', info)
+    return req.post('user', info)
 }
 
 export const linkGithub = (code) => {
-    return req(Method.post, 'user/auth', code)
+    return req.post('user/auth', code)
 }
 
 export const getUserRepos = (source) => {
-    return req(Method.get, `/repository/${source}`)
+    return req.get(`/repository/${source}`)
 }

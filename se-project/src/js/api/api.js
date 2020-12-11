@@ -11,32 +11,23 @@ function getTokenData() {
 }
 
 
-export const Method = Object.freeze({
-    post: 'post',
-    get: 'get',
-    delete: 'delete',
-    put: 'put',
-    patch: 'patch'
-})
-
-export function req(method, url, data = null) {
-    method = method.toLowerCase();
-    switch (method) {
-        case Method.post:
-            return api.post(url, data);
-        case Method.get:
-            return api.get(url, { params: data });
-        case Method.delete:
-            return api.delete(url, { params: data });
-        case Method.put:
-            return api.put(url, data);
-        case Method.patch:
-            return api.patch(url, data);
-        default:
-            console.log(`未知的 method: ${method}`);
-            return false;
+export const req = Object.freeze({
+    post: function (url, data = null) {
+        return api.post(url, data)
+    },
+    get: function (url, data = null) {
+        return api.get(url, { params: data })
+    },
+    delete: function (url, data = null) {
+        return api.delete(url, { params: data })
+    },
+    put: function (url, data = null) {
+        return api.put(url, data)
+    },
+    patch: function (url, data = null) {
+        return api.patch(url, data)
     }
-}
+})
 
 api.interceptors.request.use(
     function (config) {
