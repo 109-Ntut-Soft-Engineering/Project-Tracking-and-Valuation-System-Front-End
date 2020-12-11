@@ -19,3 +19,7 @@ export const saveUserInfo = (info) => {
 export const linkGithub = (code) => {
     return req(Method.post, 'user/auth', code)
 }
+
+export const getUserRepos = (source) => {
+    return req(Method.get, `/repository/${source}`)
+}
