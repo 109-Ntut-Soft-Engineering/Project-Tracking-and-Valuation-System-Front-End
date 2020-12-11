@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Container, Breadcrumb, Button, Modal, SelectPicker, IconButton, Icon } from 'rsuite';
+import { Container, Breadcrumb, Button, Modal, CheckPicker, IconButton, Icon } from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
 import Sidenavbar from "./tool/Sidenavbar";
@@ -90,12 +90,12 @@ class Repository extends React.Component {
                     </div>
                 </Container>
 
-                <Modal backdrop={backdrop} show={show} onHide={this.close} size="xs">
+                <Modal backdrop={backdrop} show={show} onHide={this.close} size="sm">
                     <Modal.Header>
                         <Modal.Title>新增 Repository</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <SelectPicker
+                        <CheckPicker
                             data={this.state.repos}
                             searchable={false}
                             style={{ width: 224 }}
@@ -110,7 +110,7 @@ class Repository extends React.Component {
                                 }
                                 return menu;
                             }}
-                        />
+                            block />
 
                     </Modal.Body>
                     <Modal.Footer>
