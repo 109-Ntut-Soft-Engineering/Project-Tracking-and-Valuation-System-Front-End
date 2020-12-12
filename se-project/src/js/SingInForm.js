@@ -1,11 +1,12 @@
 import React from "react";
 import '../css/Login.css';
 import 'rsuite/dist/styles/rsuite-default.css';
+import { userLogIn } from './api/userAPI';
 
 import {
     Button, Panel, Form, FormGroup, ControlLabel, FormControl, ButtonToolbar, Schema, Message
 } from 'rsuite';
-import { APIKey } from "./tool/Token";
+
 const { StringType } = Schema.Types;
 const model = Schema.Model({
     password: StringType()
@@ -37,50 +38,34 @@ class SingIn extends React.Component {
     }
     login(formValue) {
         if (this.form.check()) {
-            const req = new Request('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + APIKey
-                , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'text/json'
-                    }),
-                    body: JSON.stringify(
-                        {
-                            email: formValue.email,
-                            password: formValue.password,
-                            returnSecureToken: true
-                        }
-                    )
-                })
+            userLogIn({
+                email: formValue.email,
+                password: formValue.password,
+                returnSecureToken: true
+            }).then(response => {
+                const data = response.data
+                window.localStorage.setItem('token',
+                    JSON.stringify({
+                        idToken: data.idToken,
+                        refreshToken: data.refreshToken
+                    }))
+                this.props.history.push("/home");
+                this.setState({ correct: true })
 
-            fetch(req)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json()
-                    } else {
-                        throw response
+            }).catch(err => {
+                if (err.response) {
+                    const data = err.response.data
+                    if (data.error.message === "INVALID_PASSWORD") {
+                        this.setState({ errMsg: "密碼錯誤" })
+                    } else if (data.error.message.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
+                        this.setState({ errMsg: "請稍後再試" })
+                    } else if (data.error.message === "EMAIL_NOT_FOUND") {
+                        this.setState({ errMsg: "此帳號不存在" })
                     }
-                })
-                .then(responseJson => {
-                    //console.log(responseJson)
-                    window.localStorage.setItem('token', JSON.stringify(responseJson))
-                    this.props.history.push("/home");
-                    this.setState({ correct: true })
+                    this.setState({ correct: false })
 
-                })
-                .catch(err => {
-                    err.json().then(msg => {
-                        console.log(msg)
-                        if (msg.error.message === "INVALID_PASSWORD") {
-                            this.setState({ errMsg: "密碼錯誤" })
-                        } else if (msg.error.message.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
-                            this.setState({ errMsg: "請稍後再試" })
-                        } else if (msg.error.message === "EMAIL_NOT_FOUND") {
-                            this.setState({ errMsg: "此帳號不存在" })
-                        }
-                        this.setState({ correct: false })
-
-                    })
-                })
+                }
+            })
         }
     }
 

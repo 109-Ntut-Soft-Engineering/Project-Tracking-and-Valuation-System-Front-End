@@ -1,11 +1,12 @@
 import React from "react";
 import '../css/Login.css';
 import 'rsuite/dist/styles/rsuite-default.css';
-
+import axios from 'axios';
 import {
     Message, Button, Panel, Form, FormGroup, ControlLabel, FormControl, ButtonToolbar, Schema
 } from 'rsuite';
-import { APIKey } from "./tool/Token";
+
+import { userSignUp, saveUserInfo } from './api/userAPI';
 
 const { StringType } = Schema.Types;
 const model = Schema.Model({
@@ -48,45 +49,37 @@ class SingUp extends React.Component {
     }
     register(formValue) {
         if (this.form.check()) {
-            const req = new Request('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + APIKey
-                , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'text/json'
-                    }),
-                    body: JSON.stringify(
-                        {
-                            email: formValue.email,
-                            password: formValue.password,
-                            returnSecureToken: true
-                        }
-                    )
+            userSignUp({
+                email: formValue.email,
+                password: formValue.password,
+                returnSecureToken: true
+            }).then(response => {
+                const data = response.data
+                window.localStorage.setItem('token',
+                    JSON.stringify({
+                        idToken: data.idToken,
+                        refreshToken: data.refreshToken
+                    }))
+                saveUserInfo({
+                    'name': formValue.email.split('@')[0],
+                    'email': formValue.email
+                }).then(response => {
+                    console.log(response)
+                }).catch(err => {
+                    console.log(err)
                 })
-
-            fetch(req)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json()
-                    } else {
-                        throw response
+                this.props.history.push("/home");
+            }).catch(err => {
+                if (err.response) {
+                    const data = err.response.data
+                    if (data.error.message === "EMAIL_EXISTS") {
+                        this.setState({ errMsg: "此EMail已存在" })
+                    } else if (data.error.message.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
+                        this.setState({ errMsg: "請稍後再試" })
                     }
-                })
-                .then(responseJson => {
-                    //console.log(responseJson)
-                    window.localStorage.setItem('token', JSON.stringify(responseJson))
-                    this.props.history.push("/home");
-                })
-                .catch(err => {
-                    err.json().then(msg => {
-                        console.log(msg)
-                        if (msg.error.message === "EMAIL_EXISTS") {
-                            this.setState({ errMsg: "此EMail已存在" })
-                        } else if (msg.error.message.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
-                            this.setState({ errMsg: "請稍後再試" })
-                        }
-                        this.setState({ correct: false })
-                    })
-                })
+                    this.setState({ correct: false })
+                }
+            })
         }
     }
 

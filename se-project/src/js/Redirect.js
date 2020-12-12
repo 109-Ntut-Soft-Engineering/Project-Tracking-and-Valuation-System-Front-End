@@ -1,11 +1,7 @@
 import React from "react";
 import queryString from 'query-string';
 import { FlexboxGrid, Message } from 'rsuite'
-
-
-
-
-
+import { linkGithub } from './api/userAPI';
 
 
 function countDown(that) {
@@ -25,7 +21,7 @@ class Redirect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            secondsRemaining: 3,
+            secondsRemaining: 5,
             type: "info",
             title: "請稍後",
             description: ""
@@ -42,34 +38,21 @@ class Redirect extends React.Component {
         var that = this
 
         if ("code" in values) {
-            const req = new Request('http://127.0.0.1:5000/auth'
-                , {
-                    method: 'POST',
-                    headers: new Headers({
-                        'Content-Type': 'application/json'
-                    }),
-                    body: JSON.stringify(
-                        {
-                            code: values.code
-                        }
-                    )
-                })
-            fetch(req)
-                .then(response => {
 
-                    countDown(that);
+            linkGithub({
+                code: values.code
+            }).then(response => {
 
-                    if (response.ok) {
-                        that.setState({ type: "success", title: "成功" })
-                    } else {
-                        that.setState({ type: "error", title: "失敗" })
-                        throw response
-                    }
+                countDown(that);
+                console.log(response.data)
+                that.setState({ type: "success", title: "成功" })
 
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+
+            }).catch(err => {
+                console.log(err)
+                countDown(that);
+                that.setState({ type: "error", title: "失敗" })
+            })
         } else if ("error_description" in values) {
             that.setState({ type: "error", title: "已取消操作" })
             countDown(that);
