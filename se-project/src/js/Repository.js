@@ -78,7 +78,8 @@ class Repository extends React.Component {
                                 <Cell>
                                     {rowData => {
                                         function handleAction() {
-                                            alert(`刪除Repo：${rowData.name} (還沒做)`);
+                                            //alert(`刪除Repo：${rowData.name} (還沒做)`);
+                                            window.confirm(`確定要刪除${rowData.name}嗎`);
                                         }
                                         return (
                                             <IconButton icon={<Icon icon="trash-o" />} onClick={handleAction} />

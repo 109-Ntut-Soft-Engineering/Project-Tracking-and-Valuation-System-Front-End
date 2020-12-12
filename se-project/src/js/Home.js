@@ -93,7 +93,6 @@ class Home extends React.Component {
                     <div className="SubTitle">Projects /</div>
                     <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
                 </div>
-
                 {projectTable}
 
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="xs">
