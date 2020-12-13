@@ -20,6 +20,6 @@ export const linkGithub = (code) => {
     return req.post('user/auth', code)
 }
 
-export const getUserRepos = (source) => {
-    return req.get(`/repository/${source}`)
+export const getUserRepos = () => {
+    return req.get(`user/AvailRepository/${window.currentProject.id}`)
 }

@@ -12,7 +12,9 @@ export const requestUserProjects = () => {
 export const saveUserProjectRepos = (data) => {
     return req.patch(`${project}/${window.currentProject.id}`, data)
 }
-
+export const removeUserProjectRepos = (data) => {
+    return req.patch(`${project}/${window.currentProject.id}`, data)
+}
 export const getUserProjectRepos = (data) => {
     return req.get(`${project}/${window.currentProject.id}`)
 }

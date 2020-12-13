@@ -62,7 +62,12 @@ class Home extends React.Component {
                     </Column>
                     <Column width={chart_width * 0.2} align="center">
                         <HeaderCell className="haederCell">Last Update Time</HeaderCell>
-                        <Cell dataKey="updateTime"></Cell>
+                        <Cell>
+                            {rowData => {
+                                const time = new Date(rowData.updated)
+                                return time.toLocaleDateString() + time.toLocaleTimeString()
+                            }}
+                        </Cell>
                     </Column>
                 </Table>
             </div>
