@@ -8,3 +8,11 @@ export const requestProjectCodeFreq = (data) => {
 export const requestUserProjects = () => {
     return req.get(project)
 }
+
+export const saveUserProjectRepos = (data) => {
+    return req.patch(`${project}/${window.currentProject.id}`, data)
+}
+
+export const getUserProjectRepos = (data) => {
+    return req.get(`${project}/${window.currentProject.id}`)
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import Sidenavbar from "./tool/Sidenavbar";
-import { Container ,Breadcrumb} from 'rsuite';
-import {Link}  from "react-router-dom";
+import { Container, Breadcrumb } from 'rsuite';
+import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import black from '../img/black.png';
 import MainHeader from './tool/MainHeader'
@@ -16,8 +16,8 @@ const data = [
 const weekday = ["Monday", "Thusday", "Wendesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 var ImageCell = ({ rowData, dataKey, ...props }) => (
-    <Cell {...props} style={{ padding: 0}}>
-        <img src = {black} alt = {dataKey} width={40}/>
+    <Cell {...props} style={{ padding: 0 }}>
+        <img src={black} alt={dataKey} width={40} />
     </Cell>
 );
 
@@ -25,17 +25,17 @@ class ContributionCommit extends React.Component {
     render() {
         var proName = this.props.match.params.pro_name;
         return (
-            <Container style={{ height: "100%"}}>
-                <MainHeader/>
-                <Container style={{backgroundColor:"white",width:"100%",paddingLeft:"10%", paddingRight:"10%"}}>
-                    <Breadcrumb style={{marginBottom:"20px", marginTop:"20px"}}>
-                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
+            <Container style={{ height: "100%" }}>
+                <MainHeader />
+                <Container style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
+                    <Breadcrumb style={{ marginBottom: "20px", marginTop: "20px" }}>
+                        <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Sidenavbar contact={{pro_name:proName}}/>
+                    <Sidenavbar contact={{ pro_name: proName }} />
 
-                    <div style={{width:"80%",marginLeft:"10%",marginRight:"10%",marginBottom:"100px"}}>
-                        <h5 style={{marginTop:"25px", marginBottom:"25px"}}>ThisWeek</h5>                    
+                    <div style={{ width: "80%", marginLeft: "10%", marginRight: "10%", marginBottom: "100px" }}>
+                        <h5 style={{ marginTop: "25px", marginBottom: "25px" }}>ThisWeek</h5>
                         <Table data={data} autoHeight>
                             <Column width={80}>
                                 <HeaderCell>Name</HeaderCell>

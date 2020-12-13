@@ -17,7 +17,7 @@ class App extends React.Component {
                 <div style={{ height: "100%" }}>
                     <Route path='/redirect/' component={Redirect} />
                     <Route exact path="/" component={Login} />
-                    <Route path="/home" component={Home} />
+                    <Route path="/projects" component={Home} />
 
                     <Route path="/repository" component={Repository} />
                     <Route path="/code/:pro_name" component={CodeFrequency} />

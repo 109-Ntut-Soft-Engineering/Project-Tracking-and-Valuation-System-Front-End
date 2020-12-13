@@ -49,7 +49,7 @@ class SingIn extends React.Component {
                         idToken: data.idToken,
                         refreshToken: data.refreshToken
                     }))
-                this.props.history.push("/home");
+                this.props.history.push("/projects");
                 this.setState({ correct: true })
 
             }).catch(err => {

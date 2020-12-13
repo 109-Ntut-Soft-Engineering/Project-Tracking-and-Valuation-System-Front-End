@@ -57,7 +57,7 @@ class CodeFrequency extends React.Component {
 
                 <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
                     <Breadcrumb style={{ marginBottom: "20px", marginTop: "20px" }}>
-                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
+                        <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>{this.state.proName}</Breadcrumb.Item>
                     </Breadcrumb>
                     <Sidenavbar contact={{ repo_name: this.stateproName }} />
