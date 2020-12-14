@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Sidenavbar from "./tool/Sidenavbar";
+import HeaderNavbar from "./tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
 import { Grid, Row, Col } from 'rsuite';
 import {
@@ -131,7 +131,7 @@ function SettingPage(props) {
                     <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                 </Breadcrumb>
 
-                <Sidenavbar contact={{ repo_name: proName }} />
+                <HeaderNavbar contact={{ repo_name: proName }} />
                 <Grid style={{ marginTop: 30 }}>
                     <Row>
                         <Col xs={7} />

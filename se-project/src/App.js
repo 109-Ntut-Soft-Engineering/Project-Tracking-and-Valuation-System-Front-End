@@ -11,6 +11,7 @@ import Repository from './js/Repository'
 import SettingPage from './js/SettingPage'
 import Redirect from './js/Redirect'
 class App extends React.Component {
+
     render() {
         return (
             <BrowserRouter >
@@ -18,14 +19,13 @@ class App extends React.Component {
                     <Route path='/redirect/' component={Redirect} />
                     <Route exact path="/" component={Login} />
                     <Route path="/projects" component={Home} />
-
-                    <Route path="/repository" component={Repository} />
+                    <Route path="/project/repository" component={Repository} />
                     <Route path="/code/:pro_name" component={CodeFrequency} />
 
                     <Route path="/commit/:pro_name" component={CommitPage} />
                     <Route path="/committeam/:pro_name" component={ContributionCommit} />
                     <Route path="/issue/:pro_name" component={IssueDashboard} />
-                    <Route path='/setting/:pro_name' component={SettingPage} />
+                    <Route path='/project/setting' component={SettingPage} />
 
                 </div>
             </BrowserRouter>

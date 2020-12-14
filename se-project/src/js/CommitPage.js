@@ -3,7 +3,7 @@ import { Container, Button, Breadcrumb } from 'rsuite';
 import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
-import Sidenavbar from './tool/Sidenavbar'
+import HeaderNavbar from './tool/Navbar'
 import MainHeader from './tool/MainHeader'
 
 import '../css/commitPage.css'
@@ -33,7 +33,7 @@ class CommitPage extends React.Component {
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
 
-                    <Sidenavbar contact={{ pro_name: proName }} />
+                    <HeaderNavbar contact={{ pro_name: proName }} />
 
                     <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", marginLeft: "25px", marginTop: "25px", marginBottom: "25px" }}>
                         {members.map(member =>

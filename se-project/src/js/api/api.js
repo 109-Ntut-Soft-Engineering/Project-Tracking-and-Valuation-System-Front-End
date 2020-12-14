@@ -1,6 +1,6 @@
 import axios from 'axios';
 import createAuthRefreshInterceptor from "axios-auth-refresh";
-import { APIKey } from '../tool/Token'
+import { APIKey } from '../tool/CommonTool'
 import qs from 'qs'
 const api = axios.create({
     baseURL: "http://localhost:5000",

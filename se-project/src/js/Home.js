@@ -1,14 +1,14 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Container, Button, Modal, Input, Icon } from 'rsuite';
+import { Container, Button, Modal, Input, Breadcrumb } from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
-import fakeProjectData from '../test_data/fakeProjectData.json'
+import { setCurrentProject } from './tool/CommonTool'
 import '../css/Home&Repo.css';
 import { requestUserProjects } from './api/projectAPI';
 
 const chart_width = window.innerWidth * 0.7
-const datas = fakeProjectData.projects_data;
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -55,8 +55,8 @@ class Home extends React.Component {
                         <HeaderCell className="haederCell">Project Name</HeaderCell>
                         <Cell>
                             {rowData => {
-                                var pro_path = '/repository'
-                                return <Link to={pro_path} className="cell" onClick={() => { window.currentProject = { id: rowData.id, name: rowData.name } }}>{rowData.name}</Link>
+                                var pro_path = '/project/repository'
+                                return <Link to={pro_path} className="cell" onClick={() => setCurrentProject({ id: rowData.id, name: rowData.name })}>{rowData.name}</Link>
                             }}
                         </Cell>
                     </Column>
@@ -80,11 +80,13 @@ class Home extends React.Component {
 
 
         return (
-            <Container style={{ backgroundColor: "white" }}>
+            <Container style={{ backgroundColor: "white", height: "100%" }}>
                 <MainHeader />
 
                 <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-around" }}>
-                    <div className="SubTitle">Projects /</div>
+                    <Breadcrumb>
+                        <Breadcrumb.Item active>Projects</Breadcrumb.Item>
+                    </Breadcrumb>
                     <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
                 </div>
                 {this.getProjectTable(datas)}
