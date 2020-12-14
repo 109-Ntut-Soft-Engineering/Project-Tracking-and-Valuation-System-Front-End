@@ -3,12 +3,11 @@ import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { Container, Button, Modal, Input, Icon } from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
-// import fakeProjectData from '../test_data/fakeProjectData.json'
 import '../css/Home&Repo.css';
-import { requestUserProjects } from './api/projectAPI';
+import { requestUserProjects , addNewProject} from './api/projectAPI';
 
 const chart_width = window.innerWidth * 0.7
-// const datas = fakeProjectData.projects_data;
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -34,6 +33,10 @@ class Home extends React.Component {
     createProject() {
         this.setState({ show: false });
         alert(`新增Project：(還沒做)`);
+        addNewProject({ name: "sssssssssssssssssss" })
+            .then(result => {
+                console.log(result);
+            })
         // addNewProject({ name: "kkkkkkkkkkkkkkk" })
     }
 
