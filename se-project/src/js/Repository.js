@@ -1,12 +1,13 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Alert, Container, Breadcrumb, Button, Modal, CheckPicker, IconButton, Icon, h3 } from 'rsuite';
+import { Header, Alert, Container, Breadcrumb, Button, Modal, CheckPicker, IconButton, Icon, Content, FlexboxGrid} from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
-import Sidenavbar from "./tool/Sidenavbar";
+import HeaderNavbar from "./tool/Navbar";
 import '../css/Home&Repo.css';
-import { getUserRepos } from "./api/userAPI";
+import { getUserRepos } from "./api/projectAPI";
 import { saveUserProjectRepos, getUserProjectRepos, removeUserProjectRepos } from "./api/projectAPI";
+import { getCurrentProject } from './tool/CommonTool'
 const chart_width = window.innerWidth * 0.5
 class Repository extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class Repository extends React.Component {
             backdrop: true,
             show: false,
             data: [],
-            proName: this.props.match.params.pro_name,
+            currentProject: getCurrentProject(),
             repos: [],
             loading: true,
             menuLoading: true,
@@ -55,8 +56,8 @@ class Repository extends React.Component {
     closeConfirmDel() {
         this.setState({ showConfirmDel: false });
     }
-    getRepos() {
-        getUserProjectRepos()
+    getProjectRepos() {
+        getUserProjectRepos(this.state.currentProject.id)
             .then(result => {
                 const repos = result.data.repos
                 this.setState({ data: repos })
@@ -71,9 +72,9 @@ class Repository extends React.Component {
                 action: 'remove'
             }
         }
-        removeUserProjectRepos(data).then(response => {
+        removeUserProjectRepos(this.state.currentProject.id, data).then(response => {
             Alert.success('刪除成功！')
-            this.getRepos()
+            this.getProjectRepos()
         }).catch(err => {
             Alert.error('發生錯誤！')
         })
@@ -84,16 +85,16 @@ class Repository extends React.Component {
 
 
         Alert.config({ top: 100 });
-        saveUserProjectRepos(this.state.selectedRepos).then(response => {
+        saveUserProjectRepos(this.state.currentProject.id, this.state.selectedRepos).then(response => {
             Alert.success('新增成功！')
         }).catch(err => {
             Alert.error('發生錯誤！')
         })
         this.close()
-        this.getRepos()
+        this.getProjectRepos()
     }
     getUserRepos() {
-        getUserRepos()
+        getUserRepos(this.state.currentProject.id)
             .then(response => {
                 const repos = response.data.repos
                 this.setState({ repos: repos, menuLoading: false });
@@ -105,28 +106,32 @@ class Repository extends React.Component {
 
     componentDidMount() {
         this.setState({ loading: true })
-        this.getRepos()
+        this.getProjectRepos()
     }
     render() {
-        var proName = window.currentProject.name;
+        var projName = this.state.currentProject.name;
         const { backdrop, show, data, loading, delRepo, selectedRepos, menuLoading } = this.state;
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "800px", backgroundColor: "white" }}>
                 <MainHeader />
-                <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-around" }}>
+                <FlexboxGrid align="middle" justify="space-around" style={{ margin: "20px" }}>
+                    <FlexboxGrid.Item >
+                        <Breadcrumb style={{ marginBottom: "0" }} >
+                            <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active>{projName}</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item >
+                        <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
 
-                    <Breadcrumb style={{ marginBottom: "20px", marginTop: "20px" }}>
-                        <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
-                </div>
+                <Container shaded style={{ width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
+                    <Header>
+                        <HeaderNavbar contact={{ pro_name: projName }} />
+                    </Header>
+                    <Content className="reposTable">
 
-
-                <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
-                    <Sidenavbar contact={{ pro_name: proName }} />
-
-                    <div className="reposTable">
                         <Table loading={loading} bordered={true} width={chart_width} data={data} rowHeight={60} autoHeight >
                             <Column width={chart_width * 0.3} verticalAlign="middle" align="center" >
                                 <HeaderCell className="haederCell">Repository Name</HeaderCell>
@@ -149,7 +154,8 @@ class Repository extends React.Component {
                                 </Cell>
                             </Column>
                         </Table>
-                    </div>
+
+                    </Content>
                 </Container>
 
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="sm">
@@ -168,7 +174,7 @@ class Repository extends React.Component {
                             onClose={() => this.setState({ menuLoading: true })}
                             sticky={true}
                             placeholder="選擇 Repository"
-                            groupBy="source"
+                            groupBy="type"
                             labelKey="name"
                             virtualized={true}
                             valueKey="id"

@@ -1,24 +1,28 @@
 import { req } from './api'
 
-const project = 'project'
+
 export const requestProjectCodeFreq = (data) => {
-    return req.get(project + 'code_freq/' + data.name)
+    return req.get('project/code_freq/' + data.name)
 }
 
 export const requestUserProjects = () => {
-    return req.get(project)
+    return req.get('projects')
 }
 
 export const addNewProject = (data) => {
-    return req.post(`${project}` , data)
+    return req.post(`projects?name=` + data.name)
 }
 
-export const saveUserProjectRepos = (data) => {
-    return req.patch(`${project}/${window.currentProject.id}`, data)
+export const saveUserProjectRepos = (pid, data) => {
+    return req.patch(`project/${pid}/repos`, data)
 }
-export const removeUserProjectRepos = (data) => {
-    return req.patch(`${project}/${window.currentProject.id}`, data)
+export const removeUserProjectRepos = (pid, data) => {
+    return req.patch(`project/${pid}/repos`, data)
 }
-export const getUserProjectRepos = (data) => {
-    return req.get(`${project}/${window.currentProject.id}`)
+export const getUserProjectRepos = (pid) => {
+    return req.get(`project/${pid}/repos`)
+}
+
+export const getUserRepos = (pid) => {
+    return req.get(`project/AvailRepository/${pid}`)
 }

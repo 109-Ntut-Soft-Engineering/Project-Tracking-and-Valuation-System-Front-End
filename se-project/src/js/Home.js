@@ -1,8 +1,9 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Container, Button, Modal, Input, Icon } from 'rsuite';
+import { Container, Button, Modal, Input, Breadcrumb ,FlexboxGrid, Alert} from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
+import { setCurrentProject } from './tool/CommonTool'
 import '../css/Home&Repo.css';
 import { requestUserProjects , addNewProject} from './api/projectAPI';
 
@@ -30,16 +31,28 @@ class Home extends React.Component {
         this.setState({ show: true });
     }
 
+    //建立新的project
     createProject() {
         this.setState({ show: false });
-        alert(`新增Project：(還沒做)`);
-        addNewProject({ name: "sssssssssssssssssss" })
+        const projectInput = document.getElementById("projctInput");
+        const projectName = projectInput.value;
+        if(projectName == "")
+            Alert.error("您新增的專案名稱為空")
+        else{
+            addNewProject({ name: projectName })
             .then(result => {
                 console.log(result);
+                if(result.status == 200){
+                    Alert.success('專案新增成功，重新讀取中');
+                    this.componentDidMount();
+                }
+            }).catch(err => {
+                Alert.error('此專案名稱已存在');
             })
-        // addNewProject({ name: "kkkkkkkkkkkkkkk" })
+        }
     }
 
+    //讀取使用者的projects
     componentDidMount() {
         this.setState({ loading: true })
         requestUserProjects()
@@ -58,8 +71,8 @@ class Home extends React.Component {
                         <HeaderCell className="haederCell">Project Name</HeaderCell>
                         <Cell>
                             {rowData => {
-                                var pro_path = '/repository'
-                                return <Link to={pro_path} className="cell" onClick={() => { window.currentProject = { id: rowData.id, name: rowData.name } }}>{rowData.name}</Link>
+                                var pro_path = '/project/repository'
+                                return <Link to={pro_path} className="cell" onClick={() => setCurrentProject({ id: rowData.id, name: rowData.name })}>{rowData.name}</Link>
                             }}
                         </Cell>
                     </Column>
@@ -79,17 +92,21 @@ class Home extends React.Component {
 
     render() {
         const { backdrop, show, datas } = this.state;
-        // var projectTable;
-
 
         return (
-            <Container style={{ backgroundColor: "white" }}>
+            <Container style={{ backgroundColor: "white", height: "100%" }}>
                 <MainHeader />
-
-                <div style={{ display: "flex", flexDirection: 'row', justifyContent: "space-around" }}>
-                    <div className="SubTitle">Projects /</div>
-                    <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
-                </div>
+               <FlexboxGrid align="middle" justify="space-around" style={{ margin: "20px" }}>
+                    <FlexboxGrid.Item >
+                        <Breadcrumb style={{ marginBottom: "0" }} >
+                            <Breadcrumb.Item active>Projects</Breadcrumb.Item>
+                        </Breadcrumb>
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item >
+                        <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
+                
                 {this.getProjectTable(datas)}
 
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="xs">
@@ -99,7 +116,7 @@ class Home extends React.Component {
                     <Modal.Body>
                         <div >
                             <p style={{ paddingTop: "6px", marginLeft: "20px", marginBottom: "15px" }}>要新增的專案名稱</p>
-                            <Input style={{ width: 300, marginLeft: "20px" }} placeholder="My project name" />
+                            <Input style={{ width: 300, marginLeft: "20px" }} placeholder="My project name" id="projctInput"/>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>

@@ -1,5 +1,5 @@
 import React from 'react';
-import Sidenavbar from "./tool/Sidenavbar";
+import HeaderNavbar from "./tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
 import { Link } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
@@ -60,7 +60,7 @@ class CodeFrequency extends React.Component {
                         <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>{this.state.proName}</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Sidenavbar contact={{ repo_name: this.stateproName }} />
+                    <HeaderNavbar contact={{ repo_name: this.stateproName }} />
                     {this.createCodeFreqChart()}
                 </Container>
             </Container>

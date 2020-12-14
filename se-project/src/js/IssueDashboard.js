@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Breadcrumb } from 'rsuite';
-import Sidenavbar from './tool/Sidenavbar';
+import HeaderNavbar from './tool/Navbar';
 import { Link } from "react-router-dom";
 import ExpandedTable from './tool/ExpandedTable'
 import MainHeader from './tool/MainHeader'
@@ -27,7 +27,7 @@ class IssueDashboard extends React.Component {
                         <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
                         <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
                     </Breadcrumb>
-                    <Sidenavbar contact={{ pro_name: proName }} />
+                    <HeaderNavbar contact={{ pro_name: proName }} />
                     <div style={{ marginTop: "30px" }}>
                         <ExpandedTable data={data} height={window.innerHeight * 0.65}></ExpandedTable>
                     </div>

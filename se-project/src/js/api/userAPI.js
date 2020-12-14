@@ -1,6 +1,6 @@
 import { req } from './api'
 import axios from 'axios';
-import { APIKey } from '../tool/Token'
+import { APIKey } from '../tool/CommonTool'
 const firebaseSignUpAPI = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${APIKey}`
 const firebaseSingInAPI = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${APIKey}`
 
@@ -20,6 +20,6 @@ export const linkGithub = (code) => {
     return req.post('user/auth', code)
 }
 
-export const getUserRepos = () => {
-    return req.get(`user/AvailRepository/${window.currentProject.id}`)
+export const getUserInfo = () => {
+    return req.get('user')
 }
