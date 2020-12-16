@@ -6,6 +6,7 @@ import ExpandedTable from './tool/ExpandedTable'
 import MainHeader from './tool/MainHeader'
 import { requestProjectIssueMessage } from './api/projectAPI';
 import fakeIssueMessage from '../test_data/fakeIssueMessage.json'
+import { Panel, PanelGroup } from 'rsuite';
 
 const newDataList = []
 
@@ -17,28 +18,47 @@ class IssueDashboard extends React.Component{
             data: undefined,
         }
     } 
-    createIssueMessagesTable = () => {
+    createIssueMessagesTable = (name, issue) => {
+        console.log(issue)
+        return (
+            <Panel header={name} collapsible bordered>
+                <div style={{marginTop:"30px"}}>
+                    <ExpandedTable data={issue} height={window.innerHeight*0.65}></ExpandedTable>
+                </div>
+            </Panel>
+        )
+    }
+    createIssueMessagesPanel = () => {
         if (this.state.data === undefined) {
             return (<div>loading....</div>)
         }
-        return (
-                <div style={{marginTop:"30px"}}>
-                    <ExpandedTable data={this.mapJsonToData()} height={window.innerHeight*0.65}></ExpandedTable>
-                </div>
-            )
+        else{
+            this.mapJsonToData(this.state.data)
+            console.log('list', newDataList);
+            var result = []
+            newDataList.forEach(value => {
+                result.push(this.createIssueMessagesTable(value.name, value.issue))
+            })
+            return (result)
+        }
     }
-    mapJsonToData = () => {
+    mapJsonToData = (data) => {
         if(newDataList.length == 0){
             var counter = 1;
-            console.log(this.state)
-            this.state.data.forEach(value => {
-                var newData = {};
-                newData['id'] = counter++;
-                newData['title'] = value.title;
-                newData['date'] = value.time;
-                newData['labels'] = value.labels;
-                newData['comments'] = value.comments;
-                newDataList.push(newData);
+            data.forEach(repo_value => {
+                var repo = {};
+                repo['name'] = repo_value.name;
+                repo['issue'] = []
+                repo_value.issue.forEach(issue_value => {
+                    var issue_info = {};
+                    issue_info['id'] = counter++;
+                    issue_info['title'] = issue_value.title;
+                    issue_info['date'] = issue_value.time;
+                    issue_info['labels'] = issue_value.labels;
+                    issue_info['comments'] = issue_value.comments;
+                    repo['issue'].push(issue_info);
+                });
+                newDataList.push(repo)
             });
         }
         return newDataList
@@ -48,8 +68,8 @@ class IssueDashboard extends React.Component{
             .then(res => res.data)
             .then(data => {
                 console.log('data', data)
-                this.setState({ data: data.issue })
-                return data.issue
+                this.setState({ data: data.issues })
+                return data.issues
             })
     }
 
@@ -66,7 +86,7 @@ class IssueDashboard extends React.Component{
                         <Breadcrumb.Item active>{this.state.proName}</Breadcrumb.Item>
                     </Breadcrumb>
                     <Sidenavbar contact={{pro_name:this.state.proName}}/>
-                    {this.createIssueMessagesTable()}
+                    {this.createIssueMessagesPanel()}
                 </Container>
             </Container>
         )
