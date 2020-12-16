@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import HeaderNavbar from "./tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
-import { Grid, Row, Col } from 'rsuite';
-import {
-    Form, FormGroup, FormControl, ControlLabel, HelpBlock, ButtonToolbar, Button,
-    IconButton, Icon, Modal, Input
-} from 'rsuite';
 import { Link } from "react-router-dom";
-import MainHeader from './tool/MainHeader'
+import {
+    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert
+} from 'rsuite';
 
+import MainHeader from './tool/MainHeader'
+import { getCurrentProject, setCurrentProject } from './tool/CommonTool'
+import { updateProject, getProjectSetting } from './api/projectAPI';
 function oAuth() {
 
     const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
@@ -24,126 +24,200 @@ function oAuth() {
         null, `width = ${600 / systemZoom},height = ${700 / systemZoom},top = ${top},left = ${left}`)
 
 }
-
+// {/* <Button color='default' onClick={oAuth} style={{ marginLeft: 10 }}>
+//     授權 GitHub
+//                 </Button> */}
 // functoin handleAddContributor(){
 
 // }
-
-function SettingForm(props) {
-    const creator = '陳俊偉'
-    const [isOpen, setIsOpen] = useState(false)
-
-    function renderContributor() {
-        const names = ['test', 'test2', 'test3', 'test4', 'test5', 'test6']
-        console.log('names', names)
-        var row = []
-        var col = []
-        for (var i = 0; i < names.length; i++) {
-            col.push(
-                <div style={{ width: 100, marginLeft: 20 }}><p>{names[i]}</p></div>
-            )
-            if (col.length === 3) {
-                row.push(
-                    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                        {col}
-                    </div>
-                )
-                col = []
-            }
-            else if (i === names.length - 1) {
-                row.push(
-                    <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-                        {col}
-                    </div>
-                )
-                col = []
-            }
-        }
-        return (
-            <div style={{ marginTop: 10 }}>
-                {row}
-            </div>
-        )
-    }
-
-    return (
-        <Form layout="inline">
-            <FormGroup>
-                <ControlLabel style={{ width: 100 }}>ProjectName</ControlLabel>
-                <FormControl name="username" value={props.proName} style={{ width: 350 }} />
-                <HelpBlock tooltip>Required</HelpBlock>
-            </FormGroup>
-            <FormGroup>
-                <ControlLabel style={{ width: 100 }}>Creator</ControlLabel>
-                <FormControl name="token" style={{ width: 350 }} disabled={true} value={creator} />
-            </FormGroup>
-            <FormGroup>
-                <ControlLabel style={{ width: 100 }}>GitHub串連</ControlLabel>
-                <Button color='default' onClick={oAuth} style={{ marginLeft: 10 }}>
-                    授權 GitHub
-                </Button>
-            </FormGroup>
-
-            <FormGroup>
-                <FormGroup>
-                    <ControlLabel style={{ width: 100 }}>Contributor</ControlLabel>
-                    <IconButton icon={<Icon icon='plus' />} color='default'
-                        style={{ marginLeft: 10 }} onClick={() => { setIsOpen(true) }} />
-                </FormGroup>
-                {renderContributor()}
-            </FormGroup>
-            <ButtonToolbar>
-                <Button color='primary'>
-                    Save
-                </Button>
-                <Button color='red'>
-                    Delete
-                </Button>
-            </ButtonToolbar>
-            <Modal backdrop={true} show={isOpen} size="xs">
-                <Modal.Header>
-                    <Modal.Title>新增 Contributor</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div >
-                        <p style={{ paddingTop: "6px", marginLeft: "20px", marginBottom: "15px" }}>輸入要加入的contributor</p>
-                        <Input style={{ width: 300, marginLeft: "20px" }} placeholder="New contributor name" />
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={() => { setIsOpen(false) }} appearance="primary">確認</Button>
-                    <Button onClick={() => { setIsOpen(false) }} appearance="subtle">取消</Button>
-                </Modal.Footer>
-            </Modal>
-        </Form>
-    )
+const styles = {
+    width: 50,
+    marginBottom: 10
 }
 
-function SettingPage(props) {
-    var proName = props.match.params.pro_name
-    return (
-        <Container style={{ height: "100%" }}>
-            <MainHeader />
+class SettingPage extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentProject: getCurrentProject(),
+            showConfirm: false,
+            showAdd: false,
+            tags: [],
+            searchEmail: '',
+            projectName: ''
+        };
+        this.addCollaborator = this.addCollaborator.bind(this);
+        this.changeProjectName = this.changeProjectName.bind(this);
+        Alert.config({ top: 100 });
 
-            <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
-                <Breadcrumb style={{ marginBottom: "20px", marginTop: "20px" }}>
-                    <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
-                    <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
-                </Breadcrumb>
+    }
+    // randomColor() {
+    //     const color = "hsl(" + 360 * Math.random() + ',' +
 
-                <HeaderNavbar contact={{ repo_name: proName }} />
-                <Grid style={{ marginTop: 30 }}>
-                    <Row>
-                        <Col xs={7} />
-                        <Col xs={12}>
-                            <SettingForm proName={proName} />
-                        </Col>
-                        <Col xs={3} />
-                    </Row>
-                </Grid>
+    //         (90 + 70 * Math.random()) + '%,' +
+
+    //         (30 + 10 * Math.random()) + '%)';
+    //     return color
+    // }
+
+    addCollaborator() {
+        const data = {
+            collaborator: this.state.searchEmail.replace(/ /g, ''),
+            collabAction: 'add'
+        }
+        updateProject(this.state.currentProject.id, data)
+            .then(response => {
+                const user = response.data
+                console.log(user)
+                const { tags } = this.state;
+                const nextTags = [...tags, user]
+                this.setState({
+                    tags: nextTags,
+                    searchEmail: '',
+                    showAdd: false
+                });
+                Alert.success('新增成功！')
+            })
+            .catch(err => {
+                const msg = err.response.data.msg
+                console.log(msg)
+                Alert.error(msg)
+            })
+    }
+    removeCollaborator(tag) {
+        const data = {
+            collaborator: tag,
+            collabAction: 'remove'
+        }
+        updateProject(this.state.currentProject.id, data)
+            .then(response => {
+                const { tags } = this.state;
+                const nextTags = tags.filter(user => user.uid !== tag);
+                this.setState({
+                    tags: nextTags
+                });
+                Alert.success('刪除成功！')
+            })
+            .catch(err => {
+                const msg = err.response.data.msg
+
+                Alert.error(msg)
+            })
+    }
+    changeProjectName() {
+        const { projectName, currentProject } = this.state
+        const data = {
+            name: projectName,
+        }
+        updateProject(currentProject.id, data)
+            .then(response => {
+                Alert.success('修改成功！')
+                setCurrentProject({ 'id': currentProject.id, 'name': projectName })
+                this.setState({ showConfirm: false, currentProject: getCurrentProject() })
+
+            })
+            .catch(err => {
+                const msg = err.response.data.msg
+                Alert.error(msg)
+            })
+    }
+    componentDidMount() {
+        getProjectSetting(this.state.currentProject.id)
+            .then(response => {
+                this.setState({
+                    projectName: this.state.currentProject.name,
+                    tags: response.data.collaborator
+                });
+            })
+            .catch(err => {
+                console.log(err.response)
+            })
+    }
+    render() {
+        const { currentProject, tags, searchEmail, showConfirm, showAdd, projectName } = this.state
+        return (
+
+            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+                <MainHeader />
+       
+                 <div style={{ margin: 20,paddingLeft: "20%", paddingRight: "20%" }}>
+                    
+                        <Breadcrumb style={{display:'inline'}} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{ this.state.currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
+              
+    
+                </div>
+                <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
+
+
+                    <HeaderNavbar />
+
+                    <FlexboxGrid justify="center" align="middle" style={{ marginTop: '50px' }}>
+
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>專案名稱</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup size='sm' style={{ width: '300px' }}>
+                                <Input value={projectName} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
+                                {showConfirm && <InputGroup.Button>
+                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" onClick={this.changeProjectName} />
+                                </InputGroup.Button>}
+                                {showConfirm && <InputGroup.Button onClick={() => this.setState({ showConfirm: false, projectName: currentProject.name })}>
+                                    <Icon icon="close" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>新增協作者</h5>
+                        </FlexboxGrid.Item>
+
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup inside size='sm' style={{ width: '300px' }}>
+                                <Input
+                                    placeholder='請輸入協作者E-mail'
+                                    value={searchEmail}
+                                    onChange={(value) => {
+                                        if (value !== '')
+                                            this.setState({ searchEmail: value, showAdd: true });
+                                        else
+                                            this.setState({ searchEmail: value, showAdd: false });
+
+                                    }} />
+                                {showAdd && <InputGroup.Button onClick={this.addCollaborator} >
+                                    <Icon icon="plus" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} ></FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+
+                            <TagGroup style={{ width: '300px' }}>
+                                {tags.map((user, index) => (
+                                    <Tag
+                                        key={user.uid}
+                                        closable
+                                        // style={{ backgroundColor: this.randomColor(), color: 'white' }}
+                                        onClose={() => {
+                                            this.removeCollaborator(user.uid);
+                                        }}
+                                    >
+                                        {user.name}
+                                    </Tag>
+                                ))}
+                            </TagGroup>
+                        </FlexboxGrid.Item>
+                    </FlexboxGrid>
+
+
+
+                </Container>
             </Container>
-        </Container>
-    )
+        )
+    }
 };
 
 export default SettingPage

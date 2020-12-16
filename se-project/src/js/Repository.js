@@ -1,12 +1,11 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Header, Alert, Container, Breadcrumb, Button, Modal, CheckPicker, IconButton, Icon, Content, FlexboxGrid} from 'rsuite';
+import { Header, Alert, Container, Breadcrumb, Button, Modal, TagPicker, IconButton, Icon, Content, FlexboxGrid } from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
 import HeaderNavbar from "./tool/Navbar";
 import '../css/Home&Repo.css';
-import { getUserRepos } from "./api/projectAPI";
-import { saveUserProjectRepos, getUserProjectRepos, removeUserProjectRepos } from "./api/projectAPI";
+import { saveUserProjectRepos, getUserProjectRepos, removeUserProjectRepos, getUserRepos } from "./api/projectAPI";
 import { getCurrentProject } from './tool/CommonTool'
 const chart_width = window.innerWidth * 0.5
 class Repository extends React.Component {
@@ -28,7 +27,8 @@ class Repository extends React.Component {
                 }
             },
             showConfirmDel: false,
-            delRepo: {}
+            delRepo: {},
+            tableHeight: 200
 
         };
 
@@ -105,34 +105,35 @@ class Repository extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({ loading: true })
+        const height = document.getElementById('reposTable').clientHeight;
+        this.setState({ loading: true, tableHeight: height })
+
         this.getProjectRepos()
     }
     render() {
         var projName = this.state.currentProject.name;
-        const { backdrop, show, data, loading, delRepo, selectedRepos, menuLoading } = this.state;
+        const { backdrop, show, data, loading, delRepo, selectedRepos, menuLoading, tableHeight } = this.state;
         return (
-            <Container style={{ width: "100%", height: "800px", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
-                <FlexboxGrid align="middle" justify="space-around" style={{ margin: "20px" }}>
-                    <FlexboxGrid.Item >
-                        <Breadcrumb style={{ marginBottom: "0" }} >
-                            <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
-                            <Breadcrumb.Item active>{projName}</Breadcrumb.Item>
+                <div style={{ margin: 20,paddingLeft: "20%", paddingRight: "20%" }}>
+                    
+                        <Breadcrumb style={{display:'inline'}} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{projName}</h4></Breadcrumb.Item>
                         </Breadcrumb>
-                    </FlexboxGrid.Item>
-                    <FlexboxGrid.Item >
-                        <Button color="blue" className="creteButton" onClick={this.open}>Create</Button>
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
+              
+                        <Button style={{float:'right'}} color="blue" className="creteButton" onClick={this.open}>Create</Button>
+    
+                </div>
 
-                <Container shaded style={{ width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
+                <Container shaded style={{ width: "100%", height: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
                     <Header>
                         <HeaderNavbar contact={{ pro_name: projName }} />
                     </Header>
-                    <Content className="reposTable">
+                    <Content id="reposTable">
 
-                        <Table loading={loading} bordered={true} width={chart_width} data={data} rowHeight={60} autoHeight >
+                        <Table loading={loading} bordered={true} width={chart_width} data={data} rowHeight={60} height={tableHeight} >
                             <Column width={chart_width * 0.3} verticalAlign="middle" align="center" >
                                 <HeaderCell className="haederCell">Repository Name</HeaderCell>
                                 <Cell dataKey="name"></Cell>
@@ -163,20 +164,17 @@ class Repository extends React.Component {
                         <Modal.Title>新增 Repository</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        <CheckPicker
+                        <TagPicker
                             data={this.state.repos}
-                            searchable={false}
                             onChange={(value) => {
                                 selectedRepos.repositories.Github = value
                                 this.setState({ selectedRepos: selectedRepos })
                             }}
                             onOpen={this.getUserRepos}
                             onClose={() => this.setState({ menuLoading: true })}
-                            sticky={true}
                             placeholder="選擇 Repository"
                             groupBy="type"
                             labelKey="name"
-                            virtualized={true}
                             valueKey="id"
                             renderMenu={menu => {
                                 if (menuLoading) {
@@ -218,7 +216,7 @@ class Repository extends React.Component {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </Container>
+            </Container >
         )
     }
 }

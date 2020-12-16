@@ -26,3 +26,11 @@ export const getUserProjectRepos = (pid) => {
 export const getUserRepos = (pid) => {
     return req.get(`project/AvailRepository/${pid}`)
 }
+
+export const updateProject = (pid, data) => {
+    return req.patch(`project/${pid}/setting`, data)
+}
+
+export const getProjectSetting = (pid) => {
+    return req.get(`project/${pid}/setting`)
+}
