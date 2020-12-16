@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
 import MainHeader from './tool/MainHeader'
 import { requestProjectCodeFreq } from './api/projectAPI';
+import {getCurrentProject} from './tool/CommonTool';
 
 class CodeFrequency extends React.Component {
     constructor(props) {
@@ -15,15 +16,15 @@ class CodeFrequency extends React.Component {
         }
     }
     createCodeFreqChart = () => {
-        const chart_width = window.innerWidth * 0.7
-        const chart_height = window.innerHeight * 0.6
+        const chartWidth = window.innerWidth * 0.7
+        const chartHeight = window.innerHeight * 0.6
         if (this.state.data === undefined) {
             return (<div>loading....</div>)
         }
         else {
             return (
                 <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "100px" }}>
-                    <AreaChart width={chart_width} height={chart_height} data={this.state.data}>
+                    <AreaChart width={chartWidth} height={chartHeight} data={this.state.data}>
                         <defs>
                             <linearGradient id="colorCode" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
@@ -39,18 +40,19 @@ class CodeFrequency extends React.Component {
             )
         }
     }
-    setCodeFrequency = (name) => {
-        requestProjectCodeFreq({ name: name })
+    setCodeFrequency = () => {
+        const project = getCurrentProject()
+        console.log('pid:', project.id)
+        return requestProjectCodeFreq(project.id)
             .then(res => res.data)
             .then(data => {
-                console.log('data', data)
                 this.setState({ data: data.code_freq })
                 return data.code_freq
-            })
+        })
     }
     render() {
         if (this.state.data === undefined)
-            this.setCodeFrequency(this.state.proName)
+            this.setCodeFrequency()
         return (
             <Container style={{ height: "100%" }}>
                 <MainHeader />

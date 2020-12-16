@@ -1,8 +1,8 @@
 import { req } from './api'
 
 
-export const requestProjectCodeFreq = (data) => {
-    return req.get('project/code_freq/' + data.name)
+export const requestProjectCodeFreq = (pid) => {
+    return req.get(`project/${pid}/code_freq`)
 }
 
 export const requestUserProjects = () => {
