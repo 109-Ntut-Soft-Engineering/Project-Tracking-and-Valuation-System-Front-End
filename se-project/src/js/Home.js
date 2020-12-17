@@ -1,13 +1,13 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Container, Button, Modal, Input, Breadcrumb, FlexboxGrid, Alert } from 'rsuite';
+import { Container, Button, Modal, Input, Breadcrumb, Panel, Alert, Content } from 'rsuite';
 import { Link } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
 import { setCurrentProject } from './tool/CommonTool'
 import '../css/Home&Repo.css';
 import { requestUserProjects, addNewProject } from './api/projectAPI';
 
-const chart_width = window.innerWidth * 0.7
+const chart_width = window.innerWidth * 0.55
 
 class Home extends React.Component {
     constructor(props) {
@@ -15,8 +15,9 @@ class Home extends React.Component {
         this.state = {
             backdrop: true,
             show: false,
-            datas: undefined,
-            loading: true
+            data: undefined,
+            loading: true,
+            tableHeight: 200
         };
         this.close = this.close.bind(this);
         this.open = this.open.bind(this);
@@ -42,7 +43,7 @@ class Home extends React.Component {
             addNewProject({ name: projectName })
                 .then(result => {
                     console.log(result);
-                    if (result.status == 200) {
+                    if (result.status === 200) {
                         Alert.success('專案新增成功，重新讀取中');
                         this.componentDidMount();
                     }
@@ -54,20 +55,22 @@ class Home extends React.Component {
 
     //讀取使用者的projects
     componentDidMount() {
-        this.setState({ loading: true })
+        const height = document.getElementById('projectTable').clientHeight * 0.6;
+
+
         requestUserProjects()
             .then(result => {
                 const projects = result.data.projects
-                this.setState({ datas: projects })
-                this.setState({ loading: false })
+                this.setState({ data: projects, loading: false, tableHeight: height })
+
             })
     }
     //projectsTable元件
-    getProjectTable(datas) {
+    getProjectTable(data) {
         return (
             <div className="projectsTable">
-                <Table loading={this.state.loading} bordered={true} width={chart_width} height={375} data={datas}>
-                    <Column width={chart_width * 0.6} align="center">
+                <Table loading={this.state.loading} bordered={true} width={chart_width} rowHeight={60} height={this.state.tableHeight} data={data}>
+                    <Column width={chart_width * 0.4} verticalAlign="middle" align="center">
                         <HeaderCell className="haederCell">Project Name</HeaderCell>
                         <Cell>
                             {rowData => {
@@ -76,7 +79,13 @@ class Home extends React.Component {
                             }}
                         </Cell>
                     </Column>
-                    <Column width={chart_width * 0.2} align="center">
+                    <Column width={chart_width * 0.3} verticalAlign="middle" align="center">
+                        <HeaderCell className="haederCell">Owner</HeaderCell>
+                        <Cell>
+
+                        </Cell>
+                    </Column>
+                    <Column width={chart_width * 0.3} verticalAlign="middle" align="center">
                         <HeaderCell className="haederCell">Last Update Time</HeaderCell>
                         <Cell>
                             {rowData => {
@@ -91,22 +100,24 @@ class Home extends React.Component {
     }
 
     render() {
-        const { backdrop, show, datas } = this.state;
+        const { backdrop, show, data } = this.state;
 
         return (
-            <Container style={{ backgroundColor: "white", height: "100%" }}>
+            <Container id='projectTable' style={{ backgroundColor: "white", height: "100%" }}>
                 <MainHeader />
-   
-                     <div style={{ margin: 20,paddingLeft: "20%", paddingRight: "20%" }}>
-                    
-                        <Breadcrumb style={{display:'inline'}} separator={React.createElement('h4', {}, '/')}>
-                            <Breadcrumb.Item active><h4>Projects</h4></Breadcrumb.Item>
-                        </Breadcrumb>
-                        <Button  style={{float:'right'}} color="blue" className="creteButton" onClick={this.open}>Create</Button>
-    
-                </div>
-                {this.getProjectTable(datas)}
 
+                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
+
+                    <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                        <Breadcrumb.Item active><h4>Projects</h4></Breadcrumb.Item>
+                    </Breadcrumb>
+                    <Button style={{ float: 'right' }} color="blue" className="creteButton" onClick={this.open}>Create</Button>
+
+                </div>
+                <Content>
+                    {this.getProjectTable(data)}
+
+                </Content>
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="xs">
                     <Modal.Header>
                         <Modal.Title>新增 Project</Modal.Title>

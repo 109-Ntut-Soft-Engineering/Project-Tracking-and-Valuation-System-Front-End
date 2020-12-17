@@ -8,7 +8,7 @@ class HeaderNavbar extends React.Component {
     render() {
         var projName = getCurrentProject().name;
         return (
-            <Navbar style={{ paddingLeft: "10%", paddingRight: "15%", display: "flex", justifyContent: "space-around" }}>
+            <Navbar style={{ marginLeft: "13%", marginRight: "13%", marginBottom: "30px", paddingLeft: "15%", paddingRight: "15%", display: "flex", justifyContent: "space-around" }}>
                 <Navbar.Body>
                     <Nav>
                         <NavLink to={'/project/repository'}>

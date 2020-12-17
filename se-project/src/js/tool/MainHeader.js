@@ -22,11 +22,12 @@ class MainHeader extends React.Component {
     //         })
     // }
     render() {
-        const {userName} = this.state;
+        const { userName } = this.state;
         var userNameText = userName + " 用戶，您好";
 
         return (
-            <Header className="homeHeader">
+
+            <Header className="homeHeader" style={{ marginBottom: '50px', boxShadow: '-10px 4px 12px -3px rgba(20%,20%,40%,0.5)' }}>
                 <h1 style={{ color: "white" }}>專案管理追蹤系統</h1>
                 <div className="UserBox">
                     <h5 className="UserAccount">{userNameText}</h5>
@@ -40,6 +41,7 @@ class MainHeader extends React.Component {
                     </Dropdown>
                 </div>
             </Header>
+
         )
     }
 }

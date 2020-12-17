@@ -104,60 +104,65 @@ class Repository extends React.Component {
 
     }
 
-    componentDidMount() {
-        const height = document.getElementById('reposTable').clientHeight;
-        this.setState({ loading: true, tableHeight: height })
 
+    componentDidMount() {
+        const height = document.getElementById('reposTable').clientHeight * 0.9;
+        this.setState({ loading: true, tableHeight: height })
         this.getProjectRepos()
     }
+
     render() {
         var projName = this.state.currentProject.name;
         const { backdrop, show, data, loading, delRepo, selectedRepos, menuLoading, tableHeight } = this.state;
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
-                <div style={{ margin: 20,paddingLeft: "20%", paddingRight: "20%" }}>
-                    
-                        <Breadcrumb style={{display:'inline'}} separator={React.createElement('h4', {}, '/')}>
-                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
-                            <Breadcrumb.Item active><h4>{projName}</h4></Breadcrumb.Item>
-                        </Breadcrumb>
-              
-                        <Button style={{float:'right'}} color="blue" className="creteButton" onClick={this.open}>Create</Button>
-    
+                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
+
+                    <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                        <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                        <Breadcrumb.Item active><h4>{projName}</h4></Breadcrumb.Item>
+                    </Breadcrumb>
+
+                    <Button style={{ float: 'right' }} color="blue" className="creteButton" onClick={this.open}>Create</Button>
+
                 </div>
 
-                <Container shaded style={{ width: "100%", height: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
-                    <Header>
-                        <HeaderNavbar contact={{ pro_name: projName }} />
-                    </Header>
-                    <Content id="reposTable">
 
-                        <Table loading={loading} bordered={true} width={chart_width} data={data} rowHeight={60} height={tableHeight} >
-                            <Column width={chart_width * 0.3} verticalAlign="middle" align="center" >
-                                <HeaderCell className="haederCell">Repository Name</HeaderCell>
-                                <Cell dataKey="name"></Cell>
-                            </Column>
-                            <Column width={chart_width * 0.4} verticalAlign="middle" align="center">
-                                <HeaderCell className="haederCell">Source</HeaderCell>
-                                <Cell dataKey="source"></Cell>
-                            </Column>
-                            <Column width={chart_width * 0.3} verticalAlign="middle" align="center" fixed="right">
-                                <HeaderCell className="haederCell">Delete Repository</HeaderCell>
-                                <Cell>
-                                    {rowData => {
-                                        return <IconButton icon={<Icon icon="trash" />} onClick={() => {
-                                            this.openConfirmDel()
-                                            this.setState({ delRepo: rowData })
-                                        }} />
 
-                                    }}
-                                </Cell>
-                            </Column>
-                        </Table>
+                <HeaderNavbar />
 
-                    </Content>
-                </Container>
+                <Content id="reposTable">
+
+                    <Table loading={loading} bordered={true} width={chart_width} data={data} rowHeight={60} height={tableHeight} >
+                        <Column width={chart_width * 0.3} verticalAlign="middle" align="center" >
+                            <HeaderCell className="haederCell">Repository Name</HeaderCell>
+                            <Cell dataKey="name"></Cell>
+                        </Column>
+                        <Column width={chart_width * 0.4} verticalAlign="middle" align="center">
+                            <HeaderCell className="haederCell">Source</HeaderCell>
+                            <Cell >
+                                {rowData => {
+                                    return <Icon icon={rowData.source} />
+                                }}
+                            </Cell>
+                        </Column>
+                        <Column width={chart_width * 0.3} verticalAlign="middle" align="center" fixed="right">
+                            <HeaderCell className="haederCell">Delete Repository</HeaderCell>
+                            <Cell>
+                                {rowData => {
+                                    return <IconButton icon={<Icon icon="trash" />} onClick={() => {
+                                        this.openConfirmDel()
+                                        this.setState({ delRepo: rowData })
+                                    }} />
+
+                                }}
+                            </Cell>
+                        </Column>
+                    </Table>
+
+                </Content>
+
 
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="sm">
                     <Modal.Header>

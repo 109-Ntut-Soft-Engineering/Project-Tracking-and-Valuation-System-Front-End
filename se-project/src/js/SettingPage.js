@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import {
     InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert
 } from 'rsuite';
-
+import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
 import { getCurrentProject, setCurrentProject } from './tool/CommonTool'
 import { updateProject, getProjectSetting } from './api/projectAPI';
@@ -132,22 +132,25 @@ class SettingPage extends React.Component {
             .catch(err => {
                 console.log(err.response)
             })
+
     }
+
+
     render() {
         const { currentProject, tags, searchEmail, showConfirm, showAdd, projectName } = this.state
         return (
 
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
-       
-                 <div style={{ margin: 20,paddingLeft: "20%", paddingRight: "20%" }}>
-                    
-                        <Breadcrumb style={{display:'inline'}} separator={React.createElement('h4', {}, '/')}>
-                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
-                            <Breadcrumb.Item active><h4>{ this.state.currentProject.name}</h4></Breadcrumb.Item>
-                        </Breadcrumb>
-              
-    
+
+                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
+
+                    <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                        <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                        <Breadcrumb.Item active><h4>{this.state.currentProject.name}</h4></Breadcrumb.Item>
+                    </Breadcrumb>
+
+
                 </div>
                 <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
 
@@ -161,11 +164,11 @@ class SettingPage extends React.Component {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={14} >
                             <InputGroup size='sm' style={{ width: '300px' }}>
-                                <Input value={projectName} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
+                                <Input id='projectName' defaultValue={currentProject.name} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
                                 {showConfirm && <InputGroup.Button>
                                     <Icon style={{ 'color': '#2F93FC' }} icon="check" onClick={this.changeProjectName} />
                                 </InputGroup.Button>}
-                                {showConfirm && <InputGroup.Button onClick={() => this.setState({ showConfirm: false, projectName: currentProject.name })}>
+                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }); document.getElementById('projectName').value = currentProject.name }}>
                                     <Icon icon="close" />
                                 </InputGroup.Button>}
                             </InputGroup>
@@ -185,7 +188,6 @@ class SettingPage extends React.Component {
                                             this.setState({ searchEmail: value, showAdd: true });
                                         else
                                             this.setState({ searchEmail: value, showAdd: false });
-
                                     }} />
                                 {showAdd && <InputGroup.Button onClick={this.addCollaborator} >
                                     <Icon icon="plus" />
