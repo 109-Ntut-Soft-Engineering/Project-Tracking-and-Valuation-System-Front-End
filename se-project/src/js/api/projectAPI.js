@@ -8,3 +8,7 @@ export const requestProjectCodeFreq = (data) => {
 export const requestUserProjects = () => {
     return req.get(project)
 }
+
+export const requestProjectWeekCommit = (data) => {
+    return req.get(project + '/week_commit/'+ data.name)
+}
