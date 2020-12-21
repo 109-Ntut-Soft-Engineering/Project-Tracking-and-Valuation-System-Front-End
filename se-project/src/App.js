@@ -3,13 +3,13 @@ import React from "react";
 import { BrowserRouter, Route, Router } from "react-router-dom";
 import Home from './js/Home';
 import Login from './js/Login';
-import ContributionCommit from './js/ContributionCommit'
 import CommitPage from './js/CommitPage'
 import CodeFrequency from './js/CodeFreqency'
 import IssueDashboard from './js/IssueDashboard'
 import Repository from './js/Repository'
 import SettingPage from './js/SettingPage'
 import Redirect from './js/Redirect'
+import WeekCommit from "./js/WeekCommit";
 class App extends React.Component {
 
     render() {
@@ -23,7 +23,7 @@ class App extends React.Component {
                     <Route path="/code/:pro_name" component={CodeFrequency} />
 
                     <Route path="/commit/:pro_name" component={CommitPage} />
-                    <Route path="/committeam/:pro_name" component={ContributionCommit} />
+                    <Route path="/weekcommit/:pro_name" component={WeekCommit} />
                     <Route path="/issue/:pro_name" component={IssueDashboard} />
                     <Route path='/project/setting' component={SettingPage} />
 
