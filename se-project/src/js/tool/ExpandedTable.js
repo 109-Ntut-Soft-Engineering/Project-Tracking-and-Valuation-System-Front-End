@@ -28,16 +28,16 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
 );
 function CreateLabel(name, color) {
     console.log('color', color)
-    var label = <p className='label' style={{backgroundColor: '#' + color.toString()}}>{name}</p>;
+    var label = <p className='label' style={{ backgroundColor: '#' + color.toString() }}>{name}</p>;
     return label;
 }
 
-function GetLabelsData(list){
+function GetLabelsData(list) {
     var data = [];
     list.forEach(value => {
         data.push(CreateLabel(value['name'], value['color']));
     });
-    return(<div>{data}</div>)
+    return (<div>{data}</div>)
 }
 
 const LabelCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
@@ -58,20 +58,20 @@ class ExpandedTable extends React.Component {
         this.handleExpanded = this.handleExpanded.bind(this);
     }
 
-    CreateCommentDiv(body, user, time){
+    CreateCommentDiv(body, user, time) {
         var result = [];
         result.push((<h5>{user}  Commented at  {time}</h5>))
         result.push((<h6>{body}</h6>))
-        result.push((<br/>))
+        result.push((<br />))
         return result
     }
 
-    GetComments(comments){
+    GetComments(comments) {
         var data = [];
         comments.forEach(value => {
             data.push(this.CreateCommentDiv(value['body'], value['user'], value['time']));
         });
-        return(<div>{data}</div>)
+        return (<div>{data}</div>)
     }
 
     handleExpanded(rowData) {
@@ -104,7 +104,7 @@ class ExpandedTable extends React.Component {
                 rowKey={rowKey}
                 expandedRowKeys={expandedRowKeys}
                 renderRowExpanded={rowData => {
-                    return(
+                    return (
                         this.GetComments(rowData['comments'])
                     )
                 }}

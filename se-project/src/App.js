@@ -21,11 +21,11 @@ class App extends React.Component {
                     <Route exact path="/" component={Login} />
                     <Route path="/projects" component={Home} />
                     <Route path="/project/repository" component={Repository} />
-                    <Route path="/code/:pro_name" component={CodeFrequency} />
+                    <Route path="/project/codeBase" component={CodeFrequency} />
 
-                    <Route path="/commit/:pro_name" component={CommitPage} />
-                    <Route path="/weekcommit/:pro_name" component={WeekCommit} />
-                    <Route path="/issue/:pro_name" component={IssueDashboard} />
+                    <Route path="/project/commit" component={CommitPage} />
+                    <Route path="/project/weekCommit" component={WeekCommit} />
+                    <Route path="/project/issue" component={IssueDashboard} />
                     <Route path='/project/setting' component={SettingPage} />
                     <Route path='/user/setting' component={UserSettingPage} />
 

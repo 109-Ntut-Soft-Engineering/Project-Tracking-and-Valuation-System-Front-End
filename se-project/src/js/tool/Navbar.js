@@ -8,22 +8,22 @@ class HeaderNavbar extends React.Component {
     render() {
         var projName = getCurrentProject().name;
         return (
-            <Navbar style={{ marginLeft: "20%", marginRight: "20%", marginBottom: "30px", paddingLeft: "15%", paddingRight: "15%", display: "flex", justifyContent: "space-around" }}>
+            <Navbar style={{ marginBottom: "30px", paddingLeft: "15%", paddingRight: "15%", display: "flex", justifyContent: "space-around" }}>
                 <Navbar.Body>
                     <Nav>
                         <NavLink to={'/project/repository'}>
                             <Nav.Item icon={<Icon icon="project" />}>ALL Repositories</Nav.Item>
                         </NavLink>
-                        <Link to={"/code/" + projName}>
+                        <Link to={"/project/codeBase"}>
                             <Nav.Item icon={<Icon icon="line-chart" />}>Code Base</Nav.Item>
                         </Link>
-                        <Link to={"/commit/" + projName}>
+                        <Link to={"/project/commit"}>
                             <Nav.Item icon={<Icon icon="attribution" />}>Total Commit</Nav.Item>
                         </Link>
-                        <Link to={"/committeam/" + projName}>
+                        <Link to={"/project/weekCommit"}>
                             <Nav.Item icon={<Icon icon="circle" />}>Week Commit</Nav.Item>
                         </Link>
-                        <Link to={"/issue/" + projName}>
+                        <Link to={"/project/issue"}>
                             <Nav.Item icon={<Icon icon="exclamation-circle2" />}>Issue</Nav.Item>
                         </Link>
                         <Link to={"/project/setting"}>

@@ -5,25 +5,25 @@ import { Link } from "react-router-dom";
 import ExpandedTable from './tool/ExpandedTable'
 import MainHeader from './tool/MainHeader'
 import { requestProjectIssueMessage } from './api/projectAPI';
-import { Panel } from 'rsuite';
-import {getCurrentProject} from './tool/CommonTool';
+import { Panel, Content } from 'rsuite';
+import { getCurrentProject } from './tool/CommonTool';
 
 const newDataList = []
 
-class IssueDashboard extends React.Component{
+class IssueDashboard extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            proName: this.props.match.params.pro_name,
+            currentProject: getCurrentProject(),
             data: undefined,
         }
-    } 
+    }
     createIssueMessagesTable = (name, issue) => {
         console.log(issue)
         return (
             <Panel header={name} collapsible bordered>
-                <div style={{marginTop:"30px"}}>
-                    <ExpandedTable data={issue} height={window.innerHeight*0.65}></ExpandedTable>
+                <div style={{ marginTop: "30px" }}>
+                    <ExpandedTable data={issue} height={window.innerHeight * 0.65}></ExpandedTable>
                 </div>
             </Panel>
         )
@@ -32,7 +32,7 @@ class IssueDashboard extends React.Component{
         if (this.state.data === undefined) {
             return (<div>loading....</div>)
         }
-        else{
+        else {
             this.mapJsonToData(this.state.data)
             console.log('list', newDataList);
             var result = []
@@ -43,7 +43,7 @@ class IssueDashboard extends React.Component{
         }
     }
     mapJsonToData = (data) => {
-        if(newDataList.length == 0){
+        if (newDataList.length == 0) {
             var counter = 1;
             data.forEach(repo_value => {
                 var repo = {};
@@ -63,9 +63,9 @@ class IssueDashboard extends React.Component{
         }
         return newDataList
     }
-    setIssueMessage = (name) => {
-        const project = getCurrentProject()
-        requestProjectIssueMessage(project.id)
+    setIssueMessage = (id) => {
+
+        requestProjectIssueMessage(id)
             .then(res => res.data)
             .then(data => {
                 console.log('data', data)
@@ -74,22 +74,32 @@ class IssueDashboard extends React.Component{
             })
     }
 
-    render(){
-        if(this.state.data === undefined){
-            this.setIssueMessage(this.state.proName)
+    render() {
+        const { currentProject } = this.state
+        if (this.state.data === undefined) {
+            this.setIssueMessage(currentProject.id)
         }
-        return(
-            <Container style={{height:"100%"}}>
-                <MainHeader/>
-                <Container style={{backgroundColor:"white",width:"100%",paddingLeft:"10%", paddingRight:"10%"}}>
-                    <Breadcrumb style={{marginBottom:"20px", marginTop:"20px"}}>
-                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active>{this.state.proName}</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <HeaderNavbar contact={{pro_name:this.state.proName}}/>
+        return (
+            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+                <MainHeader />
+
+
+
+
+                <Content style={{ paddingLeft: '20%', paddingRight: '20%' }}>
+                    <div style={{ margin: 20 }}>
+
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
+
+                    </div>
+                    <HeaderNavbar />
                     {this.createIssueMessagesPanel()}
-                </Container>
+                </Content>
             </Container>
+
         )
     }
 }

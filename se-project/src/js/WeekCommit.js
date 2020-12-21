@@ -1,30 +1,30 @@
 import React from "react";
 import HeaderNavbar from "./tool/Navbar";
-import { Container ,Breadcrumb} from 'rsuite';
-import {Link}  from "react-router-dom";
+import { Container, Breadcrumb, Content } from 'rsuite';
+import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import black from '../img/black.svg';
 import MainHeader from './tool/MainHeader'
 import { requestProjectWeekCommit } from "./api/projectAPI";
-
-function GetImageWidth(data){
-    if(data <= 5)
+import { getCurrentProject } from './tool/CommonTool'
+function GetImageWidth(data) {
+    if (data <= 5)
         return data * 9
     else
         return 45
 }
 
 var ImageCell = ({ rowData, dataKey, ...props }) => (
-    <Cell {...props} style={{ padding: 0, display: "flex", alignItems: "center", justifyContent: "center"}}>
-        <img src = {black} alt = {dataKey} width={GetImageWidth(rowData[dataKey])}/>
+    <Cell {...props} style={{ padding: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <img src={black} alt={dataKey} width={GetImageWidth(rowData[dataKey])} />
     </Cell>
 );
 
 class WeekCommit extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            proName: this.props.match.params.pro_name,
+            currentProject: getCurrentProject(),
             data: undefined,
         }
     }
@@ -37,7 +37,7 @@ class WeekCommit extends React.Component {
             console.log(this.state.data)
             return (
                 <div>
-                    <h5 style={{marginTop:"25px", marginBottom:"25px"}}>{this.state.data.start_time} To {this.state.data.end_time}</h5>                    
+                    <h5 style={{ marginTop: "25px", marginBottom: "25px" }}>{this.state.data.start_time} To {this.state.data.end_time}</h5>
                     <Table data={this.state.data.commit_info} autoHeight width={"100%"}>
                         <Column align="center" fixed>
                             <HeaderCell></HeaderCell>
@@ -51,13 +51,13 @@ class WeekCommit extends React.Component {
     }
 
     GetTime = (num) => {
-        if(num >= 12){
-            if(num == 12)
+        if (num >= 12) {
+            if (num === 12)
                 return "12PM"
             return (num - 12) + "PM"
         }
-        else{
-            if(num == 0)
+        else {
+            if (num == 0)
                 return "12AM"
             return num + "AM"
         }
@@ -75,15 +75,16 @@ class WeekCommit extends React.Component {
             column_list.push(
                 <Column align="center" flexGrow>
                     <HeaderCell>{this.GetTime(index)}</HeaderCell>
-                    <ImageCell dataKey={this.padLeadingZeros(index, 2)}/>
+                    <ImageCell dataKey={this.padLeadingZeros(index, 2)} />
                 </Column>
             )
         }
         return column_list
     }
 
-    setWeekCommitData = (name) => {
-        requestProjectWeekCommit({ name: name })
+    setWeekCommitData = (id) => {
+        console.log(id)
+        requestProjectWeekCommit(id)
             .then(res => res.data)
             .then(data => {
                 console.log('data', data)
@@ -93,19 +94,27 @@ class WeekCommit extends React.Component {
     }
 
     render() {
+        const { currentProject } = this.state
         if (this.state.data === undefined)
-            this.setWeekCommitData(this.state.proName)
+            this.setWeekCommitData(currentProject.id)
         return (
-            <Container style={{ height: "100%"}}>
-                <MainHeader/>
-                <Container style={{backgroundColor:"white",width:"100%",paddingLeft:"10%", paddingRight:"10%"}}>
-                    <Breadcrumb style={{marginBottom:"20px", marginTop:"20px"}}>
-                        <Breadcrumb.Item><Link to="/home">Projects</Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active>{this.state.proName}</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <HeaderNavbar contact={{ repo_name: this.stateproName }} />
+            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+                <MainHeader />
+
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
+
+                    <div style={{ margin: 20 }}>
+
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
+
+                    </div>
+                    <HeaderNavbar />
                     {this.createWeekCommitChart()}
-                </Container>
+
+                </Content>
             </Container>
         )
     }

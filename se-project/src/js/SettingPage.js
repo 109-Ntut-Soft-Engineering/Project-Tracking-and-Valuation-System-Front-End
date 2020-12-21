@@ -3,7 +3,7 @@ import HeaderNavbar from "./tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
 import {
-    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert, Modal, Button
+    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert, Modal, Button, Content
 } from 'rsuite';
 import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
@@ -130,83 +130,83 @@ class SettingPage extends React.Component {
 
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
+                    <div style={{ margin: 20 }}>
 
-                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
-
-                    <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
-                        <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active><h4>{this.state.currentProject.name}</h4></Breadcrumb.Item>
-                    </Breadcrumb>
-
-
-                </div>
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{this.state.currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
 
 
+                    </div>
 
-                <HeaderNavbar />
 
-                <FlexboxGrid justify="center" align="middle" style={{ marginTop: '50px' }}>
 
-                    <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
-                        <h5>專案名稱</h5>
-                    </FlexboxGrid.Item>
-                    <FlexboxGrid.Item colspan={14} >
-                        <InputGroup size='sm' style={{ width: '300px' }}>
-                            <Input id='projectName' defaultValue={currentProject.name} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
-                            {showConfirm && <InputGroup.Button>
-                                <Icon style={{ 'color': '#2F93FC' }} icon="check" onClick={this.changeProjectName} />
-                            </InputGroup.Button>}
-                            {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }); document.getElementById('projectName').value = currentProject.name }}>
-                                <Icon icon="close" />
-                            </InputGroup.Button>}
-                        </InputGroup>
-                    </FlexboxGrid.Item>
+                    <HeaderNavbar />
 
-                    <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
-                        <h5>新增協作者</h5>
-                    </FlexboxGrid.Item>
+                    <FlexboxGrid justify="center" align="middle" style={{ marginTop: '50px' }}>
 
-                    <FlexboxGrid.Item colspan={14} >
-                        <InputGroup inside size='sm' style={{ width: '300px' }}>
-                            <Input
-                                placeholder='請輸入協作者E-mail'
-                                value={searchEmail}
-                                onChange={(value) => {
-                                    if (value !== '')
-                                        this.setState({ searchEmail: value, showAdd: true });
-                                    else
-                                        this.setState({ searchEmail: value, showAdd: false });
-                                }} />
-                            {showAdd && <InputGroup.Button onClick={this.addCollaborator} >
-                                <Icon icon="plus" />
-                            </InputGroup.Button>}
-                        </InputGroup>
-                    </FlexboxGrid.Item>
-                    <FlexboxGrid.Item colspan={10} ></FlexboxGrid.Item>
-                    <FlexboxGrid.Item colspan={14} >
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>專案名稱</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup size='sm' style={{ width: '300px' }}>
+                                <Input id='projectName' defaultValue={currentProject.name} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
+                                {showConfirm && <InputGroup.Button>
+                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" onClick={this.changeProjectName} />
+                                </InputGroup.Button>}
+                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }); document.getElementById('projectName').value = currentProject.name }}>
+                                    <Icon icon="close" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
 
-                        <TagGroup style={{ width: '300px' }}>
-                            {tags.map((user, index) => (
-                                <Tag
-                                    key={user.uid}
-                                    closable
-                                    // style={{ backgroundColor: this.randomColor(), color: 'white' }}
-                                    onClose={() => {
-                                        this.removeCollaborator(user.uid);
-                                    }}
-                                >
-                                    {user.name}
-                                </Tag>
-                            ))}
-                        </TagGroup>
-                    </FlexboxGrid.Item>
-                    <FlexboxGrid.Item colspan={24} >
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>新增協作者</h5>
+                        </FlexboxGrid.Item>
 
-                        <Button color="red" style={{ float: 'right', marginRight: '40%' }} onClick={() => this.setState({ showConfirmDel: true })} >刪除專案</Button>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup inside size='sm' style={{ width: '300px' }}>
+                                <Input
+                                    placeholder='請輸入協作者E-mail'
+                                    value={searchEmail}
+                                    onChange={(value) => {
+                                        if (value !== '')
+                                            this.setState({ searchEmail: value, showAdd: true });
+                                        else
+                                            this.setState({ searchEmail: value, showAdd: false });
+                                    }} />
+                                {showAdd && <InputGroup.Button onClick={this.addCollaborator} >
+                                    <Icon icon="plus" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} ></FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
 
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
+                            <TagGroup style={{ width: '300px' }}>
+                                {tags.map((user, index) => (
+                                    <Tag
+                                        key={user.uid}
+                                        closable
+                                        // style={{ backgroundColor: this.randomColor(), color: 'white' }}
+                                        onClose={() => {
+                                            this.removeCollaborator(user.uid);
+                                        }}
+                                    >
+                                        {user.name}
+                                    </Tag>
+                                ))}
+                            </TagGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={24} >
 
+                            <Button color="red" style={{ float: 'right', marginRight: '40%' }} onClick={() => this.setState({ showConfirmDel: true })} >刪除專案</Button>
+
+                        </FlexboxGrid.Item>
+                    </FlexboxGrid>
+                </Content>
                 <Modal show={showConfirmDel} onHide={() => this.setState({ showConfirmDel: false })} size="xs">
 
                     <Modal.Body style={{ textAlign: 'center' }} >
