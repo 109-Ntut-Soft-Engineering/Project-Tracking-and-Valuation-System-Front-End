@@ -37,7 +37,7 @@ class MainHeader extends React.Component {
                         return <Avatar circle><Icon icon="user" /></Avatar>
                     }}>
 
-                        <Link style={{ textDecoration: "none" }} to="/Setting">
+                        <Link style={{ textDecoration: "none" }} to="/user/setting">
                             <Dropdown.Item>Setting</Dropdown.Item>
                         </Link>
                         <Link style={{ textDecoration: "none" }} to="/">

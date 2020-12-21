@@ -10,6 +10,7 @@ import IssueDashboard from './js/IssueDashboard'
 import Repository from './js/Repository'
 import SettingPage from './js/SettingPage'
 import Redirect from './js/Redirect'
+import UserSettingPage from './js/UserSettingPage'
 class App extends React.Component {
 
     render() {
@@ -26,6 +27,7 @@ class App extends React.Component {
                     <Route path="/committeam/:pro_name" component={ContributionCommit} />
                     <Route path="/issue/:pro_name" component={IssueDashboard} />
                     <Route path='/project/setting' component={SettingPage} />
+                    <Route path='/user/setting' component={UserSettingPage} />
 
                 </div>
             </BrowserRouter>

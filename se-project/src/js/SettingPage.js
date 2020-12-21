@@ -9,31 +9,7 @@ import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
 import { getCurrentProject, setCurrentProject } from './tool/CommonTool'
 import { updateProject, getProjectSetting, delProject } from './api/projectAPI';
-function oAuth() {
 
-    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
-
-    const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth
-    const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight
-
-    const systemZoom = width / window.screen.availWidth;
-    const left = (width - 600) / 2 / systemZoom + dualScreenLeft
-    const top = (height - 700) / 2 / systemZoom + dualScreenTop
-    window.open(`https://github.com/login/oauth/authorize?client_id=4fc83f8cb4d05b3684de&scope=repo`,
-        null, `width = ${600 / systemZoom},height = ${700 / systemZoom},top = ${top},left = ${left}`)
-
-}
-// {/* <Button color='default' onClick={oAuth} style={{ marginLeft: 10 }}>
-//     授權 GitHub
-//                 </Button> */}
-// functoin handleAddContributor(){
-
-// }
-const styles = {
-    width: 50,
-    marginBottom: 10
-}
 
 class SettingPage extends React.Component {
     constructor(props) {
