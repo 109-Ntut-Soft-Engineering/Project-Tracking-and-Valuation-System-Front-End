@@ -107,7 +107,7 @@ class Repository extends React.Component {
 
     componentDidMount() {
         const height = document.getElementById('reposTable').clientHeight * 0.9;
-        this.setState({ loading: true, tableHeight: height })
+        this.setState({ tableHeight: height })
         this.getProjectRepos()
     }
 
@@ -143,7 +143,7 @@ class Repository extends React.Component {
                             <HeaderCell className="haederCell">Source</HeaderCell>
                             <Cell >
                                 {rowData => {
-                                    return <Icon icon={rowData.source} />
+                                    return <Icon size="2x" icon={rowData.source} />
                                 }}
                             </Cell>
                         </Column>
@@ -151,7 +151,7 @@ class Repository extends React.Component {
                             <HeaderCell className="haederCell">Delete Repository</HeaderCell>
                             <Cell>
                                 {rowData => {
-                                    return <IconButton icon={<Icon icon="trash" />} onClick={() => {
+                                    return <IconButton icon={<Icon size="2x" icon="trash" />} onClick={() => {
                                         this.openConfirmDel()
                                         this.setState({ delRepo: rowData })
                                     }} />

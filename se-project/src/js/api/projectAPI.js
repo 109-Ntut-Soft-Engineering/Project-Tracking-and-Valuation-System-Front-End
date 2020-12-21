@@ -34,3 +34,7 @@ export const updateProject = (pid, data) => {
 export const getProjectSetting = (pid) => {
     return req.get(`project/${pid}/setting`)
 }
+
+export const delProject = (pid) => {
+    return req.delete(`project/${pid}/setting`)
+}

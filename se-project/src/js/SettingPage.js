@@ -1,14 +1,14 @@
 import React from 'react';
 import HeaderNavbar from "./tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import {
-    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert
+    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert, Modal, Button
 } from 'rsuite';
 import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
 import { getCurrentProject, setCurrentProject } from './tool/CommonTool'
-import { updateProject, getProjectSetting } from './api/projectAPI';
+import { updateProject, getProjectSetting, delProject } from './api/projectAPI';
 function oAuth() {
 
     const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
@@ -44,10 +44,13 @@ class SettingPage extends React.Component {
             showAdd: false,
             tags: [],
             searchEmail: '',
-            projectName: ''
+            projectName: '',
+            showConfirmDel: false
         };
         this.addCollaborator = this.addCollaborator.bind(this);
         this.changeProjectName = this.changeProjectName.bind(this);
+        this.deleteProject = this.deleteProject.bind(this);
+
         Alert.config({ top: 100 });
 
     }
@@ -121,6 +124,15 @@ class SettingPage extends React.Component {
                 Alert.error(msg)
             })
     }
+    deleteProject() {
+        delProject(this.state.currentProject.id)
+            .then(response => {
+                this.props.history.push('/projects')
+            })
+            .catch(err => {
+                Alert.error('發生錯誤！')
+            })
+    }
     componentDidMount() {
         getProjectSetting(this.state.currentProject.id)
             .then(response => {
@@ -137,7 +149,7 @@ class SettingPage extends React.Component {
 
 
     render() {
-        const { currentProject, tags, searchEmail, showConfirm, showAdd, projectName } = this.state
+        const { currentProject, tags, searchEmail, showConfirm, showAdd, showConfirmDel } = this.state
         return (
 
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
@@ -152,72 +164,98 @@ class SettingPage extends React.Component {
 
 
                 </div>
-                <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
-
-
-                    <HeaderNavbar />
-
-                    <FlexboxGrid justify="center" align="middle" style={{ marginTop: '50px' }}>
-
-                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
-                            <h5>專案名稱</h5>
-                        </FlexboxGrid.Item>
-                        <FlexboxGrid.Item colspan={14} >
-                            <InputGroup size='sm' style={{ width: '300px' }}>
-                                <Input id='projectName' defaultValue={currentProject.name} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
-                                {showConfirm && <InputGroup.Button>
-                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" onClick={this.changeProjectName} />
-                                </InputGroup.Button>}
-                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }); document.getElementById('projectName').value = currentProject.name }}>
-                                    <Icon icon="close" />
-                                </InputGroup.Button>}
-                            </InputGroup>
-                        </FlexboxGrid.Item>
-
-                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
-                            <h5>新增協作者</h5>
-                        </FlexboxGrid.Item>
-
-                        <FlexboxGrid.Item colspan={14} >
-                            <InputGroup inside size='sm' style={{ width: '300px' }}>
-                                <Input
-                                    placeholder='請輸入協作者E-mail'
-                                    value={searchEmail}
-                                    onChange={(value) => {
-                                        if (value !== '')
-                                            this.setState({ searchEmail: value, showAdd: true });
-                                        else
-                                            this.setState({ searchEmail: value, showAdd: false });
-                                    }} />
-                                {showAdd && <InputGroup.Button onClick={this.addCollaborator} >
-                                    <Icon icon="plus" />
-                                </InputGroup.Button>}
-                            </InputGroup>
-                        </FlexboxGrid.Item>
-                        <FlexboxGrid.Item colspan={10} ></FlexboxGrid.Item>
-                        <FlexboxGrid.Item colspan={14} >
-
-                            <TagGroup style={{ width: '300px' }}>
-                                {tags.map((user, index) => (
-                                    <Tag
-                                        key={user.uid}
-                                        closable
-                                        // style={{ backgroundColor: this.randomColor(), color: 'white' }}
-                                        onClose={() => {
-                                            this.removeCollaborator(user.uid);
-                                        }}
-                                    >
-                                        {user.name}
-                                    </Tag>
-                                ))}
-                            </TagGroup>
-                        </FlexboxGrid.Item>
-                    </FlexboxGrid>
 
 
 
-                </Container>
+                <HeaderNavbar />
+
+                <FlexboxGrid justify="center" align="middle" style={{ marginTop: '50px' }}>
+
+                    <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                        <h5>專案名稱</h5>
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item colspan={14} >
+                        <InputGroup size='sm' style={{ width: '300px' }}>
+                            <Input id='projectName' defaultValue={currentProject.name} onChange={(value) => this.setState({ showConfirm: true, projectName: value })} />
+                            {showConfirm && <InputGroup.Button>
+                                <Icon style={{ 'color': '#2F93FC' }} icon="check" onClick={this.changeProjectName} />
+                            </InputGroup.Button>}
+                            {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }); document.getElementById('projectName').value = currentProject.name }}>
+                                <Icon icon="close" />
+                            </InputGroup.Button>}
+                        </InputGroup>
+                    </FlexboxGrid.Item>
+
+                    <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                        <h5>新增協作者</h5>
+                    </FlexboxGrid.Item>
+
+                    <FlexboxGrid.Item colspan={14} >
+                        <InputGroup inside size='sm' style={{ width: '300px' }}>
+                            <Input
+                                placeholder='請輸入協作者E-mail'
+                                value={searchEmail}
+                                onChange={(value) => {
+                                    if (value !== '')
+                                        this.setState({ searchEmail: value, showAdd: true });
+                                    else
+                                        this.setState({ searchEmail: value, showAdd: false });
+                                }} />
+                            {showAdd && <InputGroup.Button onClick={this.addCollaborator} >
+                                <Icon icon="plus" />
+                            </InputGroup.Button>}
+                        </InputGroup>
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item colspan={10} ></FlexboxGrid.Item>
+                    <FlexboxGrid.Item colspan={14} >
+
+                        <TagGroup style={{ width: '300px' }}>
+                            {tags.map((user, index) => (
+                                <Tag
+                                    key={user.uid}
+                                    closable
+                                    // style={{ backgroundColor: this.randomColor(), color: 'white' }}
+                                    onClose={() => {
+                                        this.removeCollaborator(user.uid);
+                                    }}
+                                >
+                                    {user.name}
+                                </Tag>
+                            ))}
+                        </TagGroup>
+                    </FlexboxGrid.Item>
+                    <FlexboxGrid.Item colspan={24} >
+
+                        <Button color="red" style={{ float: 'right', marginRight: '40%' }} onClick={() => this.setState({ showConfirmDel: true })} >刪除專案</Button>
+
+                    </FlexboxGrid.Item>
+                </FlexboxGrid>
+
+                <Modal show={showConfirmDel} onHide={() => this.setState({ showConfirmDel: false })} size="xs">
+
+                    <Modal.Body style={{ textAlign: 'center' }} >
+                        <Icon
+                            icon="remind"
+                            style={{
+                                color: '#ffb300',
+                                fontSize: 30
+                            }}
+                        />
+                        <h5 style={{ display: 'inline' }}>確定刪除專案？</h5>
+
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.deleteProject} appearance="subtle">
+                            確認
+                        </Button>
+                        <Button onClick={() => this.setState({ showConfirmDel: false })} appearance="primary">
+                            取消
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
             </Container>
+
         )
     }
 };

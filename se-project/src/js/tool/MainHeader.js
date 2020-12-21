@@ -1,6 +1,7 @@
 import React from "react";
-import { Header, Dropdown, IconButton, Icon } from 'rsuite';
+import { Header, Dropdown, Icon, Avatar } from 'rsuite';
 import { Link } from "react-router-dom";
+
 // import { getUserInfo } from '../api/userAPI';
 
 class MainHeader extends React.Component {
@@ -31,7 +32,11 @@ class MainHeader extends React.Component {
                 <h1 style={{ color: "white" }}>專案管理追蹤系統</h1>
                 <div className="UserBox">
                     <h5 className="UserAccount">{userNameText}</h5>
-                    <Dropdown renderTitle={children => { return <IconButton icon={<Icon icon="user" />} />; }}>
+
+                    <Dropdown renderTitle={() => {
+                        return <Avatar circle><Icon icon="user" /></Avatar>
+                    }}>
+
                         <Link style={{ textDecoration: "none" }} to="/Setting">
                             <Dropdown.Item>Setting</Dropdown.Item>
                         </Link>
@@ -39,6 +44,7 @@ class MainHeader extends React.Component {
                             <Dropdown.Item>Log Out</Dropdown.Item>
                         </Link>
                     </Dropdown>
+
                 </div>
             </Header>
 
