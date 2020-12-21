@@ -1,6 +1,5 @@
 import { req } from './api'
 
-
 export const requestProjectCodeFreq = (pid) => {
     return req.get(`project/${pid}/code_freq`)
 }
@@ -37,4 +36,16 @@ export const updateProject = (pid, data) => {
 
 export const getProjectSetting = (pid) => {
     return req.get(`project/${pid}/setting`)
+}
+
+export const delProject = (pid) => {
+    return req.delete(`project/${pid}/setting`)
+}
+
+export const requestProjectWeekCommit = (pid) => {
+    return req.get(`project/${pid}/week_commit`)
+}
+
+export const requestProjectIssueMessage = (pid) => {
+    return req.get(`project/${pid}/issue`)
 }

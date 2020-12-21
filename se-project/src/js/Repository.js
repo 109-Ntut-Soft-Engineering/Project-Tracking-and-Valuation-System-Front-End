@@ -106,8 +106,8 @@ class Repository extends React.Component {
 
 
     componentDidMount() {
-        const height = document.getElementById('reposTable').clientHeight * 0.9;
-        this.setState({ loading: true, tableHeight: height })
+        // const height = document.getElementById('reposTable').clientHeight * 0.9;
+        // this.setState({ tableHeight: height })
         this.getProjectRepos()
     }
 
@@ -117,24 +117,22 @@ class Repository extends React.Component {
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
-                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
-
-                    <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
-                        <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active><h4>{projName}</h4></Breadcrumb.Item>
-                    </Breadcrumb>
-
-                    <Button style={{ float: 'right' }} color="blue" className="creteButton" onClick={this.open}>Create</Button>
-
-                </div>
 
 
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }} >
+                    <div style={{ margin: 20 }}>
 
-                <HeaderNavbar />
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{projName}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
 
-                <Content id="reposTable">
+                        <Button style={{ float: 'right' }} color="blue" className="creteButton" onClick={this.open}>Create</Button>
 
-                    <Table loading={loading} bordered={true} width={chart_width} data={data} rowHeight={60} height={tableHeight} >
+                    </div>
+
+                    <HeaderNavbar />
+                    <Table loading={loading} bordered={true} data={data} rowHeight={60} autoHeight >
                         <Column width={chart_width * 0.3} verticalAlign="middle" align="center" >
                             <HeaderCell className="haederCell">Repository Name</HeaderCell>
                             <Cell dataKey="name"></Cell>
@@ -143,7 +141,7 @@ class Repository extends React.Component {
                             <HeaderCell className="haederCell">Source</HeaderCell>
                             <Cell >
                                 {rowData => {
-                                    return <Icon icon={rowData.source} />
+                                    return <Icon size="2x" icon={rowData.source} />
                                 }}
                             </Cell>
                         </Column>
@@ -151,7 +149,7 @@ class Repository extends React.Component {
                             <HeaderCell className="haederCell">Delete Repository</HeaderCell>
                             <Cell>
                                 {rowData => {
-                                    return <IconButton icon={<Icon icon="trash" />} onClick={() => {
+                                    return <IconButton icon={<Icon size="2x" icon="trash" />} onClick={() => {
                                         this.openConfirmDel()
                                         this.setState({ delRepo: rowData })
                                     }} />

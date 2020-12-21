@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Container, Button, Breadcrumb } from 'rsuite';
+import { Container, Button, Breadcrumb, Content } from 'rsuite';
 import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
 import HeaderNavbar from './tool/Navbar'
 import MainHeader from './tool/MainHeader'
-import { getCurrentProject } from './tool/CommonTool';
+import { getCurrentProject } from './tool/CommonTool'
 import { requestTotalCommit } from './api/projectAPI'
 
 import '../css/commitPage.css'
@@ -89,20 +89,23 @@ class CommitPage extends React.Component {
             this.setTotalCommit()
 
         return (
-            <Container style={{ height: "100%" }}>
+            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
+                    <div style={{ margin: 20 }}>
 
-                <Container style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
-                    <Breadcrumb style={{ marginBottom: "20px", marginTop: "20px" }}>
-                        <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active>{proName}</Breadcrumb.Item>
-                    </Breadcrumb>
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
 
-                    <HeaderNavbar contact={{ pro_name: proName }} />
+                    </div>
+                    <HeaderNavbar />
 
                     { this.createTotalCommit() }
-                </Container>
+                </Content>
             </Container>
+
         )
     }
 }

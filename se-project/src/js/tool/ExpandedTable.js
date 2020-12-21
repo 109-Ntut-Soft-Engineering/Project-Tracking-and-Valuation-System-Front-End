@@ -1,7 +1,10 @@
 import React from 'react';
 import { Icon, IconButton, Table } from 'rsuite';
+import Badge from 'react-bootstrap/Badge'
+import '../../css/IssuePage.css'
 
-const { Column, HeaderCell, Cell} = Table;
+
+const { Column, HeaderCell, Cell } = Table;
 const rowKey = "id";
 const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
     <Cell {...props}>
@@ -10,76 +13,101 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
             appearance="subtle"
             onClick={() => {
                 onChange(rowData);
-            }}  
+            }}
             icon={
                 <Icon
                     icon={
-                    expandedRowKeys.some(key => key === rowData[rowKey])
-                    ? 'minus-square-o'
-                    : 'plus-square-o'
-                     }
+                        expandedRowKeys.some(key => key === rowData[rowKey])
+                            ? 'minus-square-o'
+                            : 'plus-square-o'
+                    }
                 />
             }
         />
     </Cell>
-  );
+);
+function CreateLabel(name, color) {
+    console.log('color', color)
+    var label = <p className='label' style={{ backgroundColor: '#' + color.toString() }}>{name}</p>;
+    return label;
+}
 
-class ExpandedTable extends React.Component{
+function GetLabelsData(list) {
+    var data = [];
+    list.forEach(value => {
+        data.push(CreateLabel(value['name'], value['color']));
+    });
+    return (<div>{data}</div>)
+}
+
+const LabelCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) => (
+    <Cell {...props}>
+        {
+            GetLabelsData(rowData[dataKey])
+        }
+    </Cell>
+);
+
+class ExpandedTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          data: props.data,
-          expandedRowKeys: []
+            data: props.data,
+            expandedRowKeys: []
         };
         this.handleExpanded = this.handleExpanded.bind(this);
     }
-    handleExpanded(rowData){
-        const {expandedRowKeys} = this.state
+
+    CreateCommentDiv(body, user, time) {
+        var result = [];
+        result.push((<h5>{user}  Commented at  {time}</h5>))
+        result.push((<h6>{body}</h6>))
+        result.push((<br />))
+        return result
+    }
+
+    GetComments(comments) {
+        var data = [];
+        comments.forEach(value => {
+            data.push(this.CreateCommentDiv(value['body'], value['user'], value['time']));
+        });
+        return (<div>{data}</div>)
+    }
+
+    handleExpanded(rowData) {
+        const { expandedRowKeys } = this.state
         const nextExpandedRowKeys = [];
-        let open = false; 
+        let open = false;
 
         expandedRowKeys.forEach(key => {
-            if (key=== rowData[rowKey]){
+            if (key === rowData[rowKey]) {
                 open = true
             }
-            else{
+            else {
                 nextExpandedRowKeys.push(key)
             }
         });
 
-        if (!open){
+        if (!open) {
             nextExpandedRowKeys.push(rowData[rowKey]);
         }
         this.setState({
             expandedRowKeys: nextExpandedRowKeys
         });
     }
-    render(){
+    render() {
         const { expandedRowKeys, data } = this.state;
-        return(
+        return (
             <Table
-             height={this.props.height}
-             data={data} 
-             rowKey={rowKey} 
-             expandedRowKeys={expandedRowKeys}
-             renderRowExpanded={rowData => {
-                return (
-                  <div>
-                    <div
-                      style={{
-                        width: 60,
-                        height: 60,
-                        float: 'left',
-                        marginRight: 10,
-                        background: '#eee'
-                      }}
-                    >
-                    </div>
-                    <p>{rowData.discription}</p>
-                    <p>{rowData.date}</p>
-                  </div>
-                );
-              }}
+                height={this.props.height}
+                data={data}
+                rowKey={rowKey}
+                expandedRowKeys={expandedRowKeys}
+                renderRowExpanded={rowData => {
+                    return (
+                        this.GetComments(rowData['comments'])
+                    )
+                }}
             >
                 <Column width={50}>
                     <HeaderCell>#</HeaderCell>
@@ -90,8 +118,8 @@ class ExpandedTable extends React.Component{
                     />
                 </Column>
                 <Column width={130}>
-                    <HeaderCell>User</HeaderCell>
-                    <Cell dataKey="user" />
+                    <HeaderCell>Title</HeaderCell>
+                    <Cell dataKey="title" />
                 </Column>
 
                 <Column width={130}>
@@ -99,6 +127,10 @@ class ExpandedTable extends React.Component{
                     <Cell dataKey="date" />
                 </Column>
 
+                <Column width={600}>
+                    <HeaderCell>Labels</HeaderCell>
+                    <LabelCell dataKey="labels" />
+                </Column>
             </Table>
         )
     }

@@ -1,39 +1,15 @@
 import React from 'react';
 import HeaderNavbar from "./tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import {
-    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert
+    InputGroup, TagGroup, Tag, Icon, Input, FlexboxGrid, Alert, Modal, Button, Content
 } from 'rsuite';
 import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
 import { getCurrentProject, setCurrentProject } from './tool/CommonTool'
-import { updateProject, getProjectSetting } from './api/projectAPI';
-function oAuth() {
+import { updateProject, getProjectSetting, delProject } from './api/projectAPI';
 
-    const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
-    const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
-
-    const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth
-    const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight
-
-    const systemZoom = width / window.screen.availWidth;
-    const left = (width - 600) / 2 / systemZoom + dualScreenLeft
-    const top = (height - 700) / 2 / systemZoom + dualScreenTop
-    window.open(`https://github.com/login/oauth/authorize?client_id=4fc83f8cb4d05b3684de&scope=repo`,
-        null, `width = ${600 / systemZoom},height = ${700 / systemZoom},top = ${top},left = ${left}`)
-
-}
-// {/* <Button color='default' onClick={oAuth} style={{ marginLeft: 10 }}>
-//     授權 GitHub
-//                 </Button> */}
-// functoin handleAddContributor(){
-
-// }
-const styles = {
-    width: 50,
-    marginBottom: 10
-}
 
 class SettingPage extends React.Component {
     constructor(props) {
@@ -44,10 +20,13 @@ class SettingPage extends React.Component {
             showAdd: false,
             tags: [],
             searchEmail: '',
-            projectName: ''
+            projectName: '',
+            showConfirmDel: false
         };
         this.addCollaborator = this.addCollaborator.bind(this);
         this.changeProjectName = this.changeProjectName.bind(this);
+        this.deleteProject = this.deleteProject.bind(this);
+
         Alert.config({ top: 100 });
 
     }
@@ -121,6 +100,15 @@ class SettingPage extends React.Component {
                 Alert.error(msg)
             })
     }
+    deleteProject() {
+        delProject(this.state.currentProject.id)
+            .then(response => {
+                this.props.history.push('/projects')
+            })
+            .catch(err => {
+                Alert.error('發生錯誤！')
+            })
+    }
     componentDidMount() {
         getProjectSetting(this.state.currentProject.id)
             .then(response => {
@@ -137,22 +125,22 @@ class SettingPage extends React.Component {
 
 
     render() {
-        const { currentProject, tags, searchEmail, showConfirm, showAdd, projectName } = this.state
+        const { currentProject, tags, searchEmail, showConfirm, showAdd, showConfirmDel } = this.state
         return (
 
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
+                    <div style={{ margin: 20 }}>
 
-                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
-
-                    <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
-                        <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active><h4>{this.state.currentProject.name}</h4></Breadcrumb.Item>
-                    </Breadcrumb>
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{this.state.currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
 
 
-                </div>
-                <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
+                    </div>
+
 
 
                     <HeaderNavbar />
@@ -212,12 +200,38 @@ class SettingPage extends React.Component {
                                 ))}
                             </TagGroup>
                         </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={24} >
+
+                            <Button color="red" style={{ float: 'right', marginRight: '40%' }} onClick={() => this.setState({ showConfirmDel: true })} >刪除專案</Button>
+
+                        </FlexboxGrid.Item>
                     </FlexboxGrid>
+                </Content>
+                <Modal show={showConfirmDel} onHide={() => this.setState({ showConfirmDel: false })} size="xs">
 
+                    <Modal.Body style={{ textAlign: 'center' }} >
+                        <Icon
+                            icon="remind"
+                            style={{
+                                color: '#ffb300',
+                                fontSize: 30
+                            }}
+                        />
+                        <h5 style={{ display: 'inline' }}>確定刪除專案？</h5>
 
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.deleteProject} appearance="subtle">
+                            確認
+                        </Button>
+                        <Button onClick={() => this.setState({ showConfirmDel: false })} appearance="primary">
+                            取消
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
-                </Container>
             </Container>
+
         )
     }
 };

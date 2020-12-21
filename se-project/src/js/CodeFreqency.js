@@ -1,17 +1,17 @@
 import React from 'react';
 import HeaderNavbar from "./tool/Navbar";
-import { Container, Breadcrumb } from 'rsuite';
+import { Container, Breadcrumb, Content } from 'rsuite';
 import { Link } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
 import MainHeader from './tool/MainHeader'
 import { requestProjectCodeFreq } from './api/projectAPI';
-import {getCurrentProject} from './tool/CommonTool';
+import { getCurrentProject } from './tool/CommonTool';
 
 class CodeFrequency extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            proName: this.props.match.params.pro_name,
+            currentProject: getCurrentProject(),
             data: undefined,
         }
     }
@@ -40,32 +40,36 @@ class CodeFrequency extends React.Component {
             )
         }
     }
-    setCodeFrequency = () => {
-        const project = getCurrentProject()
-        console.log('pid:', project.id)
-        return requestProjectCodeFreq(project.id)
+    setCodeFrequency = (id) => {
+
+        return requestProjectCodeFreq(id)
             .then(res => res.data)
             .then(data => {
                 this.setState({ data: data.code_freq })
                 return data.code_freq
-        })
+            })
     }
     render() {
+        const { currentProject } = this.state
         if (this.state.data === undefined)
-            this.setCodeFrequency()
+            this.setCodeFrequency(currentProject.id)
         return (
-            <Container style={{ height: "100%" }}>
+            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
+                    <div style={{ margin: 20 }}>
 
-                <Container id="main" style={{ backgroundColor: "white", width: "100%", paddingLeft: "10%", paddingRight: "10%" }}>
-                    <Breadcrumb style={{ marginBottom: "20px", marginTop: "20px" }}>
-                        <Breadcrumb.Item><Link to="/projects">Projects</Link></Breadcrumb.Item>
-                        <Breadcrumb.Item active>{this.state.proName}</Breadcrumb.Item>
-                    </Breadcrumb>
-                    <HeaderNavbar contact={{ repo_name: this.stateproName }} />
+                        <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
+                            <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
+                            <Breadcrumb.Item active><h4>{currentProject.name}</h4></Breadcrumb.Item>
+                        </Breadcrumb>
+
+                    </div>
+                    <HeaderNavbar />
                     {this.createCodeFreqChart()}
-                </Container>
+                </Content>
             </Container>
+
         )
     }
 }

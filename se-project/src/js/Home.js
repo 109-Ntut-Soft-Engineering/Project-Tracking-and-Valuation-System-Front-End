@@ -81,8 +81,10 @@ class Home extends React.Component {
                     </Column>
                     <Column width={chart_width * 0.3} verticalAlign="middle" align="center">
                         <HeaderCell className="haederCell">Owner</HeaderCell>
-                        <Cell>
-
+                        <Cell >
+                            {rowData => {
+                                return rowData.owner.name
+                            }}
                         </Cell>
                     </Column>
                     <Column width={chart_width * 0.3} verticalAlign="middle" align="center">
