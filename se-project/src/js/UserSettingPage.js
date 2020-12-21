@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Divider, FlexboxGrid, Alert } from 'rsuite';
+import { Container, Divider, FlexboxGrid, Alert, Content, InputGroup, Input, Icon, Button } from 'rsuite';
 
 import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
@@ -19,18 +19,13 @@ function oAuth() {
         null, `width = ${600 / systemZoom},height = ${700 / systemZoom},top = ${top},left = ${left}`)
 
 }
-// {/* <Button color='default' onClick={oAuth} style={{ marginLeft: 10 }}>
-//     授權 GitHub
-//                 </Button> */}
-// functoin handleAddContributor(){
 
-// }
 
 class UserSettingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            showConfirm: false,
         };
 
         Alert.config({ top: 100 });
@@ -45,23 +40,81 @@ class UserSettingPage extends React.Component {
 
 
     render() {
-        // const {  } = this.state
+        const { showConfirm } = this.state
         return (
 
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
 
-                <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>
-                    <h4>個人設定</h4>
-                </div>
-                <FlexboxGrid style={{ paddingLeft: '20%', paddingRight: '20%' }}>
-                    <FlexboxGrid.Item >
-                        <Divider />
-                    </FlexboxGrid.Item>
-                </FlexboxGrid>
-                <Divider />
+
+                <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
+                    <div style={{ marginBottom: 20 }}>
+                        <h1>設定</h1>
+                    </div>
+                    <FlexboxGrid >
+                        <FlexboxGrid.Item colspan={24}>
+                            <h4>個人資料</h4>
+                            <Divider />
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>使用者名稱</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup size='sm' style={{ width: '300px' }}>
+                                <Input id='projectName' onChange={(value) => this.setState({ showConfirm: true })} />
+                                {showConfirm && <InputGroup.Button>
+                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" />
+                                </InputGroup.Button>}
+                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }) }}>
+                                    <Icon icon="close" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>新密碼</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup size='sm' style={{ width: '300px' }}>
+                                <Input id='projectName' onChange={(value) => this.setState({ showConfirm: true })} />
+                                {showConfirm && <InputGroup.Button>
+                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" />
+                                </InputGroup.Button>}
+                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }) }}>
+                                    <Icon icon="close" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>再次輸入新密碼</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup size='sm' style={{ width: '300px' }}>
+                                <Input id='projectName' onChange={(value) => this.setState({ showConfirm: true })} />
+                                {showConfirm && <InputGroup.Button>
+                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" />
+                                </InputGroup.Button>}
+                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }) }}>
+                                    <Icon icon="close" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={24}>
+                            <h4>平台連結</h4>
+                            <Divider />
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>Github</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <Button color='default' onClick={oAuth} >
+                                授權
+                            </Button>
+
+                        </FlexboxGrid.Item>
+                    </FlexboxGrid>
 
 
+                </Content>
 
 
             </Container>

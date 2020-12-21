@@ -138,10 +138,7 @@ class SettingPage extends React.Component {
                             <Breadcrumb.Item active><h4>{this.state.currentProject.name}</h4></Breadcrumb.Item>
                         </Breadcrumb>
 
-
                     </div>
-
-
 
                     <HeaderNavbar />
 

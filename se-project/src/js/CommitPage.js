@@ -14,15 +14,15 @@ class CommitPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            proName: this.props.match.params.pro_name, 
-            data: undefined, 
+            currentProject: getCurrentProject(),
+            data: undefined,
         }
     }
 
-    setTotalCommit = () => {
-        const project = getCurrentProject()
-        console.log('pid:', project.id)
-        return requestTotalCommit(project.id)
+    setTotalCommit = (id) => {
+
+
+        return requestTotalCommit(id)
             .then(res => res.data)
             .then(data => {
                 this.setState({ data: data.commits })
@@ -43,7 +43,7 @@ class CommitPage extends React.Component {
         const datas = this.state.data['commit_list']
 
         return (
-            <Container style={{ backgroundColor: "white", width: "100%"}}>
+            <Container style={{ backgroundColor: "white", width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", marginLeft: "25px", marginTop: "25px", marginBottom: "25px" }}>
                     {members.map(member =>
                         <Button className="member-button">{member}</Button>
@@ -84,9 +84,9 @@ class CommitPage extends React.Component {
     }
 
     render() {
-        var proName = this.props.match.params.pro_name;
+        const { currentProject } = this.state;
         if (this.state.data == undefined)
-            this.setTotalCommit()
+            this.setTotalCommit(currentProject.id)
 
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
@@ -102,7 +102,7 @@ class CommitPage extends React.Component {
                     </div>
                     <HeaderNavbar />
 
-                    { this.createTotalCommit() }
+                    {this.createTotalCommit()}
                 </Content>
             </Container>
 
