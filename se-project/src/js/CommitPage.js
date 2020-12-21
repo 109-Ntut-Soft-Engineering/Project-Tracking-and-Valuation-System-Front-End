@@ -14,19 +14,16 @@ class CommitPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            proName: this.props.match.params.pro_name, 
+            currentProject: getCurrentProject(),
             data: undefined, 
         }
     }
 
-    setTotalCommit = () => {
-        const project = getCurrentProject()
-        console.log('pid:', project.id)
-        return requestTotalCommit(project.id)
+    setTotalCommit = (id) => {
+        return requestTotalCommit(id)
             .then(res => res.data)
             .then(data => {
                 this.setState({ data: data.commits })
-                console.log('commits')
                 return data.commits
             })
     }
@@ -84,9 +81,9 @@ class CommitPage extends React.Component {
     }
 
     render() {
-        var proName = this.props.match.params.pro_name;
+        const { currentProject } = this.state
         if (this.state.data == undefined)
-            this.setTotalCommit()
+            this.setTotalCommit(currentProject.id)
 
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
