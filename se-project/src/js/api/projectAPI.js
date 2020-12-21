@@ -9,6 +9,10 @@ export const requestUserProjects = () => {
     return req.get('projects')
 }
 
+export const requestTotalCommit = (pid) => {
+    return req.get(`project/${pid}/commit`)
+}
+
 export const addNewProject = (data) => {
     return req.post(`projects?name=` + data.name)
 }
