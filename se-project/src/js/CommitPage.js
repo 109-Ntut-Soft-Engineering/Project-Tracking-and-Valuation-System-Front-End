@@ -65,7 +65,7 @@ class CommitPage extends React.Component {
         const datas = this.state.data['commit_list']
 
         return (
-            <Container style={{ backgroundColor: "white", width: "100%"}}>
+            <Container style={{ backgroundColor: "white", width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", marginLeft: "25px", marginTop: "25px", marginBottom: "25px" }}>
                     {members.map(member =>
                         <label className="member">
@@ -109,7 +109,7 @@ class CommitPage extends React.Component {
     }
 
     render() {
-        const { currentProject } = this.state
+        const { currentProject } = this.state;
         if (this.state.data == undefined)
             this.setTotalCommit(currentProject.id)
 
@@ -127,7 +127,7 @@ class CommitPage extends React.Component {
                     </div>
                     <HeaderNavbar />
 
-                    { this.createTotalCommit() }
+                    {this.createTotalCommit()}
                 </Content>
             </Container>
 
