@@ -15,17 +15,42 @@ class CommitPage extends React.Component {
         super(props);
         this.state = {
             currentProject: getCurrentProject(),
+            originData: undefined, 
             data: undefined, 
-        }
+            members: undefined, 
+        };
+        this.clickMemberBox = this.clickMemberBox.bind(this);
     }
 
     setTotalCommit = (id) => {
         return requestTotalCommit(id)
             .then(res => res.data)
             .then(data => {
-                this.setState({ data: data.commits })
+                this.setState({ 
+                    originData: data.commits, 
+                    data: data.commits,
+                    members: data.commits['member']
+                })
                 return data.commits
             })
+    }
+
+    clickMemberBox(e) {
+        var memberChks = document.getElementsByName("memberCheckbox");
+        var selMembers = [];
+        for (var i = 0; i < memberChks.length; i++) {
+            if (memberChks[i].checked)
+                selMembers.push(this.state.members[i]);
+        }
+        
+        var newData = Object.assign({}, this.state.originData);
+        var filteredMsgs = this.state.originData['commit_list'];
+        filteredMsgs = filteredMsgs.filter(commit => selMembers.includes(commit['author']));
+        newData['commit_list'] = filteredMsgs;
+
+        this.setState({
+            data: newData
+        })
     }
 
     createTotalCommit = () => {
@@ -43,7 +68,10 @@ class CommitPage extends React.Component {
             <Container style={{ backgroundColor: "white", width: "100%"}}>
                 <div style={{ display: "flex", flexDirection: "row", justifyContent: "center", marginLeft: "25px", marginTop: "25px", marginBottom: "25px" }}>
                     {members.map(member =>
-                        <Button className="member-button">{member}</Button>
+                        <label className="member">
+                            <input name="memberCheckbox" type="checkbox" defaultChecked="true" onClick={ this.clickMemberBox } />
+                            {member}
+                        </label>
                     )}
                 </div>
 
