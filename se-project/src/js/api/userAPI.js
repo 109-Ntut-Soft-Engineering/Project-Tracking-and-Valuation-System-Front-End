@@ -1,15 +1,13 @@
 import { req } from './api'
 import axios from 'axios';
 import { APIKey } from '../tool/CommonTool'
-const firebaseSignUpAPI = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${APIKey}`
-const firebaseSingInAPI = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${APIKey}`
 
 export const userSignUp = (signUpData) => {
-    return axios.post(firebaseSignUpAPI, signUpData)
+    return req.post('signUp', signUpData)
 }
 
-export const userLogIn = (logInData) => {
-    return axios.post(firebaseSingInAPI, logInData)
+export const userLogin = (logInData) => {
+    return req.post('login', logInData)
 }
 
 export const saveUserInfo = (info) => {
@@ -22,4 +20,7 @@ export const linkGithub = (code) => {
 
 export const getUserInfo = () => {
     return req.get('user')
+}
+export const updateUserInfo = (data) => {
+    return req.patch('user', data)
 }

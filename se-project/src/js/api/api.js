@@ -4,7 +4,7 @@ import { APIKey } from '../tool/CommonTool'
 import qs from 'qs'
 const api = axios.create({
     baseURL: "http://localhost:5000",
-    timeout: 600000
+    // timeout: 600000
 })
 function getTokenData() {
     return JSON.parse(localStorage.getItem('token'))
@@ -32,8 +32,10 @@ export const req = Object.freeze({
 api.interceptors.request.use(
     function (config) {
         const data = localStorage.getItem('token')
-        const token = data !== undefined ? `Bearer ${JSON.parse(data).idToken}` : '';
-        config.headers.Authorization = token;
+        if (data != null) {
+            const token = data !== undefined ? `Bearer ${JSON.parse(data).idToken}` : '';
+            config.headers.Authorization = token;
+        }
         return config;
     }
 );

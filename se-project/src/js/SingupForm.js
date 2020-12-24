@@ -51,8 +51,7 @@ class SingUp extends React.Component {
         if (this.form.check()) {
             userSignUp({
                 email: formValue.email,
-                password: formValue.password,
-                returnSecureToken: true
+                password: formValue.password
             }).then(response => {
                 const data = response.data
                 window.localStorage.setItem('token',
@@ -71,13 +70,8 @@ class SingUp extends React.Component {
                 this.props.history.push("/projects");
             }).catch(err => {
                 if (err.response) {
-                    const data = err.response.data
-                    if (data.error.message === "EMAIL_EXISTS") {
-                        this.setState({ errMsg: "此EMail已存在" })
-                    } else if (data.error.message.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
-                        this.setState({ errMsg: "請稍後再試" })
-                    }
-                    this.setState({ correct: false })
+                    const error = err.response.data.error
+                    this.setState({ errMsg: error, correct: false })
                 }
             })
         }

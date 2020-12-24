@@ -58,12 +58,10 @@ class CodeFrequency extends React.Component {
                 <MainHeader />
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
                     <div style={{ margin: 20 }}>
-
                         <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
                             <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
                             <Breadcrumb.Item active><h4>{currentProject.name}</h4></Breadcrumb.Item>
                         </Breadcrumb>
-
                     </div>
                     <HeaderNavbar />
                     {this.createCodeFreqChart()}

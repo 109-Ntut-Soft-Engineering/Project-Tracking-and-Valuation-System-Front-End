@@ -1,7 +1,7 @@
 import React from "react";
 import '../css/Login.css';
 import 'rsuite/dist/styles/rsuite-default.css';
-import { userLogIn } from './api/userAPI';
+import { userLogin } from './api/userAPI';
 
 import {
     Button, Panel, Form, FormGroup, ControlLabel, FormControl, ButtonToolbar, Schema, Message
@@ -38,11 +38,13 @@ class SingIn extends React.Component {
     }
     login(formValue) {
         if (this.form.check()) {
-            userLogIn({
+            console.log(formValue)
+            userLogin({
                 email: formValue.email,
-                password: formValue.password,
-                returnSecureToken: true
+                password: formValue.password
+                // returnSecureToken: true
             }).then(response => {
+
                 const data = response.data
                 window.localStorage.setItem('token',
                     JSON.stringify({
@@ -54,16 +56,8 @@ class SingIn extends React.Component {
 
             }).catch(err => {
                 if (err.response) {
-                    const data = err.response.data
-                    if (data.error.message === "INVALID_PASSWORD") {
-                        this.setState({ errMsg: "密碼錯誤" })
-                    } else if (data.error.message.includes("TOO_MANY_ATTEMPTS_TRY_LATER")) {
-                        this.setState({ errMsg: "請稍後再試" })
-                    } else if (data.error.message === "EMAIL_NOT_FOUND") {
-                        this.setState({ errMsg: "此帳號不存在" })
-                    }
-                    this.setState({ correct: false })
-
+                    const error = err.response.data.error
+                    this.setState({ errMsg: error, correct: false })
                 }
             })
         }

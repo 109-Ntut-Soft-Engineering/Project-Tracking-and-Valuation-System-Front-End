@@ -82,10 +82,6 @@ class IssueDashboard extends React.Component {
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
-
-
-
-
                 <Content style={{ paddingLeft: '20%', paddingRight: '20%' }}>
                     <div style={{ margin: 20 }}>
 

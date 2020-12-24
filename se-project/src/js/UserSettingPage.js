@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container, Divider, FlexboxGrid, Alert, Content, InputGroup, Input, Icon, Button } from 'rsuite';
-
-import '../css/ProjectSetting.css';
+import { getUserInfo, updateUserInfo } from './api/userAPI';
 import MainHeader from './tool/MainHeader'
 
 function oAuth() {
@@ -25,22 +24,46 @@ class UserSettingPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showConfirm: false,
+            showUserNameConfirm: false,
+            showEmailConfirm: false,
+            showPasswordConfirm: false,
+            userInfo: {},
+            userSetting: {}
         };
 
         Alert.config({ top: 100 });
-
+        this.updateInfo = this.updateInfo.bind(this);
     }
-
+    deepCopy(object) {
+        return JSON.parse(JSON.stringify(object))
+    }
 
     componentDidMount() {
+        getUserInfo()
+            .then(response => {
+                this.setState({ userInfo: this.deepCopy(response.data), userSetting: this.deepCopy(response.data) })
+            })
+    }
+    updateInfo() {
+        updateUserInfo(this.state.userSetting)
+            .then(response => {
+                Alert.success('修改成功！')
+                this.setState({
+                    showUserNameConfirm: false,
+                    showEmailConfirm: false,
+                    userInfo: this.deepCopy(this.state.userSetting)
+                })
 
+            })
+            .catch(err => {
+                const error = err.response.data.error
+                Alert.error(error)
+            })
 
     }
 
-
     render() {
-        const { showConfirm } = this.state
+        var { showUserNameConfirm, showEmailConfirm, showPasswordConfirm, userSetting, userInfo } = this.state
         return (
 
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
@@ -61,11 +84,41 @@ class UserSettingPage extends React.Component {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={14} >
                             <InputGroup size='sm' style={{ width: '300px' }}>
-                                <Input id='projectName' onChange={(value) => this.setState({ showConfirm: true })} />
-                                {showConfirm && <InputGroup.Button>
+                                <Input value={userSetting.name} onChange={(value) => {
+                                    userSetting.name = value
+                                    this.setState({ showUserNameConfirm: true, userSetting: userSetting })
+                                }} />
+                                {showUserNameConfirm && <InputGroup.Button onClick={() => {
+                                    console.log(this.state.userSetting)
+                                    this.updateInfo()
+                                }}>
                                     <Icon style={{ 'color': '#2F93FC' }} icon="check" />
                                 </InputGroup.Button>}
-                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }) }}>
+                                {showUserNameConfirm && <InputGroup.Button onClick={() => {
+                                    this.setState({ showUserNameConfirm: false, userSetting: this.deepCopy(userInfo) })
+                                }}>
+                                    <Icon icon="close" />
+                                </InputGroup.Button>}
+                            </InputGroup>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
+                            <h5>E-Mail</h5>
+                        </FlexboxGrid.Item>
+                        <FlexboxGrid.Item colspan={14} >
+                            <InputGroup size='sm' style={{ width: '300px' }}>
+                                <Input value={userSetting.email} onChange={(value) => {
+                                    userSetting.email = value
+                                    this.setState({ showEmailConfirm: true })
+                                }} />
+                                {showEmailConfirm && <InputGroup.Button onClick={() => {
+                                    console.log(this.state.userSetting)
+                                    this.updateInfo()
+                                }}>
+                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" />
+                                </InputGroup.Button>}
+                                {showEmailConfirm && <InputGroup.Button onClick={() => {
+                                    this.setState({ showEmailConfirm: false, userSetting: this.deepCopy(userInfo) })
+                                }}>
                                     <Icon icon="close" />
                                 </InputGroup.Button>}
                             </InputGroup>
@@ -75,13 +128,7 @@ class UserSettingPage extends React.Component {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={14} >
                             <InputGroup size='sm' style={{ width: '300px' }}>
-                                <Input id='projectName' onChange={(value) => this.setState({ showConfirm: true })} />
-                                {showConfirm && <InputGroup.Button>
-                                    <Icon style={{ 'color': '#2F93FC' }} icon="check" />
-                                </InputGroup.Button>}
-                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }) }}>
-                                    <Icon icon="close" />
-                                </InputGroup.Button>}
+                                <Input />
                             </InputGroup>
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={10} style={{ textAlign: 'right', paddingRight: '10px' }}>
@@ -89,11 +136,11 @@ class UserSettingPage extends React.Component {
                         </FlexboxGrid.Item>
                         <FlexboxGrid.Item colspan={14} >
                             <InputGroup size='sm' style={{ width: '300px' }}>
-                                <Input id='projectName' onChange={(value) => this.setState({ showConfirm: true })} />
-                                {showConfirm && <InputGroup.Button>
+                                <Input onChange={(value) => this.setState({ showPasswordConfirm: true })} />
+                                {showPasswordConfirm && <InputGroup.Button>
                                     <Icon style={{ 'color': '#2F93FC' }} icon="check" />
                                 </InputGroup.Button>}
-                                {showConfirm && <InputGroup.Button onClick={() => { this.setState({ showConfirm: false }) }}>
+                                {showPasswordConfirm && <InputGroup.Button onClick={() => { this.setState({ showPasswordConfirm: false }) }}>
                                     <Icon icon="close" />
                                 </InputGroup.Button>}
                             </InputGroup>
