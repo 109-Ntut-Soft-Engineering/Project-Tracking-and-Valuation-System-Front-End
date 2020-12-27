@@ -1,6 +1,5 @@
 import React from 'react';
-import { Icon, IconButton, Table } from 'rsuite';
-import Badge from 'react-bootstrap/Badge'
+import { Icon, IconButton, Table} from 'rsuite';
 import '../../css/IssuePage.css'
 
 
@@ -27,7 +26,6 @@ const ExpandCell = ({ rowData, dataKey, expandedRowKeys, onChange, ...props }) =
     </Cell>
 );
 function CreateLabel(name, color) {
-    console.log('color', color)
     var label = <p className='label' style={{ backgroundColor: '#' + color.toString() }}>{name}</p>;
     return label;
 }
@@ -71,7 +69,7 @@ class ExpandedTable extends React.Component {
         comments.forEach(value => {
             data.push(this.CreateCommentDiv(value['body'], value['user'], value['time']));
         });
-        return (<div>{data}</div>)
+        return (<div style={{ margin:"8px" }}>{data}</div>)
     }
 
     handleExpanded(rowData) {
@@ -103,6 +101,7 @@ class ExpandedTable extends React.Component {
                 data={data}
                 rowKey={rowKey}
                 expandedRowKeys={expandedRowKeys}
+                rowExpandedHeight={this.props.height}
                 renderRowExpanded={rowData => {
                     return (
                         this.GetComments(rowData['comments'])
@@ -135,7 +134,5 @@ class ExpandedTable extends React.Component {
         )
     }
 }
-
-
 
 export default ExpandedTable
