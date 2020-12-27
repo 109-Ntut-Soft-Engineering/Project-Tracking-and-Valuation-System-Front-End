@@ -1,12 +1,9 @@
 import React from "react";
 import { Nav, Icon, Navbar } from 'rsuite';
 import { NavLink, Link } from "react-router-dom";
-import { getCurrentProject } from './CommonTool'
+
 class HeaderNavbar extends React.Component {
-
-
     render() {
-        var projName = getCurrentProject().name;
         return (
             <Navbar style={{ marginBottom: "30px", paddingLeft: "15%", paddingRight: "15%", display: "flex", justifyContent: "space-around" }}>
                 <Navbar.Body>
