@@ -1,12 +1,12 @@
 import React from "react";
-import HeaderNavbar from "./tool/Navbar";
+import HeaderNavbar from "../tool/Navbar";
 import { Container, Breadcrumb, Content } from 'rsuite';
 import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import black from '../img/black.svg';
-import MainHeader from './tool/MainHeader'
-import { requestProjectWeekCommit } from "./api/projectAPI";
-import { getCurrentProject } from './tool/CommonTool'
+import black from '../../img/black.svg';
+import MainHeader from '../tool/MainHeader'
+import { requestProjectWeekCommit } from "../api/projectAPI";
+import { getCurrentProject } from '../tool/CommonTool'
 function GetImageWidth(data) {
     if (data <= 5)
         return data * 9

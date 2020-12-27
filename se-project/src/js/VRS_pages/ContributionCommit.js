@@ -1,10 +1,10 @@
 import React from "react";
-import HeaderNavbar from "./tool/Navbar";
+import HeaderNavbar from "../tool/Navbar";
 import { Container, Breadcrumb } from 'rsuite';
 import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import black from '../img/black.png';
-import MainHeader from './tool/MainHeader'
+import MainHeader from '../tool/MainHeader'
 
 const data = [
     { user: "Tony", c1: 5, c2: 11, c3: 7, c4: 0, c5: 3, c6: 4, c7: 2 },

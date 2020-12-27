@@ -2,12 +2,13 @@ import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { Header, Alert, Container, Breadcrumb, Button, Modal, TagPicker, IconButton, Icon, Content, FlexboxGrid } from 'rsuite';
 import { Link } from "react-router-dom";
-import MainHeader from './tool/MainHeader'
-import HeaderNavbar from "./tool/Navbar";
-import '../css/Home&Repo.css';
-import { saveUserProjectRepos, getUserProjectRepos, removeUserProjectRepos, getUserRepos } from "./api/projectAPI";
-import { getCurrentProject } from './tool/CommonTool'
+import MainHeader from '../tool/MainHeader'
+import HeaderNavbar from "../tool/Navbar";
+import '../../css/Home&Repo.css';
+import { saveUserProjectRepos, getUserProjectRepos, removeUserProjectRepos, getUserRepos } from "../api/projectAPI";
+import { getCurrentProject } from '../tool/CommonTool'
 const chart_width = window.innerWidth * 0.5
+
 class Repository extends React.Component {
     constructor(props) {
         super(props);

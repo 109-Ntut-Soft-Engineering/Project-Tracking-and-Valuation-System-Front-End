@@ -1,11 +1,11 @@
 import React from 'react';
-import HeaderNavbar from "./tool/Navbar";
+import HeaderNavbar from "../tool/Navbar";
 import { Container, Breadcrumb, Content } from 'rsuite';
 import { Link } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
-import MainHeader from './tool/MainHeader'
-import { requestProjectCodeFreq } from './api/projectAPI';
-import { getCurrentProject } from './tool/CommonTool';
+import MainHeader from '../tool/MainHeader'
+import { requestProjectCodeFreq } from '../api/projectAPI';
+import { getCurrentProject } from '../tool/CommonTool';
 
 class CodeFrequency extends React.Component {
     constructor(props) {

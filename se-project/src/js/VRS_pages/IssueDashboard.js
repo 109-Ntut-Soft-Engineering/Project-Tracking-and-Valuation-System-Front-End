@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Breadcrumb } from 'rsuite';
-import HeaderNavbar from "./tool/Navbar";
+import HeaderNavbar from "../tool/Navbar";
 import { Link } from "react-router-dom";
-import ExpandedTable from './tool/ExpandedTable'
-import MainHeader from './tool/MainHeader'
-import { requestProjectIssueMessage } from './api/projectAPI';
+import ExpandedTable from '../tool/ExpandedTable'
+import MainHeader from '../tool/MainHeader'
+import { requestProjectIssueMessage } from '../api/projectAPI';
 import { Panel, Content } from 'rsuite';
-import { getCurrentProject } from './tool/CommonTool';
+import { getCurrentProject } from '../tool/CommonTool';
 
 const newDataList = []
 

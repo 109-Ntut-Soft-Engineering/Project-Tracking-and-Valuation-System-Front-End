@@ -3,12 +3,11 @@ import { Container, CheckboxGroup, Checkbox, Breadcrumb, Content, FlexboxGrid, P
 import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
-import HeaderNavbar from './tool/Navbar'
-import MainHeader from './tool/MainHeader'
-import { getCurrentProject } from './tool/CommonTool'
-import { requestTotalCommit } from './api/projectAPI'
-
-import '../css/commitPage.css'
+import HeaderNavbar from '../tool/Navbar'
+import MainHeader from '../tool/MainHeader'
+import { getCurrentProject } from '../tool/CommonTool'
+import { requestTotalCommit } from '../api/projectAPI'
+import '../../css/commitPage.css'
 
 class CommitPage extends React.Component {
     constructor(props) {
