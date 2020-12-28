@@ -40,7 +40,7 @@ class CodeFrequency extends React.Component {
             )
         }
     }
-    setCodeFrequency = (id) => {
+    setData = (id) => {
 
         return requestProjectCodeFreq(id)
             .then(res => res.data)
@@ -57,7 +57,7 @@ class CodeFrequency extends React.Component {
         }
         const { currentProject } = this.state
         if (this.state.data === undefined)
-            this.setCodeFrequency(currentProject.id)
+            this.setData(currentProject.id)
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />

@@ -4,7 +4,7 @@ import { APIKey } from '../tool/CommonTool'
 import qs from 'qs'
 const api = axios.create({
     baseURL: "http://localhost:5000",
-    // timeout: 600000
+    timeout: 600000
 })
 function getTokenData() {
     return JSON.parse(localStorage.getItem('token'))
