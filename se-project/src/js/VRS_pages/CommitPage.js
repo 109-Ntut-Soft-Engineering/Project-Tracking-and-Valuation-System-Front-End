@@ -44,8 +44,6 @@ class CommitPage extends React.Component {
     }
 
     clickMemberBox(value) {
-
-
         var newData = Object.assign({}, this.state.originData);
         var filteredMsgs = this.state.originData['commit_list'];
         filteredMsgs = filteredMsgs.filter(commit => value.includes(commit['author']));
