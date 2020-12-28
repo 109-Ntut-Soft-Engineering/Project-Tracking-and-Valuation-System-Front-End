@@ -4,6 +4,9 @@ export const requestProjectCodeFreq = (pid) => {
     return req.get(`project/${pid}/code_freq`)
 }
 
+export const requestProjectCompareCodeFreq = (pid1, pid2) =>{
+    return req.get(`project/compare/${pid1}/${pid2}/code_freq`)
+}
 export const requestUserProjects = () => {
     return req.get('projects')
 }
