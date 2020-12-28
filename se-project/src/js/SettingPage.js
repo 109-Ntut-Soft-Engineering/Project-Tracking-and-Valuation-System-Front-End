@@ -7,7 +7,7 @@ import {
 } from 'rsuite';
 import '../css/ProjectSetting.css';
 import MainHeader from './tool/MainHeader'
-import { getCurrentProject, setCurrentProject } from './tool/CommonTool'
+import { getCurrentProject, setCurrentProject, isLoggedIn } from './tool/CommonTool'
 import { updateProject, getProjectSetting, delProject } from './api/projectAPI';
 
 
@@ -64,6 +64,7 @@ class SettingPage extends React.Component {
             })
     }
     removeCollaborator(tag) {
+        console.log(tag)
         const data = {
             collaborator: tag,
             collabAction: 'remove'
@@ -110,21 +111,29 @@ class SettingPage extends React.Component {
             })
     }
     componentDidMount() {
-        getProjectSetting(this.state.currentProject.id)
-            .then(response => {
-                this.setState({
-                    projectName: this.state.currentProject.name,
-                    tags: response.data.collaborator
-                });
-            })
-            .catch(err => {
-                console.log(err.response)
-            })
+        if (isLoggedIn() && this.state.currentProject !== null) {
+            getProjectSetting(this.state.currentProject.id)
+                .then(response => {
+                    this.setState({
+                        projectName: this.state.currentProject.name,
+                        tags: response.data.collaborator
+                    });
+                })
+                .catch(err => {
+                    console.log(err.response)
+                })
+
+        }
 
     }
 
 
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        } else if (this.state.currentProject === null) {
+            return <Redirect to="/projects" />;
+        }
         const { currentProject, tags, searchEmail, showConfirm, showAdd, showConfirmDel } = this.state
         return (
 

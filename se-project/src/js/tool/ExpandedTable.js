@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, IconButton, Table} from 'rsuite';
+import { Icon, IconButton, Table } from 'rsuite';
 import '../../css/IssuePage.css'
 
 
@@ -69,7 +69,7 @@ class ExpandedTable extends React.Component {
         comments.forEach(value => {
             data.push(this.CreateCommentDiv(value['body'], value['user'], value['time']));
         });
-        return (<div style={{ margin:"8px" }}>{data}</div>)
+        return (<div style={{ margin: "8px" }}>{data}</div>)
     }
 
     handleExpanded(rowData) {
@@ -97,7 +97,7 @@ class ExpandedTable extends React.Component {
         const { expandedRowKeys, data } = this.state;
         return (
             <Table
-                height={this.props.height}
+                // height={this.props.height}
                 data={data}
                 rowKey={rowKey}
                 expandedRowKeys={expandedRowKeys}

@@ -1,12 +1,12 @@
 import React from "react";
 import HeaderNavbar from "../tool/Navbar";
 import { Container, Breadcrumb, Content } from 'rsuite';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import black from '../../img/black.svg';
 import MainHeader from '../tool/MainHeader'
 import { requestProjectWeekCommit } from "../api/projectAPI";
-import { getCurrentProject } from '../tool/CommonTool'
+import { getCurrentProject, isLoggedIn } from '../tool/CommonTool'
 function GetImageWidth(data) {
     if (data <= 5)
         return data * 9
@@ -38,7 +38,7 @@ class WeekCommit extends React.Component {
             return (
                 <div>
                     <h5 style={{ marginTop: "25px", marginBottom: "25px" }}>{this.state.data.start_time} To {this.state.data.end_time}</h5>
-                    <Table data={this.state.data.commit_info} autoHeight width={"100%"}>
+                    <Table data={this.state.data.commit_info} autoHeight >
                         <Column align="center" fixed>
                             <HeaderCell></HeaderCell>
                             <Cell dataKey="week_day" />
@@ -94,6 +94,11 @@ class WeekCommit extends React.Component {
     }
 
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        } else if (this.state.currentProject === null) {
+            return <Redirect to="/projects" />;
+        }
         const { currentProject } = this.state
         if (this.state.data === undefined)
             this.setWeekCommitData(currentProject.id)

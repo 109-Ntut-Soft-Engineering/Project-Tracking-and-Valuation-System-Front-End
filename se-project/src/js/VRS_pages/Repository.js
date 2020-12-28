@@ -1,12 +1,12 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { Header, Alert, Container, Breadcrumb, Button, Modal, TagPicker, IconButton, Icon, Content, FlexboxGrid } from 'rsuite';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MainHeader from '../tool/MainHeader'
 import HeaderNavbar from "../tool/Navbar";
 import '../../css/Home&Repo.css';
 import { saveUserProjectRepos, getUserProjectRepos, removeUserProjectRepos, getUserRepos } from "../api/projectAPI";
-import { getCurrentProject } from '../tool/CommonTool'
+import { getCurrentProject, isLoggedIn } from '../tool/CommonTool'
 const chart_width = window.innerWidth * 0.5
 
 class Repository extends React.Component {
@@ -109,10 +109,17 @@ class Repository extends React.Component {
     componentDidMount() {
         // const height = document.getElementById('reposTable').clientHeight * 0.9;
         // this.setState({ tableHeight: height })
-        this.getProjectRepos()
+        if (isLoggedIn() && this.state.currentProject !== null) {
+            this.getProjectRepos()
+        }
     }
 
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        } else if (this.state.currentProject === null) {
+            return <Redirect to="/projects" />;
+        }
         var projName = this.state.currentProject.name;
         const { backdrop, show, data, loading, delRepo, selectedRepos, menuLoading, tableHeight } = this.state;
         return (
@@ -222,6 +229,7 @@ class Repository extends React.Component {
                 </Modal>
             </Container >
         )
+
     }
 }
 export default Repository;

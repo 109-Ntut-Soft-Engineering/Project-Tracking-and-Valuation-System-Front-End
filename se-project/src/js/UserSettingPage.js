@@ -1,8 +1,9 @@
 import React from 'react';
-import { Container, Divider, FlexboxGrid, Alert, Content, InputGroup, Input, Icon, Button } from 'rsuite';
+import { Container, Divider, FlexboxGrid, Alert, Content, InputGroup, Input, Icon, Button, IconButton } from 'rsuite';
 import { getUserInfo, updateUserInfo } from './api/userAPI';
 import MainHeader from './tool/MainHeader'
-
+import { Link, Redirect } from "react-router-dom";
+import { setCurrentUser, isLoggedIn } from './tool/CommonTool'
 function oAuth() {
 
     const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
@@ -39,10 +40,13 @@ class UserSettingPage extends React.Component {
     }
 
     componentDidMount() {
-        getUserInfo()
-            .then(response => {
-                this.setState({ userInfo: this.deepCopy(response.data), userSetting: this.deepCopy(response.data) })
-            })
+        if (isLoggedIn()) {
+            getUserInfo()
+                .then(response => {
+                    this.setState({ userInfo: this.deepCopy(response.data), userSetting: this.deepCopy(response.data) })
+                })
+        }
+
     }
     updateInfo() {
         updateUserInfo(this.state.userSetting)
@@ -53,6 +57,7 @@ class UserSettingPage extends React.Component {
                     showEmailConfirm: false,
                     userInfo: this.deepCopy(this.state.userSetting)
                 })
+                setCurrentUser({ user: this.state.userSetting.name })
 
             })
             .catch(err => {
@@ -63,6 +68,9 @@ class UserSettingPage extends React.Component {
     }
 
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        }
         var { showUserNameConfirm, showEmailConfirm, showPasswordConfirm, userSetting, userInfo } = this.state
         return (
 
@@ -71,7 +79,11 @@ class UserSettingPage extends React.Component {
 
 
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
-                    <div style={{ marginBottom: 20 }}>
+                    <div style={{ marginBottom: 20, display: 'inline' }}>
+                        <Link to={"/projects"}>
+                            <IconButton icon={<Icon icon="chevron-left" />} size="lg" />
+                        </Link>
+
                         <h1>設定</h1>
                     </div>
                     <FlexboxGrid >

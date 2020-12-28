@@ -1,11 +1,11 @@
 import React from 'react';
 import HeaderNavbar from "../tool/Navbar";
 import { Container, Breadcrumb, Content } from 'rsuite';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectCodeFreq } from '../api/projectAPI';
-import { getCurrentProject } from '../tool/CommonTool';
+import { getCurrentProject, isLoggedIn } from '../tool/CommonTool';
 
 class CodeFrequency extends React.Component {
     constructor(props) {
@@ -16,8 +16,8 @@ class CodeFrequency extends React.Component {
         }
     }
     createCodeFreqChart = () => {
-        const chartWidth = window.innerWidth * 0.7
-        const chartHeight = window.innerHeight * 0.6
+        const chartWidth = window.innerWidth * 0.6
+        const chartHeight = window.innerHeight * 0.5
         if (this.state.data === undefined) {
             return (<div>loading....</div>)
         }
@@ -50,6 +50,11 @@ class CodeFrequency extends React.Component {
             })
     }
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        } else if (this.state.currentProject === null) {
+            return <Redirect to="/projects" />;
+        }
         const { currentProject } = this.state
         if (this.state.data === undefined)
             this.setCodeFrequency(currentProject.id)

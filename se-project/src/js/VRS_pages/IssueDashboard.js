@@ -1,12 +1,12 @@
 import React from 'react';
 import { Container, Breadcrumb } from 'rsuite';
 import HeaderNavbar from "../tool/Navbar";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import ExpandedTable from '../tool/ExpandedTable'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectIssueMessage } from '../api/projectAPI';
 import { Panel, Content } from 'rsuite';
-import { getCurrentProject } from '../tool/CommonTool';
+import { getCurrentProject, isLoggedIn } from '../tool/CommonTool';
 
 const newDataList = []
 
@@ -23,7 +23,7 @@ class IssueDashboard extends React.Component {
         return (
             <Panel header={name} collapsible bordered>
                 <div style={{ marginTop: "30px" }}>
-                    <ExpandedTable data={issue} height={window.innerHeight * 0.65}></ExpandedTable>
+                    <ExpandedTable data={issue} autoHeight></ExpandedTable>
                 </div>
             </Panel>
         )
@@ -75,6 +75,11 @@ class IssueDashboard extends React.Component {
     }
 
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        } else if (this.state.currentProject === null) {
+            return <Redirect to="/projects" />;
+        }
         const { currentProject } = this.state
         if (this.state.data === undefined) {
             this.setIssueMessage(currentProject.id)

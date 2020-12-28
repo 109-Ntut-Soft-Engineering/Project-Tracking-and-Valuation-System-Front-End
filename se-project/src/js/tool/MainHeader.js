@@ -1,27 +1,31 @@
 import React from "react";
 import { Header, Dropdown, Icon, Avatar } from 'rsuite';
 import { Link } from "react-router-dom";
-
-// import { getUserInfo } from '../api/userAPI';
+import { getCurrentUser, setCurrentUser, clearCurrentUser } from '../tool/CommonTool'
+import { getUserInfo } from '../api/userAPI';
 
 class MainHeader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            userName: "寫到一半"
+            userName: ''
         };
 
         // this.getUserName();
     }
+    componentDidMount() {
+        if (getCurrentUser() === null) {
+            getUserInfo()
+                .then(result => {
+                    console.log(result.data.name);
+                    setCurrentUser({ user: result.data.name })
+                    this.setState({ userName: result.data.name });
+                })
+        } else {
+            this.setState({ userName: getCurrentUser().user });
+        }
+    }
 
-    // getUserName(){
-    //     getUserInfo()
-    //         .then(result => {
-    //             console.log(result.data.name);
-    //             this.setState({ userName: result.data.name});
-    //             return result.data.name;
-    //         })
-    // }
     render() {
         const { userName } = this.state;
         var userNameText = userName + " 用戶，您好";
@@ -41,7 +45,7 @@ class MainHeader extends React.Component {
                             <Dropdown.Item>Setting</Dropdown.Item>
                         </Link>
                         <Link style={{ textDecoration: "none" }} to="/">
-                            <Dropdown.Item>Log Out</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { }}>Log Out</Dropdown.Item>
                         </Link>
                     </Dropdown>
 

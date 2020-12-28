@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Container, CheckboxGroup, Checkbox, Breadcrumb, Content, FlexboxGrid, Panel } from 'rsuite';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
 import HeaderNavbar from '../tool/Navbar'
 import MainHeader from '../tool/MainHeader'
-import { getCurrentProject } from '../tool/CommonTool'
+import { getCurrentProject, isLoggedIn } from '../tool/CommonTool'
 import { requestTotalCommit } from '../api/projectAPI'
 import '../../css/commitPage.css'
 
@@ -24,10 +24,11 @@ class CommitPage extends React.Component {
         this.createTotalCommit = this.createTotalCommit.bind(this);
     }
     componentDidMount() {
-        const height = document.getElementById('chart').clientHeight * 0.4;
-        const width = document.getElementById('chart').clientWidth * 0.6;
-        this.setState({ height: height, width: width })
-
+        if (isLoggedIn() && this.state.currentProject !== null) {
+            const height = document.getElementById('chart').clientHeight * 0.4;
+            const width = document.getElementById('chart').clientWidth * 0.6;
+            this.setState({ height: height, width: width })
+        }
     }
     setTotalCommit = (id) => {
         return requestTotalCommit(id)
@@ -114,6 +115,11 @@ class CommitPage extends React.Component {
     }
 
     render() {
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        } else if (this.state.currentProject === null) {
+            return <Redirect to="/projects" />;
+        }
         const { currentProject } = this.state;
         if (this.state.data === undefined)
             this.setTotalCommit(currentProject.id)

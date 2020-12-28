@@ -1,9 +1,9 @@
 import React from "react";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { Container, Button, Modal, Input, Breadcrumb, Panel, Alert, Content, Checkbox} from 'rsuite';
-import { Link } from "react-router-dom";
+import { Container, Button, Modal, Input, Breadcrumb, Panel, Alert, Content, Checkbox } from 'rsuite';
+import { Link, Redirect } from "react-router-dom";
 import MainHeader from './tool/MainHeader'
-import { setCurrentProject , setCurrentCompareProjects} from './tool/CommonTool'
+import { setCurrentProject, setCurrentCompareProjects, isLoggedIn } from './tool/CommonTool'
 import '../css/Home&Repo.css';
 import { requestUserProjects, addNewProject } from './api/projectAPI';
 
@@ -11,11 +11,11 @@ const chart_width = window.innerWidth * 0.55
 
 const CheckCell = ({ rowData, onChange, checkedKeys, ...props }) => (
     <Cell {...props} style={{ padding: 0 }}>
-      <div style={{ lineHeight: '46px' }}>
-        <Checkbox value={rowData} inline onChange={onChange} checked={checkedKeys.some(item => item === rowData)}/>
-      </div>
+        <div style={{ lineHeight: '46px' }}>
+            <Checkbox value={rowData} inline onChange={onChange} checked={checkedKeys.some(item => item === rowData)} />
+        </div>
     </Cell>
-  );
+);
 
 class Home extends React.Component {
     constructor(props) {
@@ -38,13 +38,16 @@ class Home extends React.Component {
 
     //讀取使用者的projects
     componentDidMount() {
-        const height = document.getElementById('projectTable').clientHeight * 0.6;
+        if (isLoggedIn()) {
+            const height = document.getElementById('projectTable').clientHeight * 0.6;
 
-        requestUserProjects()
-            .then(result => {
-                const projects = result.data.projects
-                this.setState({ data: projects, loading: false, tableHeight: height })
-            })
+            requestUserProjects()
+                .then(result => {
+                    const projects = result.data.projects
+                    this.setState({ data: projects, loading: false, tableHeight: height })
+                })
+        }
+
     }
 
     //關閉彈出對話窗
@@ -57,11 +60,11 @@ class Home extends React.Component {
         this.setState({ show: true });
     }
 
-     //顯示Project CheckBox
+    //顯示Project CheckBox
     changeCanCompareStatus() {
         var comparValue = !this.state.canCompareProject;
         this.setState({ canCompareProject: comparValue });
-        if(this.state.checkedKeys.length!=0) this.setState({ checkedKeys: []});
+        if (this.state.checkedKeys.length != 0) this.setState({ checkedKeys: [] });
     }
 
     //建立新的project
@@ -91,26 +94,26 @@ class Home extends React.Component {
         const nextCheckedKeys = checked
             ? [...checkedKeys, value]
             : checkedKeys.filter(item => item !== value);
-    
-        this.setState({checkedKeys: nextCheckedKeys});
+
+        this.setState({ checkedKeys: nextCheckedKeys });
         console.log(nextCheckedKeys);
     }
 
     //projectsTable元件
     getProjectTable() {
-        const {data, checkedKeys, canCompareProject} = this.state;
+        const { data, checkedKeys, canCompareProject } = this.state;
         var checkColumnWidth;
 
-        if(canCompareProject == true) checkColumnWidth = 50;
+        if (canCompareProject == true) checkColumnWidth = 50;
         else checkColumnWidth = 0;
 
         return (
             <div className="projectsTable">
                 <Table loading={this.state.loading} bordered={true} width={chart_width} rowHeight={60} height={this.state.tableHeight} data={data}>
                     <Column width={checkColumnWidth} align="center">
-                    <HeaderCell className="haederCell"></HeaderCell>
-                        <CheckCell checkedKeys={checkedKeys} onChange={this.handleCheck}/>
-                     </Column>
+                        <HeaderCell className="haederCell"></HeaderCell>
+                        <CheckCell checkedKeys={checkedKeys} onChange={this.handleCheck} />
+                    </Column>
                     <Column width={chart_width * 0.3} verticalAlign="middle" align="center">
                         <HeaderCell className="haederCell">Project Name</HeaderCell>
                         <Cell>
@@ -144,39 +147,39 @@ class Home extends React.Component {
 
     //取得要顯示的buttons
     getButtonGroup() {
-        const {canCompareProject, checkedKeys} = this.state;
-        
-        if(canCompareProject == false){
+        const { canCompareProject, checkedKeys } = this.state;
+
+        if (canCompareProject == false) {
             return (
                 <div>
                     <Button style={{ float: 'right' }} color="blue" onClick={this.open}>新增專案</Button>
-                    <Button style={{ float: 'right', marginRight:'20px'}} color="green" onClick={this.changeCanCompareStatus}>比較不同專案</Button>
+                    <Button style={{ float: 'right', marginRight: '20px' }} color="green" onClick={this.changeCanCompareStatus}>比較不同專案</Button>
                 </div>
             )
-        }else{
+        } else {
             var btDisable = true;
             var reminderText;
             var compareProjects;
-            if(checkedKeys.length == 2){
+            if (checkedKeys.length == 2) {
                 btDisable = false;
                 reminderText = "提醒：您可以開始進行專案比較";
                 compareProjects = {
-                    id1 : checkedKeys[0].id,
-                    name1 : checkedKeys[0].name,
-                    id2 : checkedKeys[1].id,
-                    name2 : checkedKeys[1].name
+                    id1: checkedKeys[0].id,
+                    name1: checkedKeys[0].name,
+                    id2: checkedKeys[1].id,
+                    name2: checkedKeys[1].name
                 };
-            }else{
+            } else {
                 btDisable = true;
                 reminderText = "提醒：請選擇2個要比較的專案";
-            } 
+            }
 
             return (
                 <div>
-                    <h5 style={{float: 'left', marginLeft:"270px", color:"#8E8E93"}}>{reminderText}</h5>
-                    <Button style={{ float: 'right' ,marginRight:"30px"}} color="red" onClick={this.changeCanCompareStatus}>取消</Button>
+                    <h5 style={{ float: 'left', marginLeft: "270px", color: "#8E8E93" }}>{reminderText}</h5>
+                    <Button style={{ float: 'right', marginRight: "30px" }} color="red" onClick={this.changeCanCompareStatus}>取消</Button>
                     <Link to={"/projectsCompare/codeBase"} className="cell" onClick={() => setCurrentCompareProjects(compareProjects)}>
-                        <Button style={{ float: 'right', marginRight:'20px'}} disabled={btDisable} color="green">開始比較</Button>
+                        <Button style={{ float: 'right', marginRight: '20px' }} disabled={btDisable} color="green">開始比較</Button>
                     </Link>
                 </div>
             )
@@ -185,8 +188,11 @@ class Home extends React.Component {
 
     //畫面渲染
     render() {
-        const { backdrop, show} = this.state;
-        
+        if (!isLoggedIn()) {
+            return <Redirect to="/" />;
+        }
+        const { backdrop, show } = this.state;
+
         return (
             <Container id='projectTable' style={{ backgroundColor: "white", height: "100%" }}>
                 <MainHeader />
@@ -202,7 +208,7 @@ class Home extends React.Component {
                 <Content>
                     {this.getProjectTable()}
                 </Content>
-                
+
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="xs">
                     <Modal.Header>
                         <Modal.Title>新增 Project</Modal.Title>
