@@ -1,6 +1,6 @@
 import React from 'react';
 import HeaderNavbar from "../tool/Navbar";
-import { Container, Breadcrumb, Content , Button, SelectPicker, Icon} from 'rsuite';
+import { Container, Breadcrumb, Content , SelectPicker, Icon, Tooltip, CartesianGrid} from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
 import MainHeader from '../tool/MainHeader'
@@ -38,6 +38,8 @@ class CodeFrequency extends React.Component {
         return (
             <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "100px" }}>
                 <AreaChart width={chartWidth} height={chartHeight} data={data}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <Tooltip />
                     <defs>
                         <linearGradient id="colorCode" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
