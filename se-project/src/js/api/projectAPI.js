@@ -53,6 +53,10 @@ export const requestProjectWeekCommit = (pid) => {
     return req.get(`project/${pid}/week_commit`)
 }
 
+export const requestProjectCompareWeekCommit = (pid1, pid2) =>{
+    return req.get(`project/compare/${pid1}/${pid2}/week_commit`)
+}
+
 export const requestProjectIssueMessage = (pid) => {
     return req.get(`project/${pid}/issue`)
 }

@@ -14,7 +14,7 @@ class HeaderNavbarCompare extends React.Component {
                         <Link to={"/projectsCompare/commit"}>
                             <Nav.Item icon={<Icon icon="attribution" />} style={{marginLeft:"25px", marginRight:"25px"}}>Total Commit</Nav.Item>
                         </Link>
-                        <Link to={"/projectsCompare/codeBase"}>
+                        <Link to={"/projectsCompare/weekCommit"}>
                             <Nav.Item icon={<Icon icon="circle" />} style={{marginLeft:"25px"}}>Week Commit</Nav.Item>
                         </Link>
                     </Nav>

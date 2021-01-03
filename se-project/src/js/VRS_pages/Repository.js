@@ -107,8 +107,6 @@ class Repository extends React.Component {
 
 
     componentDidMount() {
-        // const height = document.getElementById('reposTable').clientHeight * 0.9;
-        // this.setState({ tableHeight: height })
         if (isLoggedIn() && this.state.currentProject !== null) {
             this.getProjectRepos()
         }
