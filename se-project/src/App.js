@@ -15,6 +15,7 @@ import WeekCommit from "./js/VRS_pages/WeekCommit";
 
 
 import CodeFrequencyCompare from './js/VRS_compare_pages/CodeFrequencyCompare'
+import CommitCompare from './js/VRS_compare_pages/CommitCompare'
 import WeekCommitCompare from './js/VRS_compare_pages/WeekCommitCompare'
 
 class App extends React.Component {
@@ -36,6 +37,7 @@ class App extends React.Component {
                     <Route path='/user/setting' component={UserSettingPage} />
 
                     <Route path='/projectsCompare/codeBase' component={CodeFrequencyCompare} />
+                    <Route path='/projectsCompare/commit' component={CommitCompare} />
                     <Route path='/projectsCompare/weekCommit' component={WeekCommitCompare} />
                 </div>
             </BrowserRouter>

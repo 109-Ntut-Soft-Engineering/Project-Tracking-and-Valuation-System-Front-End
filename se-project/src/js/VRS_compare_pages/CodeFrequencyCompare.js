@@ -37,7 +37,7 @@ class CodeFrequencyCompare extends Component{
             )
         }else {
             return (
-                <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "100px" }}>
+                <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "40px" }}>
                     <AreaChart width={chartWidth} height={chartHeight} data={data}>
                          <CartesianGrid strokeDasharray="3 3" />
                          <Tooltip />
@@ -148,7 +148,7 @@ class CodeFrequencyCompare extends Component{
         if (this.state.data === undefined)
             this.setData(currentCompareProjects.id1, currentCompareProjects.id2)
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", minHeight:"100%", backgroundColor: "white" }}>
                 <MainHeader />
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
                     <div style={{ margin: 20 }}>

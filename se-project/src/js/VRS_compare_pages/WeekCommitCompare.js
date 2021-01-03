@@ -43,7 +43,7 @@ class WeekCommitCompare extends Component{
         }
         else {
             return (
-                <div>
+                <div style={{marginBottom:"30px"}}>
                     {this.CreateWeekCommitTable(0, this.state.currentCompareProjects.name1)}
                     {this.CreateWeekCommitTable(1, this.state.currentCompareProjects.name2)}
                 </div>
@@ -73,9 +73,9 @@ class WeekCommitCompare extends Component{
     CreateWeekCommitTable = (index, name) => {
         var table_list = []
         var info = this.state.data.commit_info[index]
-        var nameText = "Project：" + name;
+        var nameText = "Project "+ (index+1) + "：" + name;
         table_list.push(
-            <h6 style={{ marginTop: "25px", marginBottom: "25px" }}>{nameText}</h6>
+            <h4 style={{ marginTop: "25px", marginBottom: "25px" }}>{nameText}</h4>
         )
         table_list.push(
             <Table data={info.commit} autoHeight >
@@ -120,7 +120,7 @@ class WeekCommitCompare extends Component{
         if (this.state.data === undefined)
             this.setData(currentCompareProjects.id1, currentCompareProjects.id2)
         return(
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto%", minHeight:"100%", backgroundColor: "white" }}>
                 <MainHeader />
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
                     <div style={{ margin: 20 }}>

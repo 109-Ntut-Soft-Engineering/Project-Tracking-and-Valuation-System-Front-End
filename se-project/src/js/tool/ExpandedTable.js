@@ -98,6 +98,7 @@ class ExpandedTable extends React.Component {
         return (
             <Table
                 // height={this.props.height}
+                width={800}
                 data={data}
                 rowKey={rowKey}
                 expandedRowKeys={expandedRowKeys}

@@ -21,9 +21,9 @@ class IssueDashboard extends React.Component {
     createIssueMessagesTable = (name, issue) => {
         console.log(issue)
         return (
-            <Panel header={name} collapsible bordered>
-                <div style={{ marginTop: "30px" }}>
-                    <ExpandedTable data={issue} autoHeight></ExpandedTable>
+            <Panel header={name} collapsible bordered style={{marginBottom:"30px"}}>
+                <div style={{ marginTop: "30px"}}>
+                    <ExpandedTable data={issue} autoHeight ></ExpandedTable>
                 </div>
             </Panel>
         )
@@ -90,7 +90,7 @@ class IssueDashboard extends React.Component {
             this.setIssueMessage(currentProject.id)
         }
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", minHeight:"100%", backgroundColor: "white" }}>
                 <MainHeader />
                 <Content style={{ paddingLeft: '20%', paddingRight: '20%' }}>
                     <div style={{ margin: 20 }}>

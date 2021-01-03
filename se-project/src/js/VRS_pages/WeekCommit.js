@@ -108,7 +108,7 @@ class WeekCommit extends React.Component {
         if (this.state.data === undefined)
             this.setWeekCommitData(currentProject.id)
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "130%", backgroundColor: "white" }}>
                 <MainHeader />
 
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>

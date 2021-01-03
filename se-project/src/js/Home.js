@@ -194,7 +194,7 @@ class Home extends React.Component {
         const { backdrop, show } = this.state;
 
         return (
-            <Container id='projectTable' style={{ backgroundColor: "white", height: "100%" }}>
+            <Container id='projectTable' style={{ backgroundColor: "white", minHeight: "100%", height:"auto"}}>
                 <MainHeader />
 
                 <div style={{ margin: 20, paddingLeft: "20%", paddingRight: "20%" }}>

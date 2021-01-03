@@ -30,14 +30,6 @@ class SettingPage extends React.Component {
         Alert.config({ top: 100 });
 
     }
-    // randomColor() {
-    //     const color = "hsl(" + 360 * Math.random() + ',' +
-
-    //         (90 + 70 * Math.random()) + '%,' +
-
-    //         (30 + 10 * Math.random()) + '%)';
-    //     return color
-    // }
 
     addCollaborator() {
         const data = {
