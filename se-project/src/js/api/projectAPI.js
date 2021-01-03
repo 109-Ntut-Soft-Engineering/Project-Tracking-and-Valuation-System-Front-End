@@ -15,6 +15,10 @@ export const requestTotalCommit = (pid) => {
     return req.get(`project/${pid}/commit`)
 }
 
+export const requestCompareTotalCommit = (pid1, pid2) => {
+    return req.get(`project/compare/${pid1}/${pid2}/commit`)
+}
+
 export const addNewProject = (data) => {
     return req.post(`projects?name=` + data.name)
 }

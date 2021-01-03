@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Container, CheckboxGroup, Checkbox, Breadcrumb, Content, FlexboxGrid, Panel } from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
-import { AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
+import { AreaChart, XAxis, YAxis, CartesianGrid, Area, Line } from 'recharts';
 import HeaderNavbar from '../tool/Navbar'
 import MainHeader from '../tool/MainHeader'
 import { getCurrentProject, isLoggedIn } from '../tool/CommonTool'
@@ -14,8 +14,8 @@ class CommitPage extends React.Component {
         super(props);
         this.state = {
             currentProject: getCurrentProject(),
-            originData: undefined,
-            data: undefined,
+            oriData: undefined,
+            curData: undefined,
             members: undefined,
             height: 300,
             width: 200
@@ -35,8 +35,8 @@ class CommitPage extends React.Component {
             .then(res => res.data)
             .then(data => {
                 this.setState({
-                    originData: data.commits,
-                    data: data.commits,
+                    oriData: data.commits,
+                    curData: data.commits,
                     members: data.commits['member']
                 })
                 return data.commits
@@ -44,26 +44,85 @@ class CommitPage extends React.Component {
     }
 
     clickMemberBox(value) {
-
-
-        var newData = Object.assign({}, this.state.originData);
-        var filteredMsgs = this.state.originData['commit_list'];
+        var newData = Object.assign({}, this.state.oriData);
+        var filteredMsgs = this.state.oriData['commit_list'];
         filteredMsgs = filteredMsgs.filter(commit => value.includes(commit['author']));
         newData['commit_list'] = filteredMsgs;
         console.log(newData)
         this.setState({
-            data: newData
+            curData: newData
         })
     }
 
+    makeCommitTimes(data) {
+        if (data.length == 0)
+            return [];
+        var cmtTimes = {
+            'times': 1, 
+            'time': data[0]['time']
+        };
+        var cmtTimesList = [cmtTimes];
+        for (var i = 1; i < data.length; i++) {
+            var lstIdx = cmtTimesList.length - 1;
+            if (cmtTimesList[lstIdx]['time'] == data[i]['time']) {
+                cmtTimesList[lstIdx]['times'] += 1;
+            }
+            else {
+                var cmtTimes = {
+                    'times': 1, 
+                    'time': data[i]['time']
+                };
+                var startDate = new Date(
+                    cmtTimesList[lstIdx]['time'].split('/')[0], 
+                    cmtTimesList[lstIdx]['time'].split('/')[1], 
+                    cmtTimesList[lstIdx]['time'].split('/')[2]
+                );
+                var endDate = new Date(
+                    cmtTimes['time'].split('/')[0], 
+                    cmtTimes['time'].split('/')[1], 
+                    cmtTimes['time'].split('/')[2]
+                );
+                var intervalDates = this.getIntervalCmtTimes(startDate, endDate);
+                cmtTimesList.push.apply(cmtTimesList, intervalDates);
+                cmtTimesList.push(cmtTimes);
+            }
+        }
+        console.log(data);
+        console.log(cmtTimesList);
+        return cmtTimesList;
+    }
+
+    getIntervalCmtTimes(startDate, endDate) {
+        var dayMilliSeconds = 1000*60*60*24;
+        var startDateMs = startDate.getTime();
+        var endDateMs = endDate.getTime();
+        var intervalDates = [];
+        for (var curDateMs = startDateMs + dayMilliSeconds; 
+            curDateMs < endDateMs; curDateMs += dayMilliSeconds) {
+            var date = new Date(curDateMs);
+            var dateString = date.getFullYear().toString() + '/';
+            if (date.getMonth() < 10)
+                dateString += '0';
+            dateString += date.getMonth().toString() + '/' + 
+                        date.getDate().toString();
+            intervalDates.push({
+                'times': 0, 
+                'time': dateString
+            });
+        }
+        return intervalDates;
+    }
+
     createTotalCommit = () => {
-        const { width, height } = this.state
-        if (this.state.data === undefined) {
+        const { width, height } = this.state;
+        if (this.state.curData === undefined) {
             return (<div>loading...</div>)
         }
 
-        const members = this.state.data['member']
-        const data = this.state.data['commit_list']
+        const members = this.state.curData['member'];
+        const curData = this.state.curData['commit_list'];
+        const cmtTimes = this.makeCommitTimes(curData);
+        console.log(cmtTimes);
 
         return (
             <FlexboxGrid justify="space-between" align="top" style={{ marginTop: '-20px' }}>
@@ -80,7 +139,7 @@ class CommitPage extends React.Component {
                 <FlexboxGrid.Item colspan={20}>
 
                     <h6>Issue</h6>
-                    <Table data={data}>
+                    <Table data={curData}>
                         <Column >
                             <HeaderCell>Name</HeaderCell>
                             <Cell dataKey="author" />
@@ -102,11 +161,11 @@ class CommitPage extends React.Component {
                 </FlexboxGrid.Item >
 
                 <FlexboxGrid.Item colspan={24}>
-                    <AreaChart width={width} height={height} data={data}>
+                    <AreaChart width={width} height={height} data={cmtTimes}>
                         <CartesianGrid stroke="#ccc" strokeDasharray="3 3" fill="#ECF5FF" />
                         <XAxis dataKey="time" stroke="#000000" />
-                        <YAxis dataKey="lines" stroke="#000000" />
-                        <Area type="monotone" dataKey="lines" stroke="#82ca9d" fill="#82ca9d" />
+                        <YAxis dataKey="times" stroke="#000000" />
+                        <Area type="monotone" dataKey="times" stroke="#82ca9d" fill="#82ca9d" />
                     </AreaChart>
                 </FlexboxGrid.Item>
 
