@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import HeaderNavbarCompare from "../tool/NavbarCompare";
-import { Container, Breadcrumb, Content } from 'rsuite';
+import { Container, Breadcrumb, Content, Icon} from 'rsuite';
 import { Link } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import MainHeader from '../tool/MainHeader'
@@ -34,7 +34,12 @@ class WeekCommitCompare extends Component{
         const chartWidth = window.innerWidth * 0.7
         const chartHeight = window.innerHeight * 0.6
         if (this.state.data === undefined) {
-            return (<div>loading....</div>)
+            return (
+                <div style={{display:"flex",justifyContent:"center",marginTop:"100px"}}>
+                    <Icon icon="spinner" spin size="lg"/>
+                    <p style={{marginLeft:"10px"}}>loading.... </p>
+                </div>
+            )
         }
         else {
             return (
@@ -68,8 +73,9 @@ class WeekCommitCompare extends Component{
     CreateWeekCommitTable = (index, name) => {
         var table_list = []
         var info = this.state.data.commit_info[index]
+        var nameText = "Project：" + name;
         table_list.push(
-            <h6 style={{ marginTop: "25px", marginBottom: "25px" }}>{name}</h6>
+            <h6 style={{ marginTop: "25px", marginBottom: "25px" }}>{nameText}</h6>
         )
         table_list.push(
             <Table data={info.commit} autoHeight >
@@ -110,7 +116,7 @@ class WeekCommitCompare extends Component{
     render() {
         const { currentCompareProjects } = this.state
         var projectsNameText = currentCompareProjects.name1 + ' － ' + currentCompareProjects.name2;
-        // 這裡只有先拿其中一個專案的id，還可以拿id2
+        
         if (this.state.data === undefined)
             this.setData(currentCompareProjects.id1, currentCompareProjects.id2)
         return(

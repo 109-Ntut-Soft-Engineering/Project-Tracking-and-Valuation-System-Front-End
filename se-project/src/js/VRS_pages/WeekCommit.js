@@ -1,6 +1,6 @@
 import React from "react";
 import HeaderNavbar from "../tool/Navbar";
-import { Container, Breadcrumb, Content } from 'rsuite';
+import { Container, Breadcrumb, Content, Icon} from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import black from '../../img/black.svg';
@@ -31,7 +31,12 @@ class WeekCommit extends React.Component {
 
     createWeekCommitChart = () => {
         if (this.state.data === undefined) {
-            return (<div>loading....</div>)
+            return (
+                <div style={{display:"flex",justifyContent:"center",marginTop:"100px"}}>
+                    <Icon icon="spinner" spin size="lg"/>
+                    <p style={{marginLeft:"10px"}}>loading.... </p>
+                </div>
+            )
         }
         else {
             console.log(this.state.data)

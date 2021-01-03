@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Breadcrumb } from 'rsuite';
+import { Container, Breadcrumb, Icon} from 'rsuite';
 import HeaderNavbar from "../tool/Navbar";
 import { Link, Redirect } from "react-router-dom";
 import ExpandedTable from '../tool/ExpandedTable'
@@ -30,7 +30,12 @@ class IssueDashboard extends React.Component {
     }
     createIssueMessagesPanel = () => {
         if (this.state.data === undefined) {
-            return (<div>loading....</div>)
+            return (
+                <div style={{display:"flex",justifyContent:"center",marginTop:"100px"}}>
+                    <Icon icon="spinner" spin size="lg"/>
+                    <p style={{marginLeft:"10px"}}>loading.... </p>
+                </div>
+            )
         }
         else {
             this.mapJsonToData(this.state.data)

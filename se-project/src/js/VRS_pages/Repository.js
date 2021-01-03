@@ -75,6 +75,7 @@ class Repository extends React.Component {
         }
         removeUserProjectRepos(this.state.currentProject.id, data).then(response => {
             Alert.success('刪除成功！')
+            this.setState({loading:true});
             this.getProjectRepos()
         }).catch(err => {
             Alert.error('發生錯誤！')
@@ -88,6 +89,7 @@ class Repository extends React.Component {
         Alert.config({ top: 100 });
         saveUserProjectRepos(this.state.currentProject.id, this.state.selectedRepos).then(response => {
             Alert.success('新增成功！')
+            this.setState({loading:true});
         }).catch(err => {
             Alert.error('發生錯誤！')
         })
