@@ -138,11 +138,11 @@ class Repository extends React.Component {
 
                     <HeaderNavbar />
                     <Table loading={loading} bordered={true} data={data} rowHeight={60} autoHeight >
-                        <Column width={chart_width * 0.3} verticalAlign="middle" align="center" >
+                        <Column width={chart_width * 0.45} verticalAlign="middle" align="center" >
                             <HeaderCell className="haederCell">Repository Name</HeaderCell>
                             <Cell dataKey="name"></Cell>
                         </Column>
-                        <Column width={chart_width * 0.4} verticalAlign="middle" align="center">
+                        <Column width={chart_width * 0.3} verticalAlign="middle" align="center">
                             <HeaderCell className="haederCell">Source</HeaderCell>
                             <Cell >
                                 {rowData => {
@@ -150,7 +150,7 @@ class Repository extends React.Component {
                                 }}
                             </Cell>
                         </Column>
-                        <Column width={chart_width * 0.3} verticalAlign="middle" align="center" fixed="right">
+                        <Column width={chart_width * 0.25} verticalAlign="middle" align="center" fixed="right">
                             <HeaderCell className="haederCell">Delete Repository</HeaderCell>
                             <Cell>
                                 {rowData => {
