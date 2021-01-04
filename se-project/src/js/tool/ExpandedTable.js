@@ -58,7 +58,7 @@ class ExpandedTable extends React.Component {
 
     CreateCommentDiv(body, user, time) {
         var result = [];
-        result.push((<p>{user}  Commented at  {time}</p>))
+        result.push((<p style={{fontWeight:"bolder"}}>{user}  commented at  {time}</p>))
         result.push((<p>{body}</p>))
         result.push((<br />))
         return result
