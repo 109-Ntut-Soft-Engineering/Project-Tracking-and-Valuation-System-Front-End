@@ -1,14 +1,16 @@
 import React from 'react';
 import HeaderNavbar from "../tool/Navbar";
-import { Container, Breadcrumb, Content, SelectPicker, Icon, Tooltip } from 'rsuite';
+import { Container, Breadcrumb, Content, SelectPicker, Icon } from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
-import { AreaChart, Area, XAxis, YAxis, Legend, CartesianGrid } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, Legend, CartesianGrid, Tooltip } from 'recharts'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectCodeFreq } from '../api/projectAPI';
 import { getCurrentProject, isLoggedIn } from '../tool/CommonTool';
 
 var startDate = undefined;
 var endDate = undefined;
+var disableStartDateArray = undefined;
+var disableEndDateArray = undefined;
 
 class CodeFrequency extends React.Component {
     constructor(props) {
@@ -36,7 +38,7 @@ class CodeFrequency extends React.Component {
         }
 
         return (
-            <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "100px" }}>
+            <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "40px" }}>
                 <AreaChart width={chartWidth} height={chartHeight} data={data}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
@@ -55,7 +57,7 @@ class CodeFrequency extends React.Component {
         )
     }
 
-    //取的時間選取器
+    //取得時間選取器
     createTimePicker = () => {
         var startDate = Object.assign([], this.state.originDataDates);
         var endDate = Object.assign([], this.state.originDataDates);
@@ -68,6 +70,7 @@ class CodeFrequency extends React.Component {
                     onChange={(value) => this.changeChartDate(value, null)}
                     searchable={false}
                     cleanable={false}
+                    disabledItemValues={disableStartDateArray}
                     style={{ width: 224, marginLeft: "10px", marginRight: "50px" }} />
 
                 <h5>結束時間</h5>
@@ -75,6 +78,7 @@ class CodeFrequency extends React.Component {
                     onChange={(value) => this.changeChartDate(null, value)}
                     searchable={false}
                     cleanable={false}
+                    disabledItemValues={disableEndDateArray}
                     style={{ width: 224, marginLeft: "10px", marginRight: "10px" }} />
             </div>
         )
@@ -105,17 +109,22 @@ class CodeFrequency extends React.Component {
 
         if (startDate != undefined && endDate != undefined) {
             var newData = Object.assign([], this.state.originData);
+            disableStartDateArray = [];
+            disableEndDateArray = [];
+
             while (newData[0].date != startDate) {
                 newData.reverse();
-                newData.pop();
+                disableEndDateArray.push(newData.pop().date);
                 newData.reverse();
             }
+            disableEndDateArray.push(newData[0].date);
 
             var finalIndex = newData.length - 1;
             while (newData[finalIndex].date != endDate) {
-                newData.pop();
+                disableStartDateArray.push(newData.pop().date);
                 finalIndex = finalIndex - 1;
             }
+            disableStartDateArray.push(newData[finalIndex].date);
 
             this.setState({ data: newData });
         }
@@ -133,7 +142,7 @@ class CodeFrequency extends React.Component {
             this.setData(currentProject.id)
 
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", minHeight: "100%", backgroundColor: "white" }}>
                 <MainHeader />
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
                     <div style={{ margin: 20 }}>

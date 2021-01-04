@@ -1,32 +1,44 @@
 import React, {Component} from 'react'
 import HeaderNavbarCompare from "../tool/NavbarCompare";
-import { Container, Breadcrumb, Content } from 'rsuite';
+import { Container, Breadcrumb, Content, Icon, SelectPicker} from 'rsuite';
 import { Link } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend, CartesianGrid, Tooltip} from 'recharts'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectCompareCodeFreq } from '../api/projectAPI';
 import { getCurrentCompareProjects } from '../tool/CommonTool';
 
+var startDate = undefined;
+var endDate = undefined;
+var disableStartDateArray = undefined;
+var disableEndDateArray = undefined;
 
 class CodeFrequencyCompare extends Component{
     constructor(props) {
         super(props);
         this.state = {
             currentCompareProjects: getCurrentCompareProjects(),
-            data: undefined,
+            originData: undefined,
+            originDataDates: [],
+            data: undefined
         }
     }
+
+    //取得codeFreq曲線圖
     createCodeFreqChart = () => {
         const chartWidth = window.innerWidth * 0.7
         const chartHeight = window.innerHeight * 0.6
-        if (this.state.data === undefined) {
-            return (<div>loading....</div>)
-        }
-        else {
-            
+        const { data } = this.state
+        if (data === undefined) {
             return (
-                <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "100px" }}>
-                    <AreaChart width={chartWidth} height={chartHeight} data={this.state.data}>
+                <div style={{display:"flex",justifyContent:"center",marginTop:"100px"}}>
+                    <Icon icon="spinner" spin size="lg"/>
+                    <p style={{marginLeft:"10px"}}>loading.... </p>
+                </div>
+            )
+        }else {
+            return (
+                <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "40px" }}>
+                    <AreaChart width={chartWidth} height={chartHeight} data={data}>
                          <CartesianGrid strokeDasharray="3 3" />
                          <Tooltip />
                         <defs>
@@ -53,26 +65,90 @@ class CodeFrequencyCompare extends Component{
             )
         }
     }
+
+    //取得時間選取器
+    createTimePicker = () => {
+        var startDate = Object.assign([], this.state.originDataDates);
+        var endDate = Object.assign([], this.state.originDataDates);
+        endDate.reverse().pop();
+        startDate.pop();
+        return (
+            <div style={{display:'flex',flexDirection:'row', alignItems:"center", justifyContent:"center",marginBottom:"30px"}}>
+                <h5>開始時間</h5>
+                <SelectPicker data={startDate} 
+                    onChange={(value) => this.changeChartDate(value, null)}
+                    searchable={false} 
+                    cleanable={false}
+                    disabledItemValues={disableStartDateArray}
+                    style={{ width: 224, marginLeft:"10px", marginRight:"50px"}}/>
+
+                <h5>結束時間</h5>
+                <SelectPicker data={endDate} 
+                    onChange={(value) => this.changeChartDate(null, value)}
+                    searchable={false} 
+                    cleanable={false}
+                    disabledItemValues={disableEndDateArray}
+                    style={{ width: 224, marginLeft:"10px", marginRight:"10px"}}/>
+            </div>
+        )
+    }
+
+    //變更CodeFreq曲線圖時間
+    changeChartDate(newStartDate, newEndDate){
+        if(newStartDate != null) startDate = newStartDate;
+        if(newEndDate != null) endDate = newEndDate;
+
+        if(startDate != undefined && endDate != undefined){
+            var newData = Object.assign([], this.state.originData);
+            disableStartDateArray = [];
+            disableEndDateArray = [];
+            
+            while(newData[0].date != startDate){
+                newData.reverse();
+                disableEndDateArray.push(newData.pop().date);
+                newData.reverse();
+            }
+            disableEndDateArray.push(newData[0].date);
+
+            var finalIndex = newData.length - 1;
+            while(newData[finalIndex].date != endDate) {
+                disableStartDateArray.push(newData.pop().date);
+                finalIndex = finalIndex - 1;
+            }
+            disableStartDateArray.push(newData[finalIndex].date);
+
+            this.setState({data:newData});
+        }
+    }
+
+    //取得CompareCodefreq資訊
     setData = (pid1, pid2) => {
         console.log('request!!!')
         return requestProjectCompareCodeFreq(pid1, pid2)
             .then(res => res.data)
             .then(data => {
-                console.log("Data", data)
-                this.setState({ data: data.code_freq })
+                var datas = data.code_freq;
+                var dataSize = datas.length;
+                var dateArray = [];
+                for(var i = 0; i < dataSize; i++)
+                    dateArray.push({label:datas[i].date, value:datas[i].date});
+
+                this.setState({ data: datas})
+                this.setState({ originData: datas})
+                this.setState({ originDataDates: dateArray})
                 return data.code_freq
             })
     }
     
-
+    //渲染畫面
     render() {
         const { currentCompareProjects } = this.state
         var projectsNameText = currentCompareProjects.name1 + ' － ' + currentCompareProjects.name2;
-        // 這裡只有先拿其中一個專案的id，還可以拿id2
+        
         if (this.state.data === undefined)
             this.setData(currentCompareProjects.id1, currentCompareProjects.id2)
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", minHeight:"100%", backgroundColor: "white" }}>
                 <MainHeader />
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
                     <div style={{ margin: 20 }}>
@@ -82,6 +158,8 @@ class CodeFrequencyCompare extends Component{
                         </Breadcrumb>
                     </div>
                     <HeaderNavbarCompare />
+
+                    {this.createTimePicker()}
                     {this.createCodeFreqChart()}
                 </Content>
             </Container>

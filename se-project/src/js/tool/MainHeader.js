@@ -45,7 +45,7 @@ class MainHeader extends React.Component {
                             <Dropdown.Item>Setting</Dropdown.Item>
                         </Link>
                         <Link style={{ textDecoration: "none" }} to="/">
-                            <Dropdown.Item onClick={() => { }}>Log Out</Dropdown.Item>
+                            <Dropdown.Item onClick={() => { clearCurrentUser()}}>Log Out</Dropdown.Item>
                         </Link>
                     </Dropdown>
 

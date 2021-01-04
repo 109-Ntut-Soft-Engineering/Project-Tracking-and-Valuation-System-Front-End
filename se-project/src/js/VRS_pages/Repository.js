@@ -75,6 +75,7 @@ class Repository extends React.Component {
         }
         removeUserProjectRepos(this.state.currentProject.id, data).then(response => {
             Alert.success('刪除成功！')
+            this.setState({loading:true});
             this.getProjectRepos()
         }).catch(err => {
             Alert.error('發生錯誤！')
@@ -88,6 +89,7 @@ class Repository extends React.Component {
         Alert.config({ top: 100 });
         saveUserProjectRepos(this.state.currentProject.id, this.state.selectedRepos).then(response => {
             Alert.success('新增成功！')
+            this.setState({loading:true});
         }).catch(err => {
             Alert.error('發生錯誤！')
         })
@@ -121,20 +123,17 @@ class Repository extends React.Component {
         var projName = this.state.currentProject.name;
         const { backdrop, show, data, loading, delRepo, selectedRepos, menuLoading, tableHeight } = this.state;
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", minHeight:"100%", backgroundColor: "white" }}>
                 <MainHeader />
-
 
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }} >
                     <div style={{ margin: 20 }}>
-
                         <Breadcrumb style={{ display: 'inline' }} separator={React.createElement('h4', {}, '/')}>
                             <Breadcrumb.Item><Link to="/projects"><h4>Projects</h4></Link></Breadcrumb.Item>
                             <Breadcrumb.Item active><h4>{projName}</h4></Breadcrumb.Item>
                         </Breadcrumb>
 
                         <Button style={{ float: 'right' }} color="blue" className="creteButton" onClick={this.open}>Create</Button>
-
                     </div>
 
                     <HeaderNavbar />
@@ -164,9 +163,7 @@ class Repository extends React.Component {
                             </Cell>
                         </Column>
                     </Table>
-
                 </Content>
-
 
                 <Modal backdrop={backdrop} show={show} onHide={this.close} size="sm">
                     <Modal.Header>

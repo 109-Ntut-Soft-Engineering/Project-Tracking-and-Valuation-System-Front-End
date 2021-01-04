@@ -74,19 +74,18 @@ class UserSettingPage extends React.Component {
         var { showUserNameConfirm, showEmailConfirm, showPasswordConfirm, userSetting, userInfo } = this.state
         return (
 
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", backgroundColor: "white" }}>
                 <MainHeader />
 
-
                 <Content style={{ paddingLeft: "20%", paddingRight: "20%" }}>
-                    <div style={{ marginBottom: 20, display: 'inline' }}>
+                    <div style={{ marginBottom: 20, display: 'flex'}}>
                         <Link to={"/projects"}>
                             <IconButton icon={<Icon icon="chevron-left" />} size="lg" />
                         </Link>
 
-                        <h1>設定</h1>
+                        <h3 style={{marginLeft:"30px"}}>使用者設定</h3>
                     </div>
-                    <FlexboxGrid >
+                    <FlexboxGrid style={{marginBottom:"50px"}}>
                         <FlexboxGrid.Item colspan={24}>
                             <h4>個人資料</h4>
                             <Divider />
@@ -168,14 +167,9 @@ class UserSettingPage extends React.Component {
                             <Button color='default' onClick={oAuth} >
                                 授權
                             </Button>
-
                         </FlexboxGrid.Item>
                     </FlexboxGrid>
-
-
                 </Content>
-
-
             </Container>
 
         )

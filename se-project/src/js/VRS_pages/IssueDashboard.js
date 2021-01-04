@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Breadcrumb } from 'rsuite';
+import { Container, Breadcrumb, Icon } from 'rsuite';
 import HeaderNavbar from "../tool/Navbar";
 import { Link, Redirect } from "react-router-dom";
 import ExpandedTable from '../tool/ExpandedTable'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectIssueMessage } from '../api/projectAPI';
-import { Panel, Content, Icon } from 'rsuite';
+import { Panel, Content } from 'rsuite';
 import { getCurrentProject, isLoggedIn } from '../tool/CommonTool';
 
 const newDataList = []
@@ -21,19 +21,21 @@ class IssueDashboard extends React.Component {
     createIssueMessagesTable = (name, issue) => {
         console.log(issue)
         return (
-            <Panel header={name} collapsible bordered>
+            <Panel header={name} collapsible bordered style={{ marginBottom: "30px" }}>
                 <div style={{ marginTop: "30px" }}>
-                    <ExpandedTable data={issue} autoHeight></ExpandedTable>
+                    <ExpandedTable data={issue} autoHeight ></ExpandedTable>
                 </div>
             </Panel>
         )
     }
     createIssueMessagesPanel = () => {
         if (this.state.data === undefined) {
-            return (<div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
-                <Icon icon="spinner" spin size="lg" />
-                <p style={{ marginLeft: "10px" }}>loading.... </p>
-            </div>)
+            return (
+                <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+                    <Icon icon="spinner" spin size="lg" />
+                    <p style={{ marginLeft: "10px" }}>loading.... </p>
+                </div>
+            )
         }
         else {
             this.mapJsonToData(this.state.data)
@@ -88,7 +90,7 @@ class IssueDashboard extends React.Component {
             this.setIssueMessage(currentProject.id)
         }
         return (
-            <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
+            <Container style={{ width: "100%", height: "auto", minHeight: "100%", backgroundColor: "white" }}>
                 <MainHeader />
                 <Content style={{ paddingLeft: '20%', paddingRight: '20%' }}>
                     <div style={{ margin: 20 }}>
