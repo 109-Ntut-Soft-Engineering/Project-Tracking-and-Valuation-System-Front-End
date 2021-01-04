@@ -87,6 +87,7 @@ class CommitPage extends React.Component {
     }
 
     makeCommitTimes(data) {
+        console.log(data)
         if (data.length == 0)
             return [];
         var cmtTimes = {
@@ -119,11 +120,14 @@ class CommitPage extends React.Component {
                 cmtTimesList.push(cmtTimes);
             }
         }
+        console.log(cmtTimesList)
 
         return cmtTimesList;
     }
 
     getIntervalCmtTimes(startDate, endDate) {
+        console.log(startDate)
+        console.log(endDate)
         var dayMilliSeconds = 1000 * 60 * 60 * 24;
         var startDateMs = startDate.getTime();
         var endDateMs = endDate.getTime();
@@ -131,11 +135,16 @@ class CommitPage extends React.Component {
         for (var curDateMs = startDateMs + dayMilliSeconds;
             curDateMs < endDateMs; curDateMs += dayMilliSeconds) {
             var date = new Date(curDateMs);
-            var dateString = date.getFullYear().toString() + '/';
-            if (date.getMonth() < 10)
+            var year = date.getFullYear();
+            var month = date.getMonth();
+            var day = date.getDate();
+            var dateString = year.toString() + '/';
+            if (month < 10)
                 dateString += '0';
-            dateString += date.getMonth().toString() + '/' +
-                date.getDate().toString();
+            dateString += month.toString() + '/';
+            if (day < 10)
+                dateString += '0';
+            dateString += day.toString();
             intervalDates.push({
                 'times': 0,
                 'time': dateString
