@@ -49,11 +49,25 @@ class CommitCompare extends Component {
                     <AreaChart width={width} height={height} data={data}>
                         <CartesianGrid stroke="#ccc" strokeDasharray="3 3" fill="#ECF5FF" />
                         <Tooltip />
-                        <XAxis dataKey="time" stroke="#000000" />
+                        <defs>
+                            <linearGradient id="line1ColorCode" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
+                        <defs>
+                            <linearGradient id="line2ColorCode" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                            </linearGradient>
+                        </defs>
+                        <Area type="monotone" dataKey={this.state.currCmpProjs.id1} stroke="#82ca9d" 
+                                fullOpacity={1} fill="url(#line1ColorCode)" name={this.state.currCmpProjs.name1}/>
+                        <Area type="monotone" dataKey={this.state.currCmpProjs.id2} stroke="#8884d8" 
+                                fullOpacity={1} fill="url(#line2ColorCode)" name={this.state.currCmpProjs.name2}/>
+                        <XAxis dataKey='time' />
                         <YAxis />
-                        <Area type="monotone" dataKey={this.state.currCmpProjs.id1} name={this.state.currCmpProjs.name1} stroke="#82ca9d" fill="#82ca9d" />
-                        <Area type="monotone" dataKey={this.state.currCmpProjs.id2} name={this.state.currCmpProjs.name2}stroke="#8884d8" fill="#8884d8" />
-                        <Legend/>
+                        <Legend />
                     </AreaChart>
                 </FlexboxGrid.Item>
             )
