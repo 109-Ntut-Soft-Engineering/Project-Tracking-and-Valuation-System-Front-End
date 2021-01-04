@@ -5,7 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import ExpandedTable from '../tool/ExpandedTable'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectIssueMessage } from '../api/projectAPI';
-import { Panel, Content } from 'rsuite';
+import { Panel, Content, Icon } from 'rsuite';
 import { getCurrentProject, isLoggedIn } from '../tool/CommonTool';
 
 const newDataList = []
@@ -30,7 +30,10 @@ class IssueDashboard extends React.Component {
     }
     createIssueMessagesPanel = () => {
         if (this.state.data === undefined) {
-            return (<div>loading....</div>)
+            return (<div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+                <Icon icon="spinner" spin size="lg" />
+                <p style={{ marginLeft: "10px" }}>loading.... </p>
+            </div>)
         }
         else {
             this.mapJsonToData(this.state.data)

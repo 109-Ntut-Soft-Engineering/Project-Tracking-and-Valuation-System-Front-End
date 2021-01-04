@@ -1,8 +1,8 @@
 import React from 'react';
 import HeaderNavbar from "../tool/Navbar";
-import { Container, Breadcrumb, Content , SelectPicker, Icon, Tooltip, CartesianGrid} from 'rsuite';
+import { Container, Breadcrumb, Content, SelectPicker, Icon, Tooltip } from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
-import { AreaChart, Area, XAxis, YAxis, Legend } from 'recharts'
+import { AreaChart, Area, XAxis, YAxis, Legend, CartesianGrid } from 'recharts'
 import MainHeader from '../tool/MainHeader'
 import { requestProjectCodeFreq } from '../api/projectAPI';
 import { getCurrentProject, isLoggedIn } from '../tool/CommonTool';
@@ -28,13 +28,13 @@ class CodeFrequency extends React.Component {
         const { data } = this.state
         if (data === undefined) {
             return (
-                <div style={{display:"flex",justifyContent:"center",marginTop:"100px"}}>
-                    <Icon icon="spinner" spin size="lg"/>
-                    <p style={{marginLeft:"10px"}}>loading.... </p>
+                <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+                    <Icon icon="spinner" spin size="lg" />
+                    <p style={{ marginLeft: "10px" }}>loading.... </p>
                 </div>
             )
         }
-       
+
         return (
             <div id="chart_region" style={{ display: "flex", justifyContent: "center", marginTop: "25px", marginBottom: "100px" }}>
                 <AreaChart width={chartWidth} height={chartHeight} data={data}>
@@ -62,24 +62,24 @@ class CodeFrequency extends React.Component {
         endDate.reverse().pop();
         startDate.pop();
         return (
-            <div style={{display:'flex',flexDirection:'row', alignItems:"center", justifyContent:"center",marginBottom:"30px"}}>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", justifyContent: "center", marginBottom: "30px" }}>
                 <h5>開始時間</h5>
-                <SelectPicker data={startDate} 
+                <SelectPicker data={startDate}
                     onChange={(value) => this.changeChartDate(value, null)}
-                    searchable={false} 
+                    searchable={false}
                     cleanable={false}
-                    style={{ width: 224, marginLeft:"10px", marginRight:"50px"}}/>
+                    style={{ width: 224, marginLeft: "10px", marginRight: "50px" }} />
 
                 <h5>結束時間</h5>
-                <SelectPicker data={endDate} 
+                <SelectPicker data={endDate}
                     onChange={(value) => this.changeChartDate(null, value)}
-                    searchable={false} 
+                    searchable={false}
                     cleanable={false}
-                    style={{ width: 224, marginLeft:"10px", marginRight:"10px"}}/>
+                    style={{ width: 224, marginLeft: "10px", marginRight: "10px" }} />
             </div>
         )
     }
-    
+
     //取得codefreq資訊
     setData = (id) => {
         return requestProjectCodeFreq(id)
@@ -88,39 +88,39 @@ class CodeFrequency extends React.Component {
                 var datas = data.code_freq;
                 var dataSize = datas.length;
                 var dateArray = [];
-                for(var i = 0; i < dataSize; i++)
-                    dateArray.push({label:datas[i].date, value:datas[i].date});
-                
-                this.setState({ data: datas})
-                this.setState({ originData: datas})
-                this.setState({ originDataDates: dateArray})
+                for (var i = 0; i < dataSize; i++)
+                    dateArray.push({ label: datas[i].date, value: datas[i].date });
+
+                this.setState({ data: datas })
+                this.setState({ originData: datas })
+                this.setState({ originDataDates: dateArray })
                 return data.code_freq
             })
     }
 
     //變更CodeFreq曲線圖時間
-    changeChartDate(newStartDate, newEndDate){
-        if(newStartDate != null) startDate = newStartDate;
-        if(newEndDate != null) endDate = newEndDate;
+    changeChartDate(newStartDate, newEndDate) {
+        if (newStartDate != null) startDate = newStartDate;
+        if (newEndDate != null) endDate = newEndDate;
 
-        if(startDate != undefined && endDate != undefined){
+        if (startDate != undefined && endDate != undefined) {
             var newData = Object.assign([], this.state.originData);
-            while(newData[0].date != startDate){
+            while (newData[0].date != startDate) {
                 newData.reverse();
                 newData.pop();
                 newData.reverse();
             }
 
             var finalIndex = newData.length - 1;
-            while(newData[finalIndex].date != endDate) {
+            while (newData[finalIndex].date != endDate) {
                 newData.pop();
                 finalIndex = finalIndex - 1;
             }
 
-            this.setState({data:newData});
+            this.setState({ data: newData });
         }
     }
-    
+
     //渲染畫面
     render() {
         if (!isLoggedIn()) {
@@ -131,7 +131,7 @@ class CodeFrequency extends React.Component {
         const { currentProject } = this.state
         if (this.state.data === undefined)
             this.setData(currentProject.id)
-        
+
         return (
             <Container style={{ width: "100%", height: "100%", backgroundColor: "white" }}>
                 <MainHeader />
@@ -143,7 +143,7 @@ class CodeFrequency extends React.Component {
                         </Breadcrumb>
                     </div>
                     <HeaderNavbar />
-                    
+
                     {this.createTimePicker()}
                     {this.createCodeFreqChart()}
                 </Content>

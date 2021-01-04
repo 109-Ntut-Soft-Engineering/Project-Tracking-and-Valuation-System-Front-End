@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, CheckboxGroup, Checkbox, Breadcrumb, Content, FlexboxGrid, Panel } from 'rsuite';
+import { Container, CheckboxGroup, Checkbox, Breadcrumb, Content, FlexboxGrid, Icon } from 'rsuite';
 import { Link, Redirect } from "react-router-dom";
 import { Table, Column, HeaderCell, Cell } from 'rsuite-table';
 import { AreaChart, XAxis, YAxis, CartesianGrid, Area } from 'recharts';
@@ -57,7 +57,12 @@ class CommitPage extends React.Component {
     createTotalCommit = () => {
         const { width, height } = this.state
         if (this.state.data === undefined) {
-            return (<div>loading...</div>)
+            return (
+                <div style={{ display: "flex", justifyContent: "center", marginTop: "100px" }}>
+                    <Icon icon="spinner" spin size="lg" />
+                    <p style={{ marginLeft: "10px" }}>loading.... </p>
+                </div>
+            )
         }
 
         const members = this.state.data['member']
@@ -77,7 +82,7 @@ class CommitPage extends React.Component {
 
                 <FlexboxGrid.Item colspan={20}>
 
-                    <h6>Issue</h6>
+                    <h6>Message</h6>
                     <Table data={data}>
                         <Column >
                             <HeaderCell>Name</HeaderCell>
