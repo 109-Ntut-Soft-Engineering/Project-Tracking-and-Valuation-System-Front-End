@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import { getCurrentCompareProjects } from '../tool/CommonTool';
 import { requestCompareTotalCommit } from '../api/projectAPI'
-import { Container, Breadcrumb, Content, FlexboxGrid, Icon} from 'rsuite';
+import { Container, Breadcrumb, Content, FlexboxGrid, Icon, SelectPicker} from 'rsuite';
 import { Link } from "react-router-dom";
 import { AreaChart, Area, XAxis, YAxis, Legend, CartesianGrid, Tooltip} from 'recharts'
 import HeaderNavbarCompare from "../tool/NavbarCompare";
 import MainHeader from '../tool/MainHeader'
+
+var startDate = undefined;
+var endDate = undefined;
+var disableStartDateArray = undefined;
+var disableEndDateArray = undefined;
 
 class CommitCompare extends Component {
     constructor(props) {
@@ -13,22 +18,32 @@ class CommitCompare extends Component {
         this.state = {
             currCmpProjs: getCurrentCompareProjects(), 
             oriData: undefined, 
-            curData: undefined
+            curData: undefined,
+            oriTimes: undefined
         }
     }
 
+    //初始設定
     setData = (pid1, pid2) => {
         return requestCompareTotalCommit(pid1, pid2)
             .then(res => res.data)
             .then(data => {
+                
+                var timesArray = [];
+                for (var i = 0; i < data['commit_times'].length; i++)
+                    timesArray.push({ label: data['commit_times'][i].time, value: data['commit_times'][i].time});
+
                 this.setState({
                     oriData: data, 
-                    curData: data
+                    curData: data,
+                    oriTimes: timesArray
                 })
+                console.log(this.state.oriTimes);
                 return data
             })
     }
 
+    //取得compareCommit曲線圖
     createCompareTotalCommit = () => {
         const width = window.innerWidth * 0.6;
         const height = window.innerHeight * 0.5;
@@ -43,7 +58,7 @@ class CommitCompare extends Component {
         }
         else {
             const data = this.state.curData['commit_times'];
-
+            
             return (
                 <FlexboxGrid.Item colspan={24} style={{marginBottom:"30px"}}>
                     <AreaChart width={width} height={height} data={data}>
@@ -74,6 +89,64 @@ class CommitCompare extends Component {
         }
     }
 
+    //取得時間選取器
+    createTimePicker = () => {
+        var startDate = Object.assign([], this.state.oriTimes);
+        var endDate = Object.assign([], this.state.oriTimes);
+        endDate.reverse().pop();
+        startDate.pop();
+        return (
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: "center", justifyContent: "center", marginBottom: "30px" }}>
+                <h5>開始時間</h5>
+                <SelectPicker data={startDate}
+                    onChange={(value) => this.changeChartDate(value, null)}
+                    searchable={false}
+                    cleanable={false}
+                    disabledItemValues={disableStartDateArray}
+                    style={{ width: 224, marginLeft: "10px", marginRight: "50px" }} />
+
+                <h5>結束時間</h5>
+                <SelectPicker data={endDate}
+                    onChange={(value) => this.changeChartDate(null, value)}
+                    searchable={false}
+                    cleanable={false}
+                    disabledItemValues={disableEndDateArray}
+                    style={{ width: 224, marginLeft: "10px", marginRight: "10px" }} />
+            </div>
+        )
+    }
+
+    //變更compareCommit曲線圖時間
+    changeChartDate(newStartDate, newEndDate) {
+        if (newStartDate != null) startDate = newStartDate;
+        if (newEndDate != null) endDate = newEndDate;
+
+        if (startDate != undefined && endDate != undefined) {
+            var newCommitTimes = Object.assign([], this.state.oriData['commit_times']);
+            disableStartDateArray = [];
+            disableEndDateArray = [];
+
+            while (newCommitTimes[0].time != startDate) {
+                newCommitTimes.reverse();
+                disableEndDateArray.push(newCommitTimes.pop().time);
+                newCommitTimes.reverse();
+            }
+            disableEndDateArray.push(newCommitTimes[0].time);
+
+            var finalIndex = newCommitTimes.length - 1;
+            while (newCommitTimes[finalIndex].time != endDate) {
+                disableStartDateArray.push(newCommitTimes.pop().time);
+                finalIndex = finalIndex - 1;
+            }
+            disableStartDateArray.push(newCommitTimes[finalIndex].time);
+
+            var newData = Object.assign({}, this.state.oriData);
+            newData['commit_times'] = newCommitTimes;
+            this.setState({ curData: newData });
+        }
+    }
+
+    //渲染畫面
     render() {
         const { currCmpProjs } = this.state;
         var projsNameText = currCmpProjs.name1 + ' － ' + currCmpProjs.name2;
@@ -92,6 +165,7 @@ class CommitCompare extends Component {
                         </Breadcrumb>
                     </div>
                     <HeaderNavbarCompare />
+                    {this.createTimePicker()}
                     {this.createCompareTotalCommit()}
                 </Content>
             </Container>
