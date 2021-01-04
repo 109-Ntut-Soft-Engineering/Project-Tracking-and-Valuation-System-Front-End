@@ -30,15 +30,16 @@ class CommitCompare extends Component {
             .then(data => {
                 
                 var timesArray = [];
-                for (var i = 0; i < data['commit_times'].length; i++)
-                    timesArray.push({ label: data['commit_times'][i].time, value: data['commit_times'][i].time});
+                for (var i = 0; i < data[0]['commit_times'].length; i++)
+                    timesArray.push({ label: data[0]['commit_times'][i].time, value: data[0]['commit_times'][i].time});
 
                 this.setState({
-                    oriData: data, 
-                    curData: data,
+                    oriData: data[0], 
+                    curData: data[0],
                     oriTimes: timesArray
                 })
-                console.log(this.state.oriTimes);
+                console.log(data[0]);
+                console.log(data[0]['commit_times']);
                 return data
             })
     }

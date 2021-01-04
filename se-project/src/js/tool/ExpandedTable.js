@@ -58,8 +58,8 @@ class ExpandedTable extends React.Component {
 
     CreateCommentDiv(body, user, time) {
         var result = [];
-        result.push((<h5>{user}  Commented at  {time}</h5>))
-        result.push((<h6>{body}</h6>))
+        result.push((<p style={{fontWeight:"bolder"}}>{user}  commented at  {time}</p>))
+        result.push((<p>{body}</p>))
         result.push((<br />))
         return result
     }
@@ -69,7 +69,7 @@ class ExpandedTable extends React.Component {
         comments.forEach(value => {
             data.push(this.CreateCommentDiv(value['body'], value['user'], value['time']));
         });
-        return (<div style={{ margin: "8px" }}>{data}</div>)
+        return (<div style={{ margin: "8px"}}>{data}</div>)
     }
 
     handleExpanded(rowData) {
@@ -97,12 +97,12 @@ class ExpandedTable extends React.Component {
         const { expandedRowKeys, data } = this.state;
         return (
             <Table
-                // height={this.props.height}
+                autoHeight
                 width={800}
                 data={data}
                 rowKey={rowKey}
                 expandedRowKeys={expandedRowKeys}
-                rowExpandedHeight={this.props.height}
+                rowExpandedHeight={250}
                 renderRowExpanded={rowData => {
                     return (
                         this.GetComments(rowData['comments'])
