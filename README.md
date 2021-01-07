@@ -6,5 +6,9 @@
 3.Repository管理系統
 4.Project資訊視覺化
 
-## Demo
-{%youtube sRgL4jtqIgA %}
+
+
+## [DEMO](https://www.youtube.com/watch?v=sRgL4jtqIgA&feature=youtu.be&ab_channel=%E9%99%B3%E5%B3%BB%E6%9A%90)
+<!-- {%youtube sRgL4jtqIgA %}
+ -->
+ 
